@@ -27,20 +27,25 @@ public class Game {
 		 */
 		
         
-        // for testing
-		board[5][1].setOccupation(1);
-		getWinner(board,5,1);
-		System.out.println(checkVertical(board,5,1));
-		board[4][1].setOccupation(1);
-		getWinner(board,4,1);
-		System.out.println(checkVertical(board,4,1));
-		board[3][1].setOccupation(1);
-		getWinner(board,3,1);
-		System.out.println(checkVertical(board,3,1));
-		board[2][1].setOccupation(1);
-		getWinner(board,2,1);
-		System.out.println(checkVertical(board,2,1));
+        Scanner sc = new Scanner(System.in);
 		
+		int row = 0;
+		int col = 0;
+		int playerIdTurn = 1;
+		while (getWinner(board, row, col) == false) {
+			System.out.print("Player " + playerIdTurn + ", enter a col number > ");
+			col = sc.nextInt();
+					
+			row = placeTile(board, playerIdTurn, col);
+			col = col - 1;
+		
+			// updates the players turn		
+			if (playerIdTurn == 1) {
+				playerIdTurn = 2;
+			} else {
+				playerIdTurn = 1;
+			}
+		}
 	}
 	
 	
@@ -61,7 +66,7 @@ public class Game {
 										// last counter on or above the fourth highest row
 			int lastPlayer = board[rowOfLastPlaced][colOfLastPlaced].getOccupation();
 	
-			for (int row = rowOfLastPlaced + 1; row < 5; row++) {
+			for (int row = rowOfLastPlaced + 1; row <= 5; row++) {
 				if (board[row][colOfLastPlaced].getOccupation() == lastPlayer) {
 					sameInARow++;
 					if (sameInARow == 4) {
@@ -149,7 +154,7 @@ public class Game {
 	 * A method to be called at the end of each turn to check if the last piece played resulted in 
 	 * one player winning by having four counters in a row, column or diagonally one after the other.
 	 * 
-	 * If someone won, prints the details
+	 * If someone won, prints the details and returns true, otherwise returns false
 	 * 
 	 * @param board					The board instance
 	 * @param rowOfLastPlaced		The row of the last placed counter
@@ -157,8 +162,7 @@ public class Game {
 	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
-	public static void getWinner(Tile[][] board, int rowOfLastPlaced, int colOfLastPlaced) {
-		
+	public static boolean getWinner(Tile[][] board, int rowOfLastPlaced, int colOfLastPlaced) {
 		// Checks vertical first
 		int winnerId = checkVertical(board, rowOfLastPlaced, colOfLastPlaced);
 		
@@ -177,7 +181,31 @@ public class Game {
 		// Prints out the winners details if someone won
 		if (winnerId != 0) {
 			System.out.println("PLAYER " + winnerId + " WON!");
+			return true;
 		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * A method which takes in a column number (1 - 7 = left - right) and places a counter where it can
+	 * according to the rules of connect four.
+	 * Preconditions:	Column number is between 1 and 7 and column choice is not full already
+	 * Postconditions:	Places a counter in that column
+	 * @param board		The board instance
+	 * @param col		The column that you would like to drop a counter in (1 - 7)
+	 * @param playerId	The playerId (1 or 2)
+	 * @return			Returns the row that the tile was placed
+	 */
+	public static int placeTile(Tile[][] board, int playerId, int col) {
+		for (int row = 5; row >= 0; row--) {
+			if (board[row][col - 1].getOccupation() == 0) {
+				board[row][col - 1].setOccupation(playerId);
+				return row;
+			}
+		}
+		return 0;
 	}
 
 }

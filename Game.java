@@ -145,7 +145,6 @@ public class Game {
 	}
 	
 	
-	
 	/**
 	 * A method to be called by checkWinner, checks if any player has four of their counters placed
 	 * one after the other diagonally. Checks both diagonals (bottom left to top right, and top left to bottom right)
@@ -239,7 +238,10 @@ public class Game {
 			winnerId = checkDiagonals(board, rowOfLastPlaced, colOfLastPlaced);
 		}
 		
-		
+		if (winnerId == 0 && getEmptySlots(board) == 0) {
+			System.out.println("\n*****DRAW!! NO ONE WINS*****");
+			return true;
+		}
 		
 		// Prints out the winners details if someone won
 		if (winnerId != 0) {
@@ -266,10 +268,9 @@ public class Game {
 	}
 	
 	
-	
 	/**
-	 * A method which takes in a column number (1 - 7 = left - right) and places a counter where it can
-	 * according to the rules of connect four.
+	 * A method which takes in a column number (1 - 7 = left - right), playerId and places a counter where it can
+	 * according to the rules of connect four on that an inputed board
 	 * Preconditions:	Column number is between 1 and 7 and column choice is not full already
 	 * Postconditions:	Places a counter in that column
 	 * @param board		The board instance
@@ -286,5 +287,25 @@ public class Game {
 		}
 		return 0;
 	}
+	
+	
+	/**
+	 * A method which takes in a board and returns the number of empty slots left in which players
+	 * can place their pieces.
+	 * @param board		The instance of the board
+	 * @return			The number of empty slots remaining
+	 */
+	public static int getEmptySlots(Tile[][] board) {
+		int emptySlots = 42;
+		for (int row = 0; row < 6; row ++) {
+			for (int col = 0; col < 7; col++) {
+				if (board[row][col].getOccupation() != 0) {
+					emptySlots--;
+				}
+			}
+		}
+		return emptySlots;
+	}
+	
 
 }

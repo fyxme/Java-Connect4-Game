@@ -1,11 +1,43 @@
 import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+
 
 public class Game {
 
+	// i (michael b) added these in order to configure how the game looks easily.
+	//
+	//later on if we decide to get fancy, we can have all values aside from rows and columns 
+	//calculated at runtime from window size, allowing the user to adjust the game size to their preference.
+	//
+	public static final int COLUMNS = 7;
+	public static final int ROWS = 6;
+	public static final int CIRCLE_WIDTH = 50; //padding of cicles;
+	public static final int CIRCLE_PADDING = 10;//padding in pixels between two drawn slots.
+	public static final int LINE_THICKNESS = 3;
+	public static final int CIRCLE_SPACE = CIRCLE_WIDTH + CIRCLE_PADDING;
+	
 	public static void main(String[] args) {
 		
-		
+		if(args.length > 1 && args[1].toLowerCase().equals("c"))
+		{
+			CommandLineInterface();
+		}
+		else
+		{
+	        SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	    			MainFrame jframe = new MainFrame();
+	    			jframe.setVisible(true);
+	            }
+	        });
+		}
+	}
+	
+	//just moved this so we have a good demo of the gui
+	public static void CommandLineInterface()
+	{
 		// Set up the board
 		Tile[][] board = new Tile[6][7];
 		
@@ -79,7 +111,7 @@ public class Game {
 				playerIdTurn = 1;
 			}
 		}
-		
+		sc.close();
 	}
 	
 	

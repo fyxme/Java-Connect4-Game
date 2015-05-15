@@ -9,6 +9,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements MouseMotionListener,MouseListener{
+	public int winner = 0;
+	
+	
+	
 	public GamePanel()
 	{
 		super();
@@ -40,28 +44,20 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 				{0, 0, 0, 0, 0, 0, 0 },
 				{0, 0, 0, 0, 0, 0, 0 }
 			};
-	//*/
-	/*
-	private int[][] demoArray = new int[][]
-			{
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-			};
-	//*/
+	
 	private boolean player1Turn = true;
 	private int mousex, mousey;
 	private boolean mouseIsInPanel = false;
 	
 	private int selectedColumn;
+	public Game game = new Game();
+
 	
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		
 		
 		//maybe theres a way to only run the next 3 lines once, as opposed to on every paint call.
 		Graphics2D g2d = (Graphics2D)g;
@@ -109,33 +105,47 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int memes = 14;
-		if(selectedColumn >= 0 && selectedColumn < Game.COLUMNS)
-		{
-			for( int y = 0; y < Game.ROWS; y++)
+		if (winner == 0) {
+		
+			if(selectedColumn >= 0 && selectedColumn < Game.COLUMNS)
 			{
-				if(demoArray[y][selectedColumn] != 0)
+				for( int y = 0; y < Game.ROWS; y++)
 				{
-					if(y > 0)
+					if(demoArray[y][selectedColumn] != 0)
 					{
-						if(player1Turn)
-							demoArray[y-1][selectedColumn] = 1;
-						else
-							demoArray[y-1][selectedColumn] = 2;
+						if(y > 0)
+						{
+							if(player1Turn) {
+								demoArray[y-1][selectedColumn] = 1;
+								game.board[y-1][selectedColumn].setOccupation(1);
+							} else {
+								demoArray[y-1][selectedColumn] = 2;
+								game.board[y-1][selectedColumn].setOccupation(2);
+							}
+							winner = game.getWinner(y-1, selectedColumn);
+							player1Turn = !player1Turn;
+						}
+						break;
+					}
+					
+					if(y == Game.ROWS - 1)
+					{
+						if(player1Turn) {
+							demoArray[y][selectedColumn] = 1;
+							game.board[y][selectedColumn].setOccupation(1);
+	
+						} else {
+							demoArray[y][selectedColumn] = 2;
+							game.board[y][selectedColumn].setOccupation(2);
+	
+						}
+						winner = game.getWinner(y-1, selectedColumn);
+	
 						player1Turn = !player1Turn;
 					}
-					break;
 				}
-				if(y == Game.ROWS - 1)
-				{
-					if(player1Turn)
-						demoArray[y][selectedColumn] = 1;
-					else
-						demoArray[y][selectedColumn] = 2;
-					player1Turn = !player1Turn;
-				}
+				repaint();
 			}
-			repaint();
 		}
 	}
 

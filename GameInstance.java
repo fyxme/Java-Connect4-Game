@@ -8,12 +8,10 @@ public class GameInstance {
 	private Board board = null; // game board
 	private HashMap<Integer, Participant> players = null; // <id, participant> first participant has id 1
 	private int num_part = ERROR; // number of participants
-	private int turn = ERROR; // turn counts
 	
 	public GameInstance(int rows, int columns, int num_player, int num_ai) {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
-		turn = 0;
 		num_part = 0;
 		for (int i = 0; i < num_player; i++) {
 			players.put(num_part, new Player(i));
@@ -34,7 +32,7 @@ public class GameInstance {
 	}
 	
 	public Participant getCurrentParticipant() {
-		Participant part = players.get((turn%num_part));
+		Participant part = players.get((board.getTurnNum()%num_part));
 		return part;
 	}
 
@@ -43,16 +41,19 @@ public class GameInstance {
 		if (row != ERROR) {
 			mv.setRow(row);
 			board.addMove(mv, p);
-			turn++;
 		} else {
 			System.out.println("Invalid move. Column is full!");
 		}
 	}
-
-	public void getWinner() {
+	
+	public Participant getWinner() {
 		Participant winner = board.getWinner();
-		if (winner != null) {
-			System.out.println("Player " + winner.getPid() + " has won the round.");
+		if (winner == null && !board.hasEmptySlot()) {
+			System.out.println("\n*****DRAW!! NO ONE WINS*****");
+		// Prints out the winners details if someone won
+		} else if (winner != null) {
+			System.out.println("\nPLAYER " + winner.getPid() + " WON!");
 		}
+		return winner;
 	}
 }

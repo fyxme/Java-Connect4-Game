@@ -8,9 +8,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements MouseMotionListener,MouseListener{
-	public int winner = 0;
+	private boolean isOver = false;
 	
 	private GameInstance gi = null;
 
@@ -101,12 +100,16 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {		
-		int x = e.getX() /  (MainFrame.CIRCLE_SPACE); // column number
-		
-		Participant curr = gi.getCurrentParticipant();
-		gi.makeMove(curr.makeMove(x), curr);
-		repaint();
-		gi.getWinner();
+		if (!isOver) {
+			int x = e.getX() /  (MainFrame.CIRCLE_SPACE); // column number
+			
+			Participant curr = gi.getCurrentParticipant();
+			gi.makeMove(curr.makeMove(x), curr);
+			repaint();
+			if (gi.getWinner() != null) {
+				isOver = true;
+			}
+		}
 	}
 
 	@Override

@@ -183,7 +183,7 @@ public class Board {
 		if (round_num == 0)
 			return null;
 		
-		int rowOfLastPlaced = history.get(round_num - 1).getRow(); 
+		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
 		int colOfLastPlaced = history.get(round_num - 1).getCol();
 		
 		// Checks vertical first
@@ -199,19 +199,10 @@ public class Board {
 			winnerId = this.checkDiagonals(rowOfLastPlaced, colOfLastPlaced);
 		}
 		
-		if (winnerId == null && !this.hasEmptySlot()) {
-			System.out.println("\n*****DRAW!! NO ONE WINS*****");
-		}
-		
-		// Prints out the winners details if someone won
-		if (winnerId != null) {
-			System.out.println("\nPLAYER " + winnerId + " WON!");
-		}
-		
 		return winnerId;
 	}
 	
-	private boolean hasEmptySlot() {
+	public boolean hasEmptySlot() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				if (tile[i][j].isFree()) {
@@ -247,6 +238,10 @@ public class Board {
 		}
 		
 		return space;
+	}
+
+	public int getTurnNum() {
+		return this.round_num;
 	}
 	
 }

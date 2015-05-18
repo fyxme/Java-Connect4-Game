@@ -11,10 +11,12 @@ public class Board {
 	 * Number of rows on the board
 	 */
 	private int rows = ERROR;
+	
 	/**
 	 * Number of columns on the board
 	 */
 	private int columns = ERROR;
+	
 	// history of all the moves ->> to be used for later implementations
 	private HashMap<Integer, Move> history = null; // <roundNumber, Move>
 	
@@ -114,7 +116,7 @@ public class Board {
 	 */
 	public Participant checkDiagonals(int rowOfLastPlaced, int colOfLastPlaced) {
 		int sameInARow = 0;
-		Participant lastPlayer =tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
+		Participant lastPlayer = tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
 		int row = rowOfLastPlaced;
 		int col = colOfLastPlaced;
 		
@@ -180,7 +182,7 @@ public class Board {
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
 	public Participant getWinner () {
-		if (round_num == 0)
+		if (round_num < 6) 	// cant win before the 7th round
 			return null;
 		
 		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
@@ -242,6 +244,18 @@ public class Board {
 
 	public int getTurnNum() {
 		return this.round_num;
+	}
+	
+	public HashMap<Integer, Move> getHistory() {
+		return history;
+	}
+	
+	public int getNumberOfColumns() {
+		return columns;
+	}
+	
+	public int getNumberOfRows() {
+		return rows;
 	}
 	
 }

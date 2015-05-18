@@ -11,7 +11,11 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements MouseMotionListener,MouseListener{
 	public int winner = 0;
 	
-	
+	private GameInstance gi = null;
+
+	public void setGameInstance(GameInstance gi) {
+		this.gi = gi;
+	}
 	
 	public GamePanel()
 	{
@@ -35,23 +39,10 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 			};
 	
 	//*
-	private int[][] demoArray = new int[][]
-			{
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 },
-				{0, 0, 0, 0, 0, 0, 0 }
-			};
-	
-	private boolean player1Turn = true;
 	private int mousex, mousey;
 	private boolean mouseIsInPanel = false;
 	
 	private int selectedColumn;
-	public Game game = new Game();
-
 	
 	@Override
 	public void paintComponent(Graphics g)
@@ -64,9 +55,8 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 		g2d.setStroke(new BasicStroke(Game.LINE_THICKNESS));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//makes things look nice
 		
-		if(mouseIsInPanel)
+		if(mouseIsInPanel) //draw selection rectangle code
 		{
-			selectedColumn = mousex / (Game.CIRCLE_SPACE);
 			if(selectedColumn < Game.COLUMNS)
 			{
 				g.setColor(new Color(100,100,255));
@@ -80,6 +70,20 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 			{
 				int xpos = (Game.CIRCLE_PADDING/2) + (Game.CIRCLE_SPACE)  * x;
 				int ypos = (Game.CIRCLE_PADDING/2) + (Game.CIRCLE_SPACE)  * y;
+				
+				
+				
+				Occupant oc = board[y][x].getOccupant().getId();
+				
+				
+				if (oc == null) {
+					g.setColor(slotColours[0]);	
+				} else {
+					g.setColor(slotColours[board[y][x].getOccupant().getId()]);//change this depending on what's in the slot
+				}
+				
+				
+				
 				
 				g.setColor(slotColours[demoArray[y][x]]);//change this depending on what's in the slot
 				
@@ -99,54 +103,15 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	public void mouseMoved(MouseEvent arg0) {
 		mousex = arg0.getX();
 		mousey = arg0.getY();
+		selectedColumn = mousex /  (Game.CIRCLE_SPACE);
 		repaint();
 		// set x and y positions of mouse then repaint.		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (winner == 0) {
-		
-			if(selectedColumn >= 0 && selectedColumn < Game.COLUMNS)
-			{
-				for( int y = 0; y < Game.ROWS; y++)
-				{
-					if(demoArray[y][selectedColumn] != 0)
-					{
-						if(y > 0)
-						{
-							if(player1Turn) {
-								demoArray[y-1][selectedColumn] = 1;
-								game.board[y-1][selectedColumn].setOccupation(1);
-							} else {
-								demoArray[y-1][selectedColumn] = 2;
-								game.board[y-1][selectedColumn].setOccupation(2);
-							}
-							winner = game.getWinner(y-1, selectedColumn);
-							player1Turn = !player1Turn;
-						}
-						break;
-					}
-					
-					if(y == Game.ROWS - 1)
-					{
-						if(player1Turn) {
-							demoArray[y][selectedColumn] = 1;
-							game.board[y][selectedColumn].setOccupation(1);
-	
-						} else {
-							demoArray[y][selectedColumn] = 2;
-							game.board[y][selectedColumn].setOccupation(2);
-	
-						}
-						winner = game.getWinner(y-1, selectedColumn);
-	
-						player1Turn = !player1Turn;
-					}
-				}
-				repaint();
-			}
-		}
+		//do something with selectedColumn
+		repaint();
 	}
 
 	@Override

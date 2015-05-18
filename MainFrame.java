@@ -7,15 +7,28 @@ import java.awt.*;
 import javax.swing.*;
 
 
-//supposedly extending Jframe is bad design 
+// supposedly extending Jframe is bad design 
 public class MainFrame extends JFrame{
+	
+	private GameInstance gi;
+	
+	// components:
+	private GamePanel gamePanel;
+	// add buttons and stuff here
+	
 	MainFrame()
 	{
 		super();
 		initUI();
+		newGame();
 	}
 	
-	private GamePanel gamePanel;
+	private void newGame()
+	{
+		this.gi = new GameInstance();
+		gamePanel.setGameInstance(gi);
+	}
+
 	private void initUI()
 	{
 		gamePanel = new GamePanel();

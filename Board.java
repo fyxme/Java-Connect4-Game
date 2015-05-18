@@ -5,7 +5,6 @@ public class Board {
 	
 	private Tile[][] tile = null; 
 	
-	@SuppressWarnings("unused")
 	private int round_num = ERROR;
 	
 	/**
@@ -17,7 +16,7 @@ public class Board {
 	 */
 	private int columns = ERROR;
 	// history of all the moves ->> to be used for later implementations
-	private HashMap<Move,Integer> history = null; // <Move, Participant.id>
+	private HashMap<Integer, Move> history = null; // <roundNumber, Move>
 	
 	public Board(int rows, int columns) {
 		this.columns = columns;
@@ -25,7 +24,7 @@ public class Board {
 		this.tile = new Tile[rows][columns];
 		// initialise tiles
 		initTile();
-		this.history = new HashMap<Move,Integer>();
+		this.history = new HashMap<Integer,Move>();
 		this.round_num = 0;
 	}
 	
@@ -42,7 +41,7 @@ public class Board {
 	}
 	
 	public void addMove(Move mv, Participant p) {
-		history.put(mv, p.getPid());
+		history.put(round_num, mv);
 		tile[mv.getRow()][mv.getCol()].setOccupant(p);
 		incrementRoundNumber();
 	}
@@ -180,7 +179,13 @@ public class Board {
 	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
-	public Participant getWinner (int rowOfLastPlaced, int colOfLastPlaced) {
+	public Participant getWinner () {
+		if (round_num == 0)
+			return null;
+		
+		int rowOfLastPlaced = history.get(round_num - 1).getRow(); 
+		int colOfLastPlaced = history.get(round_num - 1).getCol();
+		
 		// Checks vertical first
 		Participant winnerId = this.checkVertical(rowOfLastPlaced, colOfLastPlaced);
 		

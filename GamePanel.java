@@ -100,17 +100,13 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		//do something with selectedColumn
-		
-		int x = e.getX() /  (MainFrame.CIRCLE_SPACE);
-		System.out.println(x);
-		
-		// get the column
+	public void mouseClicked(MouseEvent e) {		
+		int x = e.getX() /  (MainFrame.CIRCLE_SPACE); // column number
 		
 		Participant curr = gi.getCurrentParticipant();
 		gi.makeMove(curr.makeMove(x), curr);
 		repaint();
+		gi.getWinner();
 	}
 
 	@Override

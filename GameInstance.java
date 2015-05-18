@@ -8,7 +8,6 @@ public class GameInstance {
 	private Board board = null; // game board
 	private HashMap<Integer, Participant> players = null; // <id, participant> first participant has id 1
 	private int num_part = ERROR; // number of participants
-
 	private int turn = ERROR; // turn counts
 	
 	public GameInstance(int rows, int columns, int num_player, int num_ai) {
@@ -35,7 +34,6 @@ public class GameInstance {
 	}
 	
 	public Participant getCurrentParticipant() {
-		System.out.println("turn = " + turn + " || num = " + num_part);
 		Participant part = players.get((turn%num_part));
 		return part;
 	}
@@ -48,6 +46,13 @@ public class GameInstance {
 			turn++;
 		} else {
 			System.out.println("Invalid move. Column is full!");
+		}
+	}
+
+	public void getWinner() {
+		Participant winner = board.getWinner();
+		if (winner != null) {
+			System.out.println("Player " + winner.getPid() + " has won the round.");
 		}
 	}
 }

@@ -2,8 +2,10 @@ public class Move {
 	private static final int ERROR = -1;
 	private int col = ERROR;
 	private int row  = ERROR;
+	private Participant part = null;
 	
-	public Move (int col) {
+	public Move (int col, Participant part) {
+		this.part = part;
 		this.col = col;
 	}
 	
@@ -23,5 +25,9 @@ public class Move {
 
 	public void setRow(int row) {
 		this.row = row;
+	}
+	
+	public Participant getParticipant() {
+		return this.part;
 	}
 }

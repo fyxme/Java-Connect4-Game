@@ -21,7 +21,7 @@ public class Player implements Participant {
 
 	@Override
 	public Move makeMove(int col) {
-		Move ret = new Move(col);
+		Move ret = new Move(col, this);
 		return ret;
 	}
 }

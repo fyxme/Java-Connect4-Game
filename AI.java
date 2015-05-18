@@ -16,7 +16,7 @@ public class AI implements Participant {
 
 	@Override
 	public Move makeMove(int col) {
-		Move ret = new Move(col);
+		Move ret = new Move(col,this);
 		return ret;
 	}
 
@@ -36,7 +36,7 @@ public class AI implements Participant {
 		// int row = ERROR;
 		int column = ERROR;
 
-		Move ret = new Move(column);
+		Move ret = new Move(column,this);
 		return ret;
 	}
 

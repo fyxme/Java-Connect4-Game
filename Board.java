@@ -4,7 +4,10 @@ public class Board {
 	private static final int ERROR = -1;
 	
 	private Tile[][] tile = null; 
-	private int round_num = ERROR;;
+	
+	@SuppressWarnings("unused")
+	private int round_num = ERROR;
+	
 	/**
 	 * Number of rows on the board
 	 */
@@ -14,19 +17,36 @@ public class Board {
 	 */
 	private int columns = ERROR;
 	// history of all the moves ->> to be used for later implementations
-	private HashMap<Move,Participant> history = null;
+	private HashMap<Move,Integer> history = null; // <Move, Participant.id>
 	
 	public Board(int rows, int columns) {
-		this.tile = new Tile[rows][columns];
-		this.history = new HashMap<Move,Participant>();
-		this.round_num = 0;
 		this.columns = columns;
 		this.rows = rows;
+		this.tile = new Tile[rows][columns];
+		// initialise tiles
+		initTile();
+		this.history = new HashMap<Move,Integer>();
+		this.round_num = 0;
+	}
+	
+	private void initTile() {
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.columns; j++) {
+				tile[i][j] = new Tile();
+			}
+		}
 	}
 	
 	public void incrementRoundNumber() {
 		this.round_num++;
 	}
+	
+	public void addMove(Move mv, Participant p) {
+		history.put(mv, p.getPid());
+		tile[mv.getRow()][mv.getCol()].setOccupant(p);
+		incrementRoundNumber();
+	}
+	
 	
 	/**
 	 * A method to be called by checkWinner, checks if any player has four of their counters placed
@@ -199,6 +219,18 @@ public class Board {
 	
 	public void printWinner(Participant winner) {
 		System.out.println();
+	}
+
+	public Tile getTile(int row, int col) {
+		return this.tile[row][col];
+	}
+	
+	public int numRow() {
+		return this.rows;
+	}
+	
+	public int numCol() {
+		return this.columns;
 	}
 	
 }

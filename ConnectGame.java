@@ -1,19 +1,13 @@
-import java.util.List;
-
 import javax.swing.SwingUtilities;
-
 
 public class ConnectGame {
 	ConnectGame cg = null;
-	Board board = null;
-	List<Participant> prts = null;
 	
 	public static void main(String[] args) {		
 	        SwingUtilities.invokeLater(new Runnable() {
 	            @Override
 	            public void run() {
-	            	GameInstance gi = new GameInstance();
-	    			MainFrame jframe = new MainFrame(gi);
+	    			MainFrame jframe = new MainFrame();
 	    			jframe.setVisible(true);
 	            }
 	        });

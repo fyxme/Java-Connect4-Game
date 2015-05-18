@@ -3,7 +3,7 @@ public class Move {
 	private int col = ERROR;
 	private int row  = ERROR;
 	
-	public Move (int col, int row) {
+	public Move (int row, int col) {
 		this.col = col;
 		this.row = row;
 	}

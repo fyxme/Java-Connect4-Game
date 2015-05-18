@@ -8,6 +8,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements MouseMotionListener,MouseListener{
 	public int winner = 0;
 	
@@ -49,47 +50,37 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	{
 		super.paintComponent(g);
 		
-		
 		//maybe theres a way to only run the next 3 lines once, as opposed to on every paint call.
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.setStroke(new BasicStroke(Game.LINE_THICKNESS));
+		g2d.setStroke(new BasicStroke(MainFrame.LINE_THICKNESS));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//makes things look nice
 		
 		if(mouseIsInPanel) //draw selection rectangle code
 		{
-			if(selectedColumn < Game.COLUMNS)
+			if(selectedColumn < gi.getBoard().numCol())
 			{
 				g.setColor(new Color(100,100,255));
-				g.drawRect(selectedColumn * Game.CIRCLE_SPACE, 0, Game.CIRCLE_SPACE, (int)getSize().getHeight() - 3);
+				g.drawRect(selectedColumn * MainFrame.CIRCLE_SPACE, 0, MainFrame.CIRCLE_SPACE, (int)getSize().getHeight() - 3);
 			}
 		}
 		
-		for( int x = 0; x < Game.COLUMNS; x++ )
+		for( int x = 0; x < gi.getBoard().numRow(); x++ )
 		{
-			for( int y = 0; y < Game.ROWS; y++ )
+			for( int y = 0; y < gi.getBoard().numCol(); y++ )
 			{
-				int xpos = (Game.CIRCLE_PADDING/2) + (Game.CIRCLE_SPACE)  * x;
-				int ypos = (Game.CIRCLE_PADDING/2) + (Game.CIRCLE_SPACE)  * y;
+				int xpos = (MainFrame.CIRCLE_PADDING/2) + (MainFrame.CIRCLE_SPACE)  * x;
+				int ypos = (MainFrame.CIRCLE_PADDING/2) + (MainFrame.CIRCLE_SPACE)  * y;
+						
+				Participant oc = gi.getBoard().getTile(x,y).getOccupant();
 				
+				g.setColor(slotColours[0]);
 				
+				if (oc != null)
+					g.setColor(slotColours[oc.getPid()]); //change this depending on what's in the slot
 				
-				Occupant oc = board[y][x].getOccupant().getId();
-				
-				
-				if (oc == null) {
-					g.setColor(slotColours[0]);	
-				} else {
-					g.setColor(slotColours[board[y][x].getOccupant().getId()]);//change this depending on what's in the slot
-				}
-				
-				
-				
-				
-				g.setColor(slotColours[demoArray[y][x]]);//change this depending on what's in the slot
-				
-				g.fillOval(xpos, ypos, Game.CIRCLE_WIDTH, Game.CIRCLE_WIDTH);
+				g.fillOval(xpos, ypos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
 				g.setColor(Color.black);
-				g.drawOval(xpos, ypos, Game.CIRCLE_WIDTH, Game.CIRCLE_WIDTH);
+				g.drawOval(xpos, ypos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
 			}
 		}
 	}
@@ -103,7 +94,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	public void mouseMoved(MouseEvent arg0) {
 		mousex = arg0.getX();
 		mousey = arg0.getY();
-		selectedColumn = mousex /  (Game.CIRCLE_SPACE);
+		selectedColumn = mousex /  (MainFrame.CIRCLE_SPACE);
 		repaint();
 		// set x and y positions of mouse then repaint.		
 	}
@@ -111,6 +102,11 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//do something with selectedColumn
+		
+		System.out.println(mousex);
+		
+		Participant curr = gi.getCurrentParticipant();
+		gi.makeMove(curr.makeMove(mousey,mousex), curr);
 		repaint();
 	}
 

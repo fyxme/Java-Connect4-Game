@@ -18,22 +18,8 @@ public interface Participant {
 	public Move makeMove(int row, int column);
 	
 	/**
-	 * Method mostly called by the makeMove method.
-	 * Allows the player to choose his move 
-	 * and the AI to calculate the best move possible
-	 * and choose that move.
-	 * 
-	 * This method also allows the AI to help a player
-	 * if a Hint is requested 
-	 * 
-	 * @return The chosen Move
-	 */
-	public Move chooseMove();
-	
-	/**
 	 * @return Returns the Player ID
 	 */
 	public int getPid();
 
-	Move chooseMove(Board bd);
 }

@@ -15,8 +15,8 @@ public class AI implements Participant {
 	}
 
 	@Override
-	public Move makeMove(int row, int column) {
-		Move ret = new Move(row,column);
+	public Move makeMove(int col) {
+		Move ret = new Move(col);
 		return ret;
 	}
 
@@ -33,10 +33,10 @@ public class AI implements Participant {
 	 */
 	public Move chooseMove(Board bd) {
 		// find the best row and best column for the AI
-		int row = ERROR;
+		// int row = ERROR;
 		int column = ERROR;
 
-		Move ret = new Move(row,column);
+		Move ret = new Move(column);
 		return ret;
 	}
 

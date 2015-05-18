@@ -232,5 +232,16 @@ public class Board {
 	public int numCol() {
 		return this.columns;
 	}
+
+	public int getColumnSpace(int col) {
+		int space = ERROR;
+		for (int i = 0; i < rows; i++) {
+			if (tile[i][col].isFree()) {
+				space = i;
+			}
+		}
+		
+		return space;
+	}
 	
 }

@@ -3,9 +3,8 @@ public class Move {
 	private int col = ERROR;
 	private int row  = ERROR;
 	
-	public Move (int row, int col) {
+	public Move (int col) {
 		this.col = col;
-		this.row = row;
 	}
 	
 	/**
@@ -20,5 +19,9 @@ public class Move {
 	 */
 	public int getCol() {
 		return this.col;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
 	}
 }

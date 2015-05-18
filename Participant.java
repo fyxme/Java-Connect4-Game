@@ -15,7 +15,7 @@ public interface Participant {
 	 * Asks the player or the AI to make a move
 	 * @return The Move made
 	 */
-	public Move makeMove(int row, int column);
+	public Move makeMove(int col);
 	
 	/**
 	 * @return Returns the Player ID

@@ -20,8 +20,8 @@ public class Player implements Participant {
 	}
 
 	@Override
-	public Move makeMove(int row, int column) {
-		Move ret = new Move(row, column);
+	public Move makeMove(int col) {
+		Move ret = new Move(col);
 		return ret;
 	}
 }

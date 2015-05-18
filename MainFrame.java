@@ -9,7 +9,7 @@ import javax.swing.*;
 
 
 // supposedly extending Jframe is bad design 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 	private final static int DEFAULT_ROW_NUM = 6;
 	private final static int DEFAULT_COLUMN_NUM = 7;
 	private final static int DEFAULT_PLAYER_NUM = 2;

@@ -34,9 +34,9 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	// all the private variables below are for demo purposes only.
 	private Color[] slotColours = new Color[]
 			{
-				Color.WHITE, //empty cell
-				Color.RED, //player one colour
-				Color.YELLOW //player two colour
+				Color.WHITE, // empty cell
+				Color.RED, // player one color
+				Color.YELLOW // player two color
 			};
 	
 	//*
@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	{
 		super.paintComponent(g);
 		
-		//maybe theres a way to only run the next 3 lines once, as opposed to on every paint call.
+		// maybe there's a way to only run the next 3 lines once, as opposed to on every paint call.
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(MainFrame.LINE_THICKNESS));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//makes things look nice
@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 				g.setColor(slotColours[0]);
 				
 				if (oc != null)
-					g.setColor(slotColours[oc.getPid()]); //change this depending on what's in the slot
+					g.setColor(slotColours[oc.getPid()+1]); // added +1 since pid starts at 0 and colors start at 1
 				
 				g.fillOval(xpos, ypos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
 				g.setColor(Color.black);
@@ -103,10 +103,13 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	public void mouseClicked(MouseEvent e) {
 		//do something with selectedColumn
 		
-		System.out.println(mousex);
+		int x = e.getX() /  (MainFrame.CIRCLE_SPACE);
+		System.out.println(x);
+		
+		// get the column
 		
 		Participant curr = gi.getCurrentParticipant();
-		gi.makeMove(curr.makeMove(mousey,mousex), curr);
+		gi.makeMove(curr.makeMove(x), curr);
 		repaint();
 	}
 

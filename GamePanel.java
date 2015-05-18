@@ -70,7 +70,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 			{
 				int xpos = (MainFrame.CIRCLE_PADDING/2) + (MainFrame.CIRCLE_SPACE)  * x;
 				int ypos = (MainFrame.CIRCLE_PADDING/2) + (MainFrame.CIRCLE_SPACE)  * y;
-						
+				
 				Participant oc = gi.getBoard().getTile(x,y).getOccupant();
 				
 				g.setColor(slotColours[0]);
@@ -78,9 +78,9 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 				if (oc != null)
 					g.setColor(slotColours[oc.getPid()+1]); // added +1 since pid starts at 0 and colors start at 1
 				
-				g.fillOval(xpos, ypos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
+				g.fillOval(ypos, xpos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
 				g.setColor(Color.black);
-				g.drawOval(xpos, ypos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
+				g.drawOval(ypos, xpos, MainFrame.CIRCLE_WIDTH, MainFrame.CIRCLE_WIDTH);
 			}
 		}
 	}

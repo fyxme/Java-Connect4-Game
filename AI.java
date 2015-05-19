@@ -1,4 +1,3 @@
-
 public class AI implements Participant {
 	private static final int ERROR = -1;
 	
@@ -38,16 +37,12 @@ public class AI implements Participant {
 			boardCopy.addMove(bd.getHistory().get(moveNum), bd.getHistory().get(moveNum).getParticipant());
 		}
 		
-		// Set up three scores, which can be used to determine which
-		// move is the best. Always keeps the best three scores. Score with the
-		// highest number is the best. Also sets up variables to hold the columns
-		// which result in the three best moves
-		int scoreOfBestMove = -998;
-		int colOfBestMove = ERROR;
-		int scoreOfSecondBestMove = -999;
-		int colOfSecondBestMove = ERROR;
-		int scoreOfThirdBestMove = -1000;
-		int colOfThirdBestMove = ERROR;
+		
+		// Sets up an array to hold the scores given to each move
+		int scoreOfCol[] = new int[7];
+		for (int col = 0; col < 7; col++) {
+			scoreOfCol[col] = -1000;
+		}
 		
 		// This is where the calculations are made. It should go two moves into the future,
 		// thereby calculating the scores of 49 moves and storing the best three moves to make.
@@ -55,14 +50,35 @@ public class AI implements Participant {
 		// opponent to win on their next turn are scored with -1000.
 		// TODO: we need to come up with some scoring system.
 		for (int colTurn1 = 0; colTurn1 < boardCopy.getNumberOfColumns(); colTurn1++) {
+			boardCopy.addMove(new Move(colTurn1, this), this);
+			if (boardCopy.getWinner() == boardCopy.getHistory().get(boardCopy.getTurnNum()).getParticipant()) {
+				// If I am now the winner, do this move
+				return new Move(colTurn1, this);
+			}
+			
 			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
-				
+
 			}
 		}
+				
+				
+				
+				
+			
+		int colToGoWith = ERROR;
+		int bestScore = -1000;
+		for (int col = 0; col < 7; col++) {
+			if (scoreOfCol[col] <= bestScore) {
+				bestScore = scoreOfCol[col];
+				colToGoWith = col;
+			}
+		}
+
+
 		
 		// find the best row and best column for the AI
 		// int row = ERROR;
-		int column = ERROR;
+		int column = colToGoWith;
 
 		Move ret = new Move(column,this);
 		return ret;

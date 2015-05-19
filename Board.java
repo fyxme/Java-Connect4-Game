@@ -1,10 +1,19 @@
 import java.util.HashMap;
 
 public class Board {
+	/**
+	 * ERROR Constant
+	 */
 	private static final int ERROR = -1;
 	
+	/**
+	 * 2D array of all the tiles on the board
+	 */
 	private Tile[][] tile = null; 
 	
+	/**
+	 * # of rounds
+	 */
 	private int round_num = ERROR;
 	
 	/**
@@ -17,19 +26,24 @@ public class Board {
 	 */
 	private int columns = ERROR;
 	
-	// history of all the moves ->> to be used for later implementations
+	/**
+	 *  history of all the Past moves based on round number <RoundNumber, Move made>
+	 */
 	private HashMap<Integer, Move> history = null; // <roundNumber, Move>
 	
 	public Board(int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;
 		this.tile = new Tile[rows][columns];
-		// initialise tiles
+		// initialize tiles
 		initTile();
 		this.history = new HashMap<Integer,Move>();
 		this.round_num = 0;
 	}
 	
+	/**
+	 * Initialize all the Tiles on the Board
+	 */
 	private void initTile() {
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.columns; j++) {
@@ -37,11 +51,20 @@ public class Board {
 			}
 		}
 	}
-	
+	/**
+	 * Increments the round number
+	 */
 	public void incrementRoundNumber() {
 		this.round_num++;
 	}
 	
+	/**
+	 * Adds a Move made by Participant p to the board
+	 * by adding the Move to the history and adding the occupant
+	 * to the specific Tile
+	 * @param mv Move made
+	 * @param p Participant who made the move
+	 */
 	public void addMove(Move mv, Participant p) {
 		history.put(round_num, mv);
 		tile[mv.getRow()][mv.getCol()].setOccupant(p);
@@ -141,8 +164,7 @@ public class Board {
 			col--;
 			
 		}
-		
-		
+	
 		sameInARow = 0;
 		row = rowOfLastPlaced;
 		col = colOfLastPlaced;
@@ -182,7 +204,7 @@ public class Board {
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
 	public Participant getWinner () {
-		if (round_num < 6) 	// cant win before the 7th round
+		if (round_num < 6) 	// can't win before the 7th round
 			return null;
 		
 		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
@@ -204,33 +226,48 @@ public class Board {
 		return winnerId;
 	}
 	
+	/**
+	 * Check if the board has an empty Slot
+	 * @return Return true if it does else return false
+	 */
 	public boolean hasEmptySlot() {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				if (tile[i][j].isFree()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return round_num >= (rows * columns)  ? false : true;
 	}
 	
-	public void printWinner(Participant winner) {
-		System.out.println();
-	}
-
+	/**
+	 * Returns a specific Tile based on the row and column
+	 * @param row Row of the Tile asked
+	 * @param col Column of the Tile asked
+	 * @return The Tile which corresponds to the row and the column
+	 * or null if that Tile does not exist
+	 */
 	public Tile getTile(int row, int col) {
-		return this.tile[row][col];
+		if ((row < this.rows) && (col < this.columns)) {
+			return this.tile[row][col];
+		}
+		return null;
 	}
 	
+	/**
+	 * @return Returns the number of rows
+	 */
 	public int numRow() {
 		return this.rows;
 	}
 	
+	/**
+	 * @return Returns the number of columns
+	 */
 	public int numCol() {
 		return this.columns;
 	}
 
+	/**
+	 * Finds the id of the first Free Space based on a column
+	 * and returns the Row Number
+	 * @param col Column to look at
+	 * @return The Row number if it has a space available otherwise returns -1
+	 */
 	public int getColumnSpace(int col) {
 		int space = ERROR;
 		for (int i = 0; i < rows; i++) {
@@ -238,24 +275,35 @@ public class Board {
 				space = i;
 			}
 		}
-		
 		return space;
 	}
 
+	/**
+	 * @return Return the round number
+	 */
 	public int getTurnNum() {
 		return this.round_num;
 	}
 	
+	/**
+	 * @return Returns the history of all past Moves
+	 * as a HashMap containing the Round Number as Key
+	 */
 	public HashMap<Integer, Move> getHistory() {
 		return history;
 	}
 	
+	/**
+	 * @return Returns the number of columns
+	 */
 	public int getNumberOfColumns() {
 		return columns;
 	}
 	
+	/**
+	 * @return Returns the Number of Rows
+	 */
 	public int getNumberOfRows() {
 		return rows;
 	}
-	
 }

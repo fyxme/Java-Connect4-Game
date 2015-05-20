@@ -326,4 +326,24 @@ public class Board {
 	public int getNumberOfRows() {
 		return rows;
 	}
+	
+	/**
+	 * A method to be used by the AI to determine who is in a better position in the current board
+	 * @param currentParticipant	The participant that you want to score the board for
+	 * @return						A score given to the board state. 1000 if currentParticipant won
+	 */
+	public int scoreOfBoard(Participant currentParticipant) {
+		int score = 0;
+		if (this.getWinner() == currentParticipant) {
+			return 1000; 	// currentParticipant won, so this is the best option to do
+			
+		} else if (this.getWinner() != null) {
+			return -1000;	// other participant won so this is the worse option to do
+			
+		} else {
+			// no one won, so calculations must be done evaluating a game state.
+			// we would need to update score.
+		}
+		return score;
+	}
 }

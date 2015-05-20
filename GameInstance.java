@@ -35,6 +35,18 @@ public class GameInstance {
 		Participant part = players.get((board.getTurnNum()%num_part));
 		return part;
 	}
+	
+	/**
+	 * Returns the second participant based on the given participant
+	 * @param ptc The first Participant
+	 * @return The second Participant or null if no other participants
+	 */
+	public Participant getOtherParticipant(Participant ptc) {
+		for (Participant p : getPlayers())
+			if (p != ptc)
+				return p;
+		return null;
+	}
 
 	/**
 	 * Tries to make a Move on the board based on the input column

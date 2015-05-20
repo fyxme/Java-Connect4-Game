@@ -14,6 +14,7 @@ public interface Participant {
 	/**
 	 * Asks the player or the AI to make a move
 	 * @return The Move made
+	 * @param col Column to make the Move in
 	 */
 	public Move makeMove(int col);
 	

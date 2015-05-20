@@ -1,4 +1,9 @@
-
+/**
+ * Player Class containing the name of a Player and the Player ID.
+ * A player is someone participating in the game.
+ * @author Louis RIGAUDIE z5016776
+ * @version 0.1
+ */
 public class Player implements Participant {
 	private static final int ERROR = -1;
 	

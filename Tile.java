@@ -1,5 +1,8 @@
 
 public class Tile {
+	/**
+	 * Participant occupying this Tile.
+	 */
 	private Participant occupant = null;
 	
 	public Tile() {
@@ -28,6 +31,10 @@ public class Tile {
 		if (occupant == null)
 			return true;
 		return false;
+	}
+
+	public void removeParticipant() {
+		this.occupant = null;
 	}
 	
 }

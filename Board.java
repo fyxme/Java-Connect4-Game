@@ -346,4 +346,18 @@ public class Board {
 		}
 		return score;
 	}
+	
+	/**
+	 * Removes the last Move made on the board
+	 * and makes the Tile empty again
+	 * @return True if Move undone else returns False
+	 */
+	public boolean undoLastMove() {
+		if (round_num == 0 || history.isEmpty())
+			return false;
+		round_num--;
+		Move mv = history.remove(round_num);
+		tile[mv.getRow()][mv.getCol()].removeParticipant();
+		return true;
+	}
 }

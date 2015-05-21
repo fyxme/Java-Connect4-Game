@@ -78,6 +78,7 @@ public class Board {
 	public void addMove(Move mv) {
 		this.history.put(this.round_num, mv);
 		this.tile[mv.getRow()][mv.getCol()].setOccupant(mv.getParticipant());
+		this.tile[mv.getRow()][mv.getCol()].setMove(mv);
 		round_num++;
 	}
 
@@ -380,16 +381,16 @@ public class Board {
 	 */
 	public int scoreOfBoard(Participant currentParticipant) {
 		int score = 0;
-		
+
 		if (this.getWinner() == currentParticipant) {
 			score = 1000; 	// currentParticipant won, so this is the best option to do
-			
+
 		} else if (this.getWinner() != null) {
 			score = -1000;	// other participant won so this is the worst option to do
-			
+
 		} else {
 			// DO CALCULATIONS
-			
+
 			// This block of code calculates if there are any counters placed 3 vertical, and could
 			// be used for a win. If so, increases the score by 300 if they are the currentParticipants
 			// or decreases it by 300 if it is the other participants.
@@ -416,7 +417,42 @@ public class Board {
 				}	
 			}
 		}
-		System.out.println(score);
+		System.out.println(score); // DEBUGGING
 		return score;
+	}
+
+	/**
+	 * Prints the full board using O for player 1 and X for player 2
+	 * on the System console
+	 * THIS METHOD IS MAINLY USED FOR DEBUGGING
+	 */
+	public void printBoard(Participant p1, Participant p2) {
+		for (int i = 0; i < (rows * 2 + 1); i++) {
+			for (int j = 0; j < (columns * 2 + 1); j++) {
+				System.out.print(" ");
+				if (i%2 == 0)
+					if (j%2 == 0)
+						System.out.print("+");
+					else
+						System.out.print("-");
+				else
+					if (j%2 == 0) {
+						System.out.print("|");
+					} else {
+						Move mv = tile[(i-1)/2][(j-1)/2].getMove();
+						if (mv == null) {
+							System.out.print(" ");
+						} else {
+							Participant p = mv.getParticipant();
+							if (p == p1)
+								System.out.print("X");
+							else 
+								System.out.print("O");
+						}
+					}	
+			}
+			System.out.println();
+		}
+
 	}
 }

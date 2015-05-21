@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Instance of the current Game 
@@ -97,10 +98,9 @@ public class GameInstance {
 	/**
 	 * Tries to make a Move on the board based on the input column
 	 * @param mv Move made
-	 * @param p Participant who made the move
 	 * @return True if the Move has been Made else returns False if the move can't be made.
 	 */
-	public boolean makeMove(Move mv, Participant p) {
+	public boolean makeMove(Move mv) {
 		int row = board.getColumnSpace(mv.getCol());
 		if (row != ERROR) {
 			mv.setRow(row);
@@ -126,5 +126,16 @@ public class GameInstance {
 			System.out.println("\nPLAYER " + winner.getPid() + " WON!");
 		}
 		return winner;
+	}
+
+	/**
+	 * Used to make multiple moves at once
+	 * THIS IS MOSTLY USED FOR TESTING PURPOSES
+	 * @param moves List of Moves to make
+	 */
+	public void makeMoves(List<Move> moves) {
+		for (Move mv : moves) {
+			makeMove(mv);
+		}
 	}
 }

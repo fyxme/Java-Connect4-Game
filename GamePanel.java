@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 			int x = e.getX() /  (MainFrame.CIRCLE_SPACE); // column number
 			
 			Participant curr = gi.getCurrentParticipant();
-			gi.makeMove(curr.makeMove(x), curr);
+			gi.makeMove(curr.makeMove(x));
 			repaint();
 			if (gi.getWinner() != null || !(gi.getBoard().hasEmptySlot())) {
 				isOver = true;

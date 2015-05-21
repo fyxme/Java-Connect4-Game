@@ -16,7 +16,7 @@ public class GameInstance {
 	
 	/**
 	 * HashMap of Participants with Id as Key.
-	 * >> (id, participant) first participant has id 1
+	 * >> (id, participant) first participant has id 0
 	 */
 	private HashMap<Integer, Participant> players = null;
 	
@@ -25,7 +25,14 @@ public class GameInstance {
 	 */
 	private int num_part = ERROR;
 	
-	
+	/**
+	 * Constructor Method for GameInstance Class
+	 * @param rows Number of Rows
+	 * @param columns Number of Columns
+	 * @param num_player Number of Human Players
+	 * @param num_ai Number of AI's
+	 * @param difficulty Difficulty of AI
+	 */
 	public GameInstance(int rows, int columns, int num_player, int num_ai, int difficulty) {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
@@ -34,7 +41,7 @@ public class GameInstance {
 			players.put(num_part, new Player(i));
 			num_part++;
 		}
-		for (int i = num_part; i < num_ai; i++) { 
+		for (int i = 0; i < num_ai; i++) { 
 			players.put(num_part, new AI(i, difficulty));
 			num_part++;
 		}

@@ -49,10 +49,7 @@ public class AI implements Participant {
 			scoreOfCol[col] = 0;
 		}
 		
-		// This is where the calculations are made. It should go two moves into the future,
-		// thereby calculating the scores of 49 moves and storing the best three moves to make.
-		// Moves which allow you to win on that turn are scored with 1000. Moves that allow the
-		// opponent to win on their next turn are scored with -1000.
+		// gets the score of all moves, two turns into the future (49 moves in total) and places them in the array.
 		for (int colTurn1 = 0; colTurn1 < boardCopy.getNumberOfColumns(); colTurn1++) {
 			boardCopy.addMove(new Move(colTurn1, this), this); // adds the colTurn1 move to the board (the move this AI can make)
 			
@@ -70,33 +67,32 @@ public class AI implements Participant {
 		}	
 				
 		
-		// calculates the best score and its corresponding column - for HARD
-		int bestScore = -1000;
+		int bestScore = -1001;
 		int hardCol = ERROR;
-		for (int colBest = 0; colBest < 7; colBest++) {
-			if (scoreOfCol[colBest] >= bestScore) {
-				bestScore = scoreOfCol[colBest];
-				hardCol = colBest;
-			}
-		}
-
-		// calculates the second best score and its corresponding column - for MEDIUM
-		int secondBestScore = -1000;
+		int secondBestScore = -1001;
 		int mediumCol = ERROR;
-		for (int colSecond = 0; colSecond < 7; colSecond++) {
-			if ((scoreOfCol[colSecond] >= secondBestScore) && (colSecond != hardCol)) {
-				secondBestScore = scoreOfCol[colSecond];
-				mediumCol = colSecond;
-			}
-		}
-				
-		// calculates the third best score and its corresponding column - for EASY
-		int thirdBestScore = -1000;
+		int thirdBestScore = -1001;
 		int easyCol = ERROR;
-		for (int colThird = 0; colThird < 7; colThird++) {
-			if ((scoreOfCol[colThird] >= thirdBestScore) && (colThird != mediumCol) && (colThird != hardCol)) {
-				thirdBestScore = scoreOfCol[colThird];
-				easyCol = colThird;
+		
+		// calculates the best score and its corresponding column - for HARD
+		// calculates the second best score and its corresponding column - for MEDIUM
+		// calculates the third best score and its corresponding column - for EASY
+		for (int col = 0; col < 7; col++) {
+			if (scoreOfCol[col] > bestScore) {
+				thirdBestScore = secondBestScore;	// Updates third score, to be the old second score
+				easyCol = mediumCol;				// Updates third col, to be old second col
+				secondBestScore = bestScore;		// Updates second score, to be old first score
+				mediumCol = hardCol;				// Updates second col, to be old first col
+				bestScore = scoreOfCol[col];		// Updates first score, to be new best score
+				hardCol = col;						// Updates first col, to be new best col
+			} else if (scoreOfCol[col] > secondBestScore) {
+				thirdBestScore = secondBestScore;	// Updates third score, to be the old second score
+				easyCol = mediumCol;				// Updates third col, to be old second col
+				secondBestScore = scoreOfCol[col];	// Updates second score, to be new second score
+				mediumCol = col;					// Updates second col, to be new second col
+			} else if (scoreOfCol[col] > thirdBestScore) {
+				thirdBestScore = scoreOfCol[col];	// Updates third score, to be new third score
+				easyCol = col;						// Updates third col, to be new third col
 			}
 		}
 		
@@ -105,8 +101,11 @@ public class AI implements Participant {
 			return new Move(hardCol, this);
 		} else if (difficulty == MEDIUM) {
 			return new Move(mediumCol, this);
-		} else {
+		} else if (difficulty == EASY) {
 			return new Move(easyCol, this);
+		} else {
+			// Should never be the case
+			return new Move(ERROR, this);
 		}
 	}
 	

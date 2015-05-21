@@ -1,5 +1,8 @@
 import javax.swing.SwingUtilities;
 
+/**
+ * Connect4Game Class contains the main method which initiates the whole program
+ */
 public class Connect4Game {
 	Connect4Game cg = null;
 	

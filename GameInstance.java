@@ -1,13 +1,30 @@
 import java.util.Collection;
 import java.util.HashMap;
 
-
+/**
+ * Instance of the current Game 
+ * containing the Players
+ * and the Board
+ */
 public class GameInstance {
 	private final static int ERROR = -1;
 	
-	private Board board = null; // game board
-	private HashMap<Integer, Participant> players = null; // <id, participant> first participant has id 1
-	private int num_part = ERROR; // number of participants
+	/**
+	 * Game Board
+	 */
+	private Board board = null;
+	
+	/**
+	 * HashMap of Participants with Id as Key.
+	 * >> (id, participant) first participant has id 1
+	 */
+	private HashMap<Integer, Participant> players = null;
+	
+	/**
+	 * Number of Participants
+	 */
+	private int num_part = ERROR;
+	
 	
 	public GameInstance(int rows, int columns, int num_player, int num_ai, int difficulty) {
 		board = new Board(rows, columns);
@@ -23,14 +40,28 @@ public class GameInstance {
 		}
 	}
 
+	/**
+	 * Get the board of this Game Instance
+	 * @return The board itself
+	 */
 	public Board getBoard() {
 		return this.board;
 	}
 
+	/**
+	 * Get a Collection of all the Players participating in the game
+	 * This contains both the AI and Human Players
+	 * @return A Collection of the Participants
+	 */
 	public Collection<Participant> getPlayers() {
 		return this.players.values();
 	}
 	
+	/**
+	 * Get the Current Participant
+	 * ie. who's turn is it?
+	 * @return The Current Participant Playing
+	 */
 	public Participant getCurrentParticipant() {
 		Participant part = players.get((board.getTurnNum()%num_part));
 		return part;
@@ -66,6 +97,10 @@ public class GameInstance {
 		}
 	}
 	
+	/**
+	 * Get the Winner of the game if there is one
+	 * @return The Winner if there is one, else returns no
+	 */
 	public Participant getWinner() {
 		Participant winner = board.getWinner();
 		if (winner == null && !board.hasEmptySlot()) {

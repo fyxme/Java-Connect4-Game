@@ -1,5 +1,9 @@
 import java.util.HashMap;
-
+/**
+ * Board containing all the Tiles where a Participant can place a Button
+ * Board Class also keeps count of the round_num and the history of Moves
+ * @version 0.1
+ */
 public class Board {
 	/**
 	 * ERROR Constant
@@ -31,6 +35,11 @@ public class Board {
 	 */
 	private HashMap<Integer, Move> history = null; // <roundNumber, Move>
 	
+	/**
+	 * Constructor Method for Board Class
+	 * @param rows
+	 * @param columns
+	 */
 	public Board(int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;

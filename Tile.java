@@ -1,4 +1,8 @@
-
+/**
+ * Tile Class represents a spot on the board
+ * where a Participant can place a button
+ * ie. Tile Class contains the occupant of the Tile
+ */
 public class Tile {
 	/**
 	 * Participant occupying this Tile.

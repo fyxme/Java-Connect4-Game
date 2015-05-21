@@ -1,7 +1,6 @@
 /**
  * Player Class containing the name of a Player and the Player ID.
  * A player is someone participating in the game.
- * @author Louis RIGAUDIE z5016776
  * @version 0.1
  */
 public class Player implements Participant {
@@ -10,6 +9,10 @@ public class Player implements Participant {
 	private String name = null;
 	private int id = ERROR;
 	
+	/**
+	 * Constructor method for the Player class
+	 * @param id ID assigned to this player
+	 */
 	public Player(int id) {
 		this.id = id;
 	}

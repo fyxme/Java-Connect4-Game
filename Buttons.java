@@ -1,30 +1,10 @@
+package a;
+
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JTextField;
-import java.awt.Canvas;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.ButtonGroup;
-import javax.swing.border.EmptyBorder;
-import java.awt.Dimension;
-import javax.swing.SwingConstants;
-import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-
-public class Buttons {
+public class ok {
 
 	private JFrame frame;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -33,7 +13,7 @@ public class Buttons {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Buttons window = new Buttons();
+					ok window = new ok();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +25,7 @@ public class Buttons {
 	/**
 	 * Create the application.
 	 */
-	public Buttons() {
+	public ok() {
 		initialize();
 	}
 
@@ -54,43 +34,41 @@ public class Buttons {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 423, 365);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		JButton restart = new JButton("Restart");
+		restart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		restart.setBounds(10, 11, 89, 23);
+		frame.getContentPane().add(restart);
 		
-		JMenu mnNewMenu = new JMenu("File");
-		menuBar.add(mnNewMenu);
-		
-		JButton btnNewButton = new JButton("New Game");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton undo = new JButton("Undo");
+		undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnNewButton.setBackground(new Color(255, 255, 255));
-		buttonGroup.add(btnNewButton);
-		mnNewMenu.add(btnNewButton);
+		undo.setBounds(109, 11, 89, 23);
+		frame.getContentPane().add(undo);
 		
-		JButton btnNewButton_1 = new JButton("Exit");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-				
+		JButton redo = new JButton("Redo");
+		redo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_1.setMinimumSize(new Dimension(83, 23));
-		btnNewButton_1.setMaximumSize(new Dimension(83, 23));
-		btnNewButton_1.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnNewButton_1.setBackground(new Color(255, 255, 255));
-		btnNewButton_1.setForeground(Color.BLACK);
-		mnNewMenu.add(btnNewButton_1);
+		redo.setBounds(208, 11, 89, 23);
+		frame.getContentPane().add(redo);
 		
-		Canvas canvas = new Canvas();
-		frame.getContentPane().add(canvas, BorderLayout.WEST);
+		JButton mainMenu = new JButton("Main Menu");
+		mainMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		mainMenu.setBounds(307, 11, 89, 23);
+		frame.getContentPane().add(mainMenu);
+		
 	}
-
 }

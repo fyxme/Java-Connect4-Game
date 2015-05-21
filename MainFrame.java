@@ -15,6 +15,9 @@ public class MainFrame extends JFrame {
 	private final static int DEFAULT_PLAYER_NUM = 2;
 	private final static int DEFAULT_AI_NUM = 0;
 	private final static int DEFAULT_AI_DIFFICULTY = ERROR;
+	private static final int EASY = 1;
+	private static final int MEDIUM = 2;
+	private static final int HARD = 3;
 	
 	public static final int CIRCLE_WIDTH = 50; // padding of circles;
 	public static final int CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.

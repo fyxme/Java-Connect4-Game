@@ -65,8 +65,23 @@ public class AI implements Participant {
 			}
 			boardCopy.undoLastMove(); // undoes the last move so we can simulate the case of the next column along
 		}	
-				
 		
+		return new Move(findCol(scoreOfCol), this);
+	}
+	
+
+	@Override
+	public int getPid() {
+		return id;
+	}
+	
+	
+	/**
+	 * A method to find a suitable column to place a counter in, given the scores of each column
+	 * @param scoreOfCol	An array of the scores of each col, in order, ie. index 0 is for col 0;
+	 * @return				An int corresponding to the column which the AI should place its counter
+	 */
+	private int findCol(int[] scoreOfCol) {
 		int bestScore = -1001;
 		int hardCol = ERROR;
 		int secondBestScore = -1001;
@@ -97,21 +112,15 @@ public class AI implements Participant {
 		}
 		
 		// Returns the move based on the difficulty of the AI.
-		if (difficulty == HARD) {
-			return new Move(hardCol, this);
-		} else if (difficulty == MEDIUM) {
-			return new Move(mediumCol, this);
-		} else if (difficulty == EASY) {
-			return new Move(easyCol, this);
+		if (this.difficulty == HARD) {
+			return hardCol;
+		} else if (this.difficulty == MEDIUM) {
+			return mediumCol;
+		} else if (this.difficulty == EASY) {
+			return easyCol;
 		} else {
 			// Should never be the case
-			return new Move(ERROR, this);
+			return ERROR;
 		}
-	}
-	
-
-	@Override
-	public int getPid() {
-		return id;
 	}
 }

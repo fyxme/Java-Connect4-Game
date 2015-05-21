@@ -104,7 +104,8 @@ public class GameInstance {
 		int row = board.getColumnSpace(mv.getCol());
 		if (row != ERROR) {
 			mv.setRow(row);
-			board.addMove(mv, p);
+			board.addMove(mv);
+			board.clearUndoneMoves(); // clears the stack of undone Moves
 			return true;
 		} else {
 			System.out.println("Invalid move. Column is full!");

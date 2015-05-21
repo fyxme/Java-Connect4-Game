@@ -77,15 +77,14 @@ public class Board {
 	 * in a column one after the other
 	 * @param rowOfLastPlaced		The row of the last placed counter
 	 * @param colOfLastPlaced		The column of the last placed counter
-	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
-	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
+	 * @return						The participant that won, null if no one won
 	 */
 	public Participant checkVertical(int rowOfLastPlaced, int colOfLastPlaced) {
-		int sameInARow = 1;
-		
 		if (rowOfLastPlaced <= 2) {		// Can only win in a vertical line if you have placed your
 										// last counter on or above the fourth highest row
-			Participant lastPlayer =tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
+			
+			Participant lastPlayer = tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
+			int sameInARow = 1;
 	
 			for (int row = rowOfLastPlaced + 1; row <= 5; row++) {
 				if (tile[row][colOfLastPlaced].getOccupant() == lastPlayer) {
@@ -107,12 +106,11 @@ public class Board {
 	 * in a row one after the other
 	 * @param rowOfLastPlaced		The row of the last placed counter
 	 * @param colOfLastPlaced		The column of the last placed counter
-	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
-	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
+	 * @return						The participant that won, null if no one won
 	 */
 	public Participant checkHorizontal(int rowOfLastPlaced, int colOfLastPlaced) {
 		int sameInARow = 0;
-		Participant lastPlayer =tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
+		Participant lastPlayer = tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
 
 		for (int col = 0; col <= 6; col++) {
 			if (tile[rowOfLastPlaced][col].getOccupant() == lastPlayer) {
@@ -134,8 +132,7 @@ public class Board {
 	 * one after the other diagonally. Checks both diagonals (bottom left to top right, and top left to bottom right)
 	 * @param rowOfLastPlaced		The row of the last placed counter
 	 * @param colOfLastPlaced		The column of the last placed counter
-	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
-	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
+	 * @return						The participant that won, null if no one won
 	 */
 	public Participant checkDiagonals(int rowOfLastPlaced, int colOfLastPlaced) {
 		int sameInARow = 0;
@@ -224,9 +221,13 @@ public class Board {
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
 	public Participant getWinner () {
-		if (round_num < 6) 	// can't win before the 7th round
-			return null;
 		
+		
+		if (round_num < 6) {
+			// can't win before the 7th round - dont need to calculate anything
+			return null;
+		}
+			
 		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
 		int colOfLastPlaced = history.get(round_num - 1).getCol();
 		
@@ -334,16 +335,23 @@ public class Board {
 	 */
 	public int scoreOfBoard(Participant currentParticipant) {
 		int score = 0;
+		
+//		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
+//		int colOfLastPlaced = history.get(round_num - 1).getCol();
+		
+		
 		if (this.getWinner() == currentParticipant) {
-			return 1000; 	// currentParticipant won, so this is the best option to do
+			score = 1000; 	// currentParticipant won, so this is the best option to do
 			
 		} else if (this.getWinner() != null) {
-			return -1000;	// other participant won so this is the worse option to do
+			score = -1000;	// other participant won so this is the worst option to do
 			
 		} else {
 			// no one won, so calculations must be done evaluating a game state.
 			// we would need to update score.
+			score = 0;
 		}
+		System.out.println(score);
 		return score;
 	}
 	
@@ -353,8 +361,11 @@ public class Board {
 	 * @return True if Move undone else returns False
 	 */
 	public boolean undoLastMove() {
-		if (round_num == 0 || history.isEmpty())
+		// Cannot undo if there have been no counters placed so far
+		if (round_num == 0 || history.isEmpty()) {
 			return false;
+		}
+		
 		round_num--;
 		Move mv = history.remove(round_num);
 		tile[mv.getRow()][mv.getCol()].removeParticipant();

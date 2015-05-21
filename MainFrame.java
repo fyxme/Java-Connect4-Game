@@ -14,6 +14,7 @@ public class MainFrame extends JFrame {
 	private final static int DEFAULT_COLUMN_NUM = 7;
 	private final static int DEFAULT_PLAYER_NUM = 2;
 	private final static int DEFAULT_AI_NUM = 0;
+	private final static int DEFAULT_AI_DIFFICULTY = ERROR;
 	
 	public static final int CIRCLE_WIDTH = 50; // padding of circles;
 	public static final int CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
@@ -36,7 +37,7 @@ public class MainFrame extends JFrame {
 	private void newGame()
 	{
 		this.gi = new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
-				   				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM);
+				   				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM, DEFAULT_AI_DIFFICULTY);
 		gamePanel.setGameInstance(gi);
 	}
 

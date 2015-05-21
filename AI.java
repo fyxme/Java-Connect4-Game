@@ -1,10 +1,15 @@
 public class AI implements Participant {
 	private static final int ERROR = -1;
+	private static final int EASY = 1;
+	private static final int MEDIUM = 2;
+	private static final int HARD = 3;
 	
 	private int id = ERROR;
+	private int difficulty = ERROR;		// must be either EASY, MEDIUM or HARD
 	
-	public AI(int id) {
+	public AI(int id, int difficulty) {
 		this.id = id;
+		this.difficulty = difficulty;
 	}
 	
 	@Override
@@ -52,37 +57,57 @@ public class AI implements Participant {
 			boardCopy.addMove(new Move(colTurn1, this), this); // adds the colTurn1 move to the board (the move this AI can make)
 			
 			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
-				// TODO:
-				// adds the colTurn2 move to the board (the move the other player can make)
+				// TODO: adds the colTurn2 move to the board (the move the other player can make)
 				// should be similar to boardCopy.addMove(new Move(colTurn1, this), OTHERPLAYER);
-				// but im not sure how to do this
+				// NOT SURE HOW TO DO THIS, NEED A WAY TO GET THE OTHER PARTICIPANT
 				
 				// updates the column score to be the minimum
 				scoreOfCol[colTurn1] = Math.min(scoreOfCol[colTurn1], boardCopy.scoreOfBoard(this));
 				
-				// TODO: NEED TO REMOVE THE ADDED colTurn2 from boardCopy. (AKA undo)
+				boardCopy.undoLastMove();
 			}
-			// TODO: NEED TO REMOVE THE ADDED colTurn1 from boardCopy. (AKA undo)
+			boardCopy.undoLastMove(); // undoes the last move so we can simulate the case of the next column along
 		}	
 				
-				
-		int colToGoWith = ERROR;
+		
+		// calculates the best score and its corresponding column - for HARD
 		int bestScore = -1000;
-		for (int col = 0; col < 7; col++) {
-			if (scoreOfCol[col] > bestScore) {
-				bestScore = scoreOfCol[col];
-				colToGoWith = col;
+		int hardCol = ERROR;
+		for (int colBest = 0; colBest < 7; colBest++) {
+			if (scoreOfCol[colBest] >= bestScore) {
+				bestScore = scoreOfCol[colBest];
+				hardCol = colBest;
 			}
 		}
 
-
+		// calculates the second best score and its corresponding column - for MEDIUM
+		int secondBestScore = -1000;
+		int mediumCol = ERROR;
+		for (int colSecond = 0; colSecond < 7; colSecond++) {
+			if ((scoreOfCol[colSecond] >= secondBestScore) && (colSecond != hardCol)) {
+				secondBestScore = scoreOfCol[colSecond];
+				mediumCol = colSecond;
+			}
+		}
+				
+		// calculates the third best score and its corresponding column - for EASY
+		int thirdBestScore = -1000;
+		int easyCol = ERROR;
+		for (int colThird = 0; colThird < 7; colThird++) {
+			if ((scoreOfCol[colThird] >= thirdBestScore) && (colThird != mediumCol) && (colThird != hardCol)) {
+				thirdBestScore = scoreOfCol[colThird];
+				easyCol = colThird;
+			}
+		}
 		
-		// find the best row and best column for the AI
-		// int row = ERROR;
-		int column = colToGoWith;
-
-		Move ret = new Move(column,this);
-		return ret;
+		// Returns the move based on the difficulty of the AI.
+		if (difficulty == HARD) {
+			return new Move(hardCol, this);
+		} else if (difficulty == MEDIUM) {
+			return new Move(mediumCol, this);
+		} else {
+			return new Move(easyCol, this);
+		}
 	}
 	
 

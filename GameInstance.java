@@ -9,7 +9,7 @@ public class GameInstance {
 	private HashMap<Integer, Participant> players = null; // <id, participant> first participant has id 1
 	private int num_part = ERROR; // number of participants
 	
-	public GameInstance(int rows, int columns, int num_player, int num_ai) {
+	public GameInstance(int rows, int columns, int num_player, int num_ai, int difficulty) {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
 		num_part = 0;
@@ -18,7 +18,7 @@ public class GameInstance {
 			num_part++;
 		}
 		for (int i = num_part; i < num_ai; i++) { 
-			players.put(num_part, new AI(i));
+			players.put(num_part, new AI(i, difficulty));
 			num_part++;
 		}
 	}

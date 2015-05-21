@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class kkk {
+public class Buttons {
 
 	private JFrame frame;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -33,7 +33,7 @@ public class kkk {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					kkk window = new kkk();
+					Buttons window = new Buttons();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +45,7 @@ public class kkk {
 	/**
 	 * Create the application.
 	 */
-	public kkk() {
+	public Buttons() {
 		initialize();
 	}
 

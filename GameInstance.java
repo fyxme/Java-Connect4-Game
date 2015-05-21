@@ -41,6 +41,14 @@ public class GameInstance {
 	}
 
 	/**
+	 * Clears the Board Completely so the game 
+	 * can be Restarted with the same settings
+	 */
+	public void restartGame() {
+		this.board = new Board(this.board.getNumberOfRows(), this.board.getNumberOfColumns());
+	}
+	
+	/**
 	 * Get the board of this Game Instance
 	 * @return The board itself
 	 */

@@ -159,4 +159,13 @@ public class GameInstance {
 			makeMove(mv);
 		}
 	}
+
+	public void undoMove() {
+		board.undoLastMove();
+		fireGameEvent();
+	}
+	public void redoMove() {
+		board.redoLastMove();
+		fireGameEvent();
+	}
 }

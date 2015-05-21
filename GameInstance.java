@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -10,10 +11,12 @@ import java.util.List;
 public class GameInstance {
 	private final static int ERROR = -1;
 	
+	private List<GameEventListener> eventListeners = new LinkedList<GameEventListener>();
+	
 	/**
 	 * Game Board
 	 */
-	private Board board = null;
+	private Board board = null;	
 	
 	/**
 	 * HashMap of Participants with Id as Key.
@@ -47,6 +50,22 @@ public class GameInstance {
 			num_part++;
 		}
 	}
+	
+	public void addListener(GameEventListener l)
+	{
+		eventListeners.add(l);
+	}
+	public void removeListener(GameEventListener l)
+	{
+		eventListeners.remove(l);
+	}
+	private void fireGameEvent()
+	{
+		for(GameEventListener l : eventListeners)
+		{
+			l.onGameEvent(0);
+		}
+	}
 
 	/**
 	 * Clears the Board Completely so the game 
@@ -54,6 +73,7 @@ public class GameInstance {
 	 */
 	public void restartGame() {
 		this.board = new Board(this.board.getNumberOfRows(), this.board.getNumberOfColumns());
+		fireGameEvent();
 	}
 	
 	/**
@@ -106,9 +126,10 @@ public class GameInstance {
 			mv.setRow(row);
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves
+			fireGameEvent();
 			return true;
 		} else {
-			System.out.println("Invalid move. Column is full!");
+//			System.out.println("Invalid move. Column is full!");
 			return false;
 		}
 	}
@@ -119,12 +140,12 @@ public class GameInstance {
 	 */
 	public Participant getWinner() {
 		Participant winner = board.getWinner();
-		if (winner == null && !board.hasEmptySlot()) {
-			System.out.println("\n*****DRAW!! NO ONE WINS*****");
-		// Prints out the winners details if someone won
-		} else if (winner != null) {
-			System.out.println("\nPLAYER " + winner.getPid() + " WON!");
-		}
+//		if (winner == null && !board.hasEmptySlot()) {
+//			System.out.println("\n*****DRAW!! NO ONE WINS*****");
+//		// Prints out the winners details if someone won
+//		} else if (winner != null) {
+//			System.out.println("\nPLAYER " + winner.getPid() + " WON!");
+//		}
 		return winner;
 	}
 

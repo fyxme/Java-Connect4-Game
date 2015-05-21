@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
+import java.util.*;
+import javax.swing.*;
 
 /**
  * Connect4Game Class contains the main method which initiates the whole program

@@ -33,9 +33,9 @@ public class AI implements Participant {
 	 * This method also allows the AI to help a player
 	 * if a Hint is requested 
 	 * 
-	 * @return The chosen Move
+	 * @return The chosen Column
 	 */
-	public Move chooseMove(Board bd) {
+	public int chooseColumn(Board bd) {
 		// Creates a copy of bd
 		Board boardCopy = new Board(bd.getNumberOfRows(), bd.getNumberOfColumns());
 		for (int moveNum = 0; moveNum < bd.getTurnNum(); moveNum++) {
@@ -66,7 +66,7 @@ public class AI implements Participant {
 			boardCopy.undoLastMove(); // undoes the last move so we can simulate the case of the next column along
 		}	
 		
-		return new Move(findCol(scoreOfCol), this);
+		return findCol(scoreOfCol);
 	}
 	
 

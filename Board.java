@@ -380,21 +380,41 @@ public class Board {
 	 */
 	public int scoreOfBoard(Participant currentParticipant) {
 		int score = 0;
-
-		//		int rowOfLastPlaced = history.get(round_num - 1).getRow(); // -1 since we want the move from the previous round
-		//		int colOfLastPlaced = history.get(round_num - 1).getCol();
-
-
+		
 		if (this.getWinner() == currentParticipant) {
 			score = 1000; 	// currentParticipant won, so this is the best option to do
-
+			
 		} else if (this.getWinner() != null) {
 			score = -1000;	// other participant won so this is the worst option to do
-
+			
 		} else {
-			// no one won, so calculations must be done evaluating a game state.
-			// we would need to update score.
-			score = 0;
+			// DO CALCULATIONS
+			
+			// This block of code calculates if there are any counters placed 3 vertical, and could
+			// be used for a win. If so, increases the score by 300 if they are the currentParticipants
+			// or decreases it by 300 if it is the other participants.
+			for (int col = 0; col < this.getNumberOfColumns(); col ++) {
+				int sameInARow = 0;
+				middleloop: for (int firstRow = 0; firstRow < this.getNumberOfRows(); firstRow++) {	
+					if (!tile[firstRow][col].isFree()) {
+						Participant participantAtTop = tile[firstRow][col].getOccupant();
+						for (int row = firstRow + 1; row < this.getNumberOfRows(); row++) {
+							if (tile[row][col].getOccupant() == participantAtTop) {
+								sameInARow++;
+							} else if (tile[row][col].getOccupant() != participantAtTop ){
+								if (sameInARow == 3) {
+									if (participantAtTop == currentParticipant) {
+										score += 300;
+									} else {
+										score -= 300;
+									}
+								}
+								break middleloop;
+							}
+						}					
+					}
+				}	
+			}
 		}
 		System.out.println(score);
 		return score;

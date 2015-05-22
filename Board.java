@@ -39,7 +39,19 @@ public class Board {
 	/**
 	 * List of all the Moves Undone before a new Move is made
 	 */
-	private Stack<Move> undone_move = null; 
+	private Stack<Move> undone_move = null;
+	
+	/**
+	 * List of the locations of the winning tiles. There will be four winning tiles so
+	 * this is a 2D array which holds the row and col numbers of the winning tiles. I.e.
+	 * 		index	0	1	2	3
+	 *		row		r0	r1	r2	r3
+	 *		col 	r0	c1	c2	c3
+	 * 
+	 */
+	private int[][] winningTiles = new int[4][2];
+	
+	
 
 	/**
 	 * Constructor Method for Board Class
@@ -55,6 +67,13 @@ public class Board {
 		this.history = new HashMap<Integer,Move>();
 		this.round_num = 0;
 		this.undone_move = new Stack<Move>();
+		
+		// Initialise the winningTiles
+		for (int r = 0; r < 4; r++) {
+			for (int c = 0; c < 2; c++) {
+				winningTiles[r][c] = ERROR;
+			}
+		}
 	}
 
 	/**
@@ -136,6 +155,15 @@ public class Board {
 				if (tile[row][colOfLastPlaced].getOccupant() == lastPlayer) {
 					sameInARow++;
 					if (sameInARow == 4) {
+						// Updates the winning tiles
+						winningTiles[0][0] = row - 3;
+						winningTiles[0][1] = colOfLastPlaced;
+						winningTiles[1][0] = row - 2;
+						winningTiles[1][1] = colOfLastPlaced;
+						winningTiles[2][0] = row - 1;
+						winningTiles[2][1] = colOfLastPlaced;
+						winningTiles[3][0] = row;
+						winningTiles[3][1] = colOfLastPlaced;
 						return lastPlayer;
 					}
 				} else {
@@ -162,6 +190,15 @@ public class Board {
 			if (tile[rowOfLastPlaced][col].getOccupant() == lastPlayer) {
 				sameInARow++;
 				if (sameInARow == 4) {
+					// Updates the winning tiles
+					winningTiles[0][0] = rowOfLastPlaced;
+					winningTiles[0][1] = col - 3;
+					winningTiles[1][0] = rowOfLastPlaced;
+					winningTiles[1][1] = col - 2;
+					winningTiles[2][0] = rowOfLastPlaced;
+					winningTiles[2][1] = col - 1;
+					winningTiles[3][0] = rowOfLastPlaced;
+					winningTiles[3][1] = col;
 					return lastPlayer;
 				}
 			} else {
@@ -199,6 +236,15 @@ public class Board {
 			if (tile[row][col].getOccupant() == lastPlayer) {
 				sameInARow++;
 				if (sameInARow == 4) {
+					// Updates the winning tiles
+					winningTiles[0][0] = row - 3;
+					winningTiles[0][1] = col + 3;
+					winningTiles[1][0] = row - 2;
+					winningTiles[1][1] = col + 2;
+					winningTiles[2][0] = row - 1;
+					winningTiles[2][1] = col + 1;
+					winningTiles[3][0] = row;
+					winningTiles[3][1] = col;
 					return lastPlayer;
 				}
 			} else {
@@ -226,6 +272,15 @@ public class Board {
 			if (tile[row][col].getOccupant() == lastPlayer) {
 				sameInARow++;
 				if (sameInARow == 4) {
+					// Updates the winning tiles
+					winningTiles[0][0] = row - 3;
+					winningTiles[0][1] = col - 3;
+					winningTiles[1][0] = row - 2;
+					winningTiles[1][1] = col - 2;
+					winningTiles[2][0] = row - 1;
+					winningTiles[2][1] = col - 1;
+					winningTiles[3][0] = row;
+					winningTiles[3][1] = col;
 					return lastPlayer;
 				}
 			} else {
@@ -271,6 +326,13 @@ public class Board {
 		//Checks the two diagonals last
 		if (winnerId == null) {
 			winnerId = this.checkDiagonals(rowOfLastPlaced, colOfLastPlaced);
+		}
+		
+		for (int r = 0; r < 4; r++) {
+			for (int c = 0; c < 2; c++) {
+				System.out.print(winningTiles[r][c]);
+			}
+			System.out.println();
 		}
 
 		return winnerId;
@@ -355,6 +417,13 @@ public class Board {
 	 */
 	public int getNumberOfRows() {
 		return rows;
+	}
+	
+	/**
+	 * @return An array with the locations of the four winning tiles
+	 */
+	public int[][] getWinningTiles() {
+		return winningTiles;
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class Board {
 	 * this is a 2D array which holds the row and col numbers of the winning tiles. I.e.
 	 * 		index	0	1	2	3
 	 *		row		r0	r1	r2	r3
-	 *		col 	r0	c1	c2	c3
+	 *		col 	c0	c1	c2	c3
 	 * 
 	 */
 	private int[][] winningTiles = new int[4][2];

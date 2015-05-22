@@ -188,34 +188,25 @@ public class Board {
 
 
 		// CHECKS THE DIAGONAL GOING FROM BOTTOM LEFT TO TOP RIGHT
+		
+		// gets to the top right of the diagonal you are in
+		while (col < 6 && row > 0) {
+			row--;
+			col++;
+		}
 
-		// Can't win in the bottom right triangle of squares, or the top left triangle of squares.
-		// Triangles that I am talking about have base length 3 and height 3
-		if ((col == 0 && row <= 2) || (col == 1 && row <= 1) || (col == 2 && row == 0)) {
-			return null;
-		} else if ((col == 6 && row >= 3) || (col == 5 && row >= 4) || (col == 4 && row == 5)) {
-			return null;
-		} else {
-
-			// gets to the top right of the diagonal you are in
-			while (col < 6 && row > 0) {
-				row--;
-				col++;
+		while (col >= 0 && row <= 5) {
+			if (tile[row][col].getOccupant() == lastPlayer) {
+				sameInARow++;
+				if (sameInARow == 4) {
+					return lastPlayer;
+				}
+			} else {
+				sameInARow = 0;
 			}
 
-			while (col >= 0 && row <= 5) {
-				if (tile[row][col].getOccupant() == lastPlayer) {
-					sameInARow++;
-					if (sameInARow == 4) {
-						return lastPlayer;
-					}
-				} else {
-					sameInARow = 0;
-				}
-
-				row++;
-				col--;	
-			}	
+			row++;
+			col--;	
 		}
 
 		sameInARow = 0;
@@ -223,33 +214,25 @@ public class Board {
 		col = colOfLastPlaced;
 
 
-		// CHECKS THE DIAGONAL GOING FROM BOTTOM LEFT TO TOP RIGHT
+		// CHECKS THE DIAGONAL GOING FROM BOTTOM RIGHT TO TOP LEFT
 
-		// Can't win in the bottom left triangle of squares, or the top right triangle of squares.
-		// Triangles that I am talking about have base length 3 and height 3
-		if ((col == 6 && row <= 2) || (col == 5 && row <= 1) || (col == 4 && row == 0)) {
-			return null;
-		} else if ((col == 0 && row >= 3) || (col == 1 && row >= 4) || (col == 2 && row == 5)) {
-			return null;
-		} else {
-			// gets to the top left of the diagonal you are in
-			while (col > 0 && row > 0) {
-				row--;
-				col--;
-			}
+		// gets to the top left of the diagonal you are in
+		while (col > 0 && row > 0) {
+			row--;
+			col--;
+		}
 
-			while (row <= 5 && col <= 6) {
-				if (tile[row][col].getOccupant() == lastPlayer) {
-					sameInARow++;
-					if (sameInARow == 4) {
-						return lastPlayer;
-					}
-				} else {
-					sameInARow = 0;
+		while (row <= 5 && col <= 6) {
+			if (tile[row][col].getOccupant() == lastPlayer) {
+				sameInARow++;
+				if (sameInARow == 4) {
+					return lastPlayer;
 				}
-				row++;
-				col++;
+			} else {
+				sameInARow = 0;
 			}
+			row++;
+			col++;
 		}
 		return null;
 	}

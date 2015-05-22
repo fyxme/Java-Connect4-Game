@@ -328,13 +328,16 @@ public class Board {
 			winnerId = this.checkDiagonals(rowOfLastPlaced, colOfLastPlaced);
 		}
 		
-		for (int r = 0; r < 4; r++) {
-			for (int c = 0; c < 2; c++) {
-				System.out.print(winningTiles[r][c]);
+		// If there is no winner, makes sure that the winningTiles are still ERROR.
+		// This safegaurds against undoing and redoing errors
+		if (winnerId == null) {
+			for (int r = 0; r < 4; r++) {
+				for (int c = 0; c < 2; c++) {
+					winningTiles[r][c] = ERROR;
+				}
 			}
-			System.out.println();
 		}
-
+		
 		return winnerId;
 	}
 

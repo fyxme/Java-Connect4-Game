@@ -85,7 +85,8 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 			{
 				if(selectedColumn < gi.getBoard().numCol())
 				{
-					g.setColor(new Color(100,100,255));
+					Participant oc = gi.getCurrentParticipant();
+					g.setColor(slotColours[oc.getPid()+1]);
 					g.drawRect(selectedColumn * MainFrame.CIRCLE_SPACE, 0, MainFrame.CIRCLE_SPACE, (int)getSize().getHeight() - 3);
 				}
 			}

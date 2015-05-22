@@ -41,7 +41,7 @@ public class UIPanel extends JPanel implements ActionListener{
 		mainMenuButton.setBounds(307, 11, 89, 23);
 		mainMenuButton.addActionListener(this);
 		add(mainMenuButton);	
-		setBackground(new Color(150,150,150));
+		setBackground(new Color(210,210,210));
 	}
 
 	@Override

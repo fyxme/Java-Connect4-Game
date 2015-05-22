@@ -18,11 +18,6 @@ public class MainFrame extends JFrame {
 	private static final int MEDIUM = 2;
 	private static final int HARD = 3;
 	
-	public static final int CIRCLE_WIDTH = 50; // padding of circles;
-	public static final int CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
-	public static final int LINE_THICKNESS = 3;
-	public static final int CIRCLE_SPACE = CIRCLE_WIDTH + CIRCLE_PADDING;
-	
 	private GameInstance gi;
 	
 	// components:

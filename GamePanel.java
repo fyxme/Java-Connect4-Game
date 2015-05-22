@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 		setPreferredSize(new Dimension(
 				MainFrame.DEFAULT_COLUMN_NUM * (MainFrame.CIRCLE_WIDTH + MainFrame.CIRCLE_PADDING),
 				MainFrame.DEFAULT_ROW_NUM * (MainFrame.CIRCLE_WIDTH + MainFrame.CIRCLE_PADDING)));	
-		setBackground(new Color(210,210,210));
+		setBackground(new Color(150,150,150));
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		

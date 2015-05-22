@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,7 +40,8 @@ public class UIPanel extends JPanel implements ActionListener{
 		mainMenuButton = new JButton("Main Menu");
 		mainMenuButton.setBounds(307, 11, 89, 23);
 		mainMenuButton.addActionListener(this);
-		add(mainMenuButton);
+		add(mainMenuButton);	
+		setBackground(new Color(150,150,150));
 	}
 
 	@Override

@@ -53,12 +53,10 @@ public class UIPanel extends JPanel implements ActionListener{
 		else if(e.getSource() == undoButton)
 		{
 			gi.undoMove();
-			// JOptionPane.showMessageDialog(null, "undoButton not implemented");
 		}
 		else if(e.getSource() == redoButton)
 		{
 			gi.redoMove();
-			// JOptionPane.showMessageDialog(null, "redoButton not implemented");
 		}
 		else if(e.getSource() == mainMenuButton)
 		{

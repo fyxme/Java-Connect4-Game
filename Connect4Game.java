@@ -26,8 +26,8 @@ public class Connect4Game {
 		moves.add(new Move(0,p2));
 		moves.add(new Move(1,p2));
 		moves.add(new Move(3,p2));
-		moves.add(new Move(4,p2));
-		moves.add(new Move(2,p1));
+		moves.add(new Move(4,p1));
+		moves.add(new Move(2,p2));
 		moves.add(new Move(5,p1));
 		moves.add(new Move(2,p2));
 		moves.add(new Move(4,p2));

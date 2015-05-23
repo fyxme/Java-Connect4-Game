@@ -10,7 +10,7 @@ public class Board {
 	 * ERROR Constant
 	 */
 	private static final int ERROR = -1;
-
+	
 	/**
 	 * 2D array of all the tiles on the board
 	 */
@@ -272,7 +272,7 @@ public class Board {
 		if (winnerId == null) {
 			winnerId = this.checkDiagonals(rowOfLastPlaced, colOfLastPlaced);
 		}
-
+		
 		return winnerId;
 	}
 
@@ -369,8 +369,7 @@ public class Board {
 			score = 1000; 	// currentParticipant won, so this is the best option to do
 
 		} else if (this.getWinner() != null) {
-			score = -1000;	// other participant won so this is the worst option to do
-
+			score = -1000;	// other participant won so this is the worst option to do			
 		} else {
 			// DO CALCULATIONS
 
@@ -410,6 +409,9 @@ public class Board {
 	 * THIS METHOD IS MAINLY USED FOR DEBUGGING
 	 */
 	public void printBoard(Participant p1, Participant p2) {
+		System.out.println(" -- ROUND " + this.round_num);
+		System.out.println(" >> Player 1 : X");
+		System.out.println(" >> Player 2 : O");
 		for (int i = 0; i < (rows * 2 + 1); i++) {
 			for (int j = 0; j < (columns * 2 + 1); j++) {
 				System.out.print(" ");
@@ -436,6 +438,8 @@ public class Board {
 			}
 			System.out.println();
 		}
-
+		System.out.println(this.getWinner());
+		scoreOfBoard(p1);
+		scoreOfBoard(p2);
 	}
 }

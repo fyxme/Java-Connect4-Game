@@ -327,9 +327,7 @@ public class Board {
 		if (winnerId == null) {
 			winnerId = this.checkDiagonals(rowOfLastPlaced, colOfLastPlaced);
 		}
-		
-<<<<<<< HEAD
-=======
+
 		// If there is no winner, makes sure that the winningTiles are still ERROR.
 		// This safegaurds against undoing and redoing errors
 		if (winnerId == null) {
@@ -340,7 +338,6 @@ public class Board {
 			}
 		}
 		
->>>>>>> 2a51c68b78d0817db659cae8e35f9afb23cb4b19
 		return winnerId;
 	}
 

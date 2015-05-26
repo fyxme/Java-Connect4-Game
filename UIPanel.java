@@ -42,6 +42,56 @@ public class UIPanel extends JPanel implements ActionListener{
 		mainMenuButton.addActionListener(this);
 		add(mainMenuButton);	
 		setBackground(new Color(210,210,210));
+		
+		/*
+		JButton onePlayer = new JButton("1 Player");
+		onePlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		onePlayer.setBounds(86, 48, 89, 23);
+		frame.getContentPane().add(onePlayer);
+		
+		JButton twoPlayer = new JButton("2 Player");
+		twoPlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		twoPlayer.setBounds(86, 74, 89, 23);
+		frame.getContentPane().add(twoPlayer);
+		
+		JButton help = new JButton("Help");
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		help.setBounds(86, 100, 89, 23);
+		frame.getContentPane().add(help);
+		
+		JButton easyAI = new JButton("Easy AI");
+		easyAI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		easyAI.setBounds(86, 134, 89, 23);
+		frame.getContentPane().add(easyAI);
+		
+		JButton mediumAI = new JButton("Medium AI");
+		mediumAI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		mediumAI.setBounds(86, 163, 89, 23);
+		frame.getContentPane().add(mediumAI);
+		
+		JButton hardAI = new JButton("Hard AI");
+		hardAI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		hardAI.setBounds(86, 198, 89, 23);
+		frame.getContentPane().add(hardAI);
+		*/
 	}
 
 	@Override

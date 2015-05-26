@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 		addMouseListener(this);
 		addComponentListener(this);
 		
+		//TODO: proper fonts for end screen.
 		//the next line needs to be looked at if we want proper fonts.
 		this.setFont(this.getFont().deriveFont(Font.PLAIN, 24));
 	}
@@ -78,7 +79,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 		//for some reason calculating this elsewhere results in inconsistencies if its not set properly before every paint call
 		screenLeft = (int) ((getSize().getWidth() - gi.getBoard().numCol()*CIRCLE_SPACE)/2);//better to just do it here
 		
-		for( int y = 0; y < gi.getBoard().numRow(); y++ )
+		for( int y = 0; y < gi.getBoard().numRow(); y++ ) //draw circles on board.
 		{
 			for( int x = 0; x < gi.getBoard().numCol(); x++ )
 			{
@@ -93,13 +94,27 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 					g.setColor(slotColours[oc.getPid()+1]); // added +1 since pid starts at 0 and colors start at 1
 				
 				g.fillOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+				
+				//outline
 				g.setColor(Color.black);
+				if(gi.getWinner() != null)
+				{
+					int[][] winningTiles = gi.getBoard().getWinningTiles();
+					for(int i = 0; i < winningTiles.length; i++)
+					{
+						if(winningTiles[i][0] == y && winningTiles[i][1] == x)
+						{
+							g.setColor(Color.blue);
+						}
+					}
+				}
+
 				g.drawOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 			}
 		}
-		if(gi.getWinner() == null)
+		if(gi.getWinner() == null) //draw selection rectangle code
 		{
-			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) //draw selection rectangle code
+			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) 
 			{
 				if(selectedColumn < gi.getBoard().numCol())
 				{

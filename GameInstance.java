@@ -127,6 +127,7 @@ public class GameInstance {
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves
 			fireGameEvent();
+			board.scoreOfBoard(this.getCurrentParticipant());
 			return true;
 		} else {
 //			System.out.println("Invalid move. Column is full!");

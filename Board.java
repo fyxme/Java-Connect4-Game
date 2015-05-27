@@ -10,7 +10,7 @@ public class Board {
 	 * ERROR Constant
 	 */
 	private static final int ERROR = -1;
-	
+
 	/**
 	 * 2D array of all the tiles on the board
 	 */
@@ -40,7 +40,7 @@ public class Board {
 	 * List of all the Moves Undone before a new Move is made
 	 */
 	private Stack<Move> undone_move = null;
-	
+
 	/**
 	 * List of the locations of the winning tiles. There will be four winning tiles so
 	 * this is a 2D array which holds the row and col numbers of the winning tiles. I.e.
@@ -50,8 +50,6 @@ public class Board {
 	 * 
 	 */
 	private int[][] winningTiles = new int[4][2];
-	
-	
 
 	/**
 	 * Constructor Method for Board Class
@@ -67,7 +65,7 @@ public class Board {
 		this.history = new HashMap<Integer,Move>();
 		this.round_num = 0;
 		this.undone_move = new Stack<Move>();
-		
+
 		// Initialise the winningTiles
 		for (int r = 0; r < 4; r++) {
 			for (int c = 0; c < 2; c++) {
@@ -225,7 +223,7 @@ public class Board {
 
 
 		// CHECKS THE DIAGONAL GOING FROM BOTTOM LEFT TO TOP RIGHT
-		
+
 		// gets to the top right of the diagonal you are in
 		while (col < 6 && row > 0) {
 			row--;
@@ -337,7 +335,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		return winnerId;
 	}
 
@@ -421,7 +419,7 @@ public class Board {
 	public int getNumberOfRows() {
 		return rows;
 	}
-	
+
 	/**
 	 * @return An array with the locations of the four winning tiles
 	 */
@@ -449,24 +447,29 @@ public class Board {
 			// be used for a win. If so, increases the score by 300 if they are the currentParticipants
 			// or decreases it by 300 if it is the other participants.
 			for (int col = 0; col < this.getNumberOfColumns(); col ++) {
-				int sameInARow = 0;
-				middleloop: for (int firstRow = 0; firstRow < this.getNumberOfRows(); firstRow++) {	
+				for (int firstRow = 0; firstRow < this.getNumberOfRows() - 2; firstRow++) {	
+					int sameInARow = 0;
+					
 					if (!tile[firstRow][col].isFree()) {
-						Participant participantAtTop = tile[firstRow][col].getOccupant();
+
+						Participant participantAtTop = tile[firstRow][col].getOccupant(); 
+						sameInARow++;
+						
 						for (int row = firstRow + 1; row < this.getNumberOfRows(); row++) {
 							if (tile[row][col].getOccupant() == participantAtTop) {
 								sameInARow++;
-							} else if (tile[row][col].getOccupant() != participantAtTop ){
-								if (sameInARow == 3) {
-									if (participantAtTop == currentParticipant) {
-										score += 300;
-									} else {
-										score -= 300;
-									}
-								}
-								break middleloop;
+							} else if (tile[row][col].getOccupant() != participantAtTop || (row == this.getNumberOfRows() - 1)) {
+								break;
 							}
-						}					
+						}
+						
+						if (sameInARow == 3) {
+							if (participantAtTop == currentParticipant) {
+								score += 300;
+							} else {
+								score -= 300;
+							}
+						}
 					}
 				}	
 			}

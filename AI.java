@@ -35,7 +35,7 @@ public class AI implements Participant {
 	 * 
 	 * @return The chosen Column
 	 */
-	public int chooseColumn(Board bd) {
+	public int chooseColumn(Board bd, Participant other) {
 		// Creates a copy of bd
 		Board boardCopy = new Board(bd.getNumberOfRows(), bd.getNumberOfColumns());
 		for (int moveNum = 0; moveNum < bd.getTurnNum(); moveNum++) {
@@ -54,9 +54,8 @@ public class AI implements Participant {
 			boardCopy.addMove(new Move(colTurn1, this)); // adds the colTurn1 move to the board (the move this AI can make)
 			
 			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
-				// TODO: adds the colTurn2 move to the board (the move the other player can make)
-				// should be similar to boardCopy.addMove(new Move(colTurn1, this), OTHERPLAYER);
-				// NOT SURE HOW TO DO THIS, NEED A WAY TO GET THE OTHER PARTICIPANT
+				// Adds the colTurn2 move to the board (the move the other player can make)
+				boardCopy.addMove(new Move(colTurn1, other));
 				
 				// updates the column score to be the minimum
 				scoreOfCol[colTurn1] = Math.min(scoreOfCol[colTurn1], boardCopy.scoreOfBoard(this));

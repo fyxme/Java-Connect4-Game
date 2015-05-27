@@ -56,8 +56,16 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 	private Color[] slotColours = new Color[]
 			{
 				Color.WHITE, // empty cell
-				Color.RED, // player one color
-				Color.YELLOW // player two color
+				Color.ORANGE, // player one color
+				new Color(204,0,0) // player two color
+				
+				/*
+				 * All Colors:
+				 * BLUE 	: new Color(0, 76, 153)
+				 * RED		: new Color(204, 0, 0)
+				 * GREEN	: new Color(0, 153, 76)
+				 * ORANGE	: Color.ORANGE
+				 */
 			};
 	
 	//*
@@ -104,7 +112,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 					{
 						if(winningTiles[i][0] == y && winningTiles[i][1] == x)
 						{
-							g.setColor(Color.blue);
+							g.setColor(Color.WHITE);
 						}
 					}
 				}
@@ -158,6 +166,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,MouseListen
 		{
 			selectedColumn = -1;
 		}
+		// TODO make it repaint only when mouse goes over a new column
 		repaint();
 		// set x and y positions of mouse then repaint.		
 	}

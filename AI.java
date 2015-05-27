@@ -52,7 +52,9 @@ public class AI implements Participant {
 		// gets the score of all moves, two turns into the future (49 moves in total) and places them in the array.
 		for (int colTurn1 = 0; colTurn1 < boardCopy.getNumberOfColumns(); colTurn1++) {
 			boardCopy.addMove(new Move(colTurn1, this)); // adds the colTurn1 move to the board (the move this AI can make)
-			
+			if (boardCopy.scoreOfBoard(this) == 1000) {
+				return colTurn1; // WIN
+			}
 			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
 				// Adds the colTurn2 move to the board (the move the other player can make)
 				boardCopy.addMove(new Move(colTurn1, other));

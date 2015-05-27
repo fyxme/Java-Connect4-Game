@@ -435,11 +435,9 @@ public class Board {
 	public int scoreOfBoard(Participant currentParticipant) {
 		int score = 0;
 
-		if (this.getWinner() == currentParticipant) {
-			score = 1000; 	// currentParticipant won, so this is the best option to do
-
-		} else if (this.getWinner() != null) {
-			score = -1000;	// other participant won so this is the worst option to do			
+		if (this.getWinner() != null) {
+			return compareParticipants(this.getWinner(), currentParticipant) * 1000;
+			
 		} else {
 			// DO CALCULATIONS
 
@@ -464,20 +462,108 @@ public class Board {
 						}
 						
 						if (sameInARow == 3) {
-							if (participantAtTop == currentParticipant) {
-								score += 300;
-							} else {
-								score -= 300;
-							}
+							score += compareParticipants(participantAtTop, currentParticipant) * 300;
 						}
 					}
 				}	
+			}
+			
+			// This block of code calculates if there are any counters placed horizontally, and could
+			// be used for a win, these could be in the form of 3 horizontal one after the other, or 
+			// 4 horizontal with a gap in the middle. If so, increases the score by 300 if they are the 
+			// currentParticipants or decreases it by 300 if it is the other participants.
+			for (int row = 0; row < this.getNumberOfRows(); row++) {
+				int sameInARow = 0;
+				boolean gapBefore = false;
+				boolean gapBetween = false;
+				boolean gapAfter = false;
+				Participant currentP = null;
+				
+				for (int col = 0; col < this.getNumberOfColumns(); col ++) {
+					
+					if (tile[row][col].isFree()) {
+						
+						if (gapBetween) {
+							gapBetween = false;
+							sameInARow = 0;
+							currentP = null;
+						}
+						// There is a free tile in the row before other occupied tiles
+						if (sameInARow == 0) {
+							gapBefore = true;
+						
+						// There is a free tile in the row between a row of 3
+						} else if (sameInARow > 0 && sameInARow < 3) {
+							gapBetween = true;
+						
+						// There is a free tile in the row after 3 occupied tiles
+						} else if (sameInARow == 3) {
+							gapAfter = true;
+						}
+
+					// This is the first occupied tile
+					} else if (currentP == null) {
+						currentP = tile[row][col].getOccupant();
+						sameInARow = 1;
+						
+					// There is another occupied tile
+					} else {
+						if (currentP == tile[row][col].getOccupant()) {
+							sameInARow++;
+						} else {
+							sameInARow = 1;
+							currentP = tile[row][col].getOccupant();
+							gapBefore = false;
+							gapBetween = false;
+							gapAfter = false;
+							
+							if (tile[row][col - 1].isFree()) {
+								gapBefore = true;
+							}
+						}
+					}
+				}
+				
+				if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
+					
+					// you have three in row on the bottom row with free tiles on either side
+					if (!gapBetween && gapBefore && gapAfter && row == this.getNumberOfRows() - 1) {
+						return compareParticipants(currentP, currentParticipant) * 999;
+					
+					} else {
+						// You have 3 in a row, with either a gap in between, at the beginning,
+						// or at the end of your three
+						score += compareParticipants(currentP, currentParticipant) * 300;
+						
+						// Your three can be completed on either side (i.e in two ways)
+						if (!gapBetween && gapBefore && gapAfter) {
+							score += compareParticipants(currentP, currentParticipant) * 50;
+						}
+					}
+				}
 			}
 		}
 		System.out.println(score); // DEBUGGING
 		return score;
 	}
+	
+	
+	/**
+	 * A method which takes in two participants and returns 1 if they are the same, and -1 if 
+	 * they are different
+	 * @param p1		The first participant to be compared
+	 * @param p2		The second participant to be compared
+	 * @return			1 if p1 == p2, or -1 of p1 != p2
+	 */
+	private int compareParticipants(Participant p1, Participant p2) {
+		if (p1 == p2) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
 
+	
 	/**
 	 * Prints the full board using O for player 1 and X for player 2
 	 * on the System console

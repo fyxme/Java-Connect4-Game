@@ -428,6 +428,19 @@ public class Board {
 	}
 
 	/**
+	 * This function split the board horizontally 
+	 * and moves the tiles from the left side to the right side and vice versa
+	 * Usefull when writing code which tests diagonals
+	 */
+	private void rotateBoard() {
+		for (int i = 0 , j = this.getNumberOfColumns(); i < j; i++, j--) {
+			Tile temp = this.tile[i][j];
+			this.tile[i][j] = this.tile[j][i];
+			this.tile[j][i] = temp;
+		}
+	}
+	
+	/**
 	 * A method to be used by the AI to determine who is in a better position in the current board
 	 * @param currentParticipant	The participant that you want to score the board for
 	 * @return						A score given to the board state. 1000 if currentParticipant won
@@ -439,6 +452,7 @@ public class Board {
 			return compareParticipants(this.getWinner(), currentParticipant) * 1000;
 			
 		} else {
+			
 			// DO CALCULATIONS
 
 			// This block of code calculates if there are any counters placed 3 vertical, and could

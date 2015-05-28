@@ -2,11 +2,32 @@
 
 compiled_using_script=false
 
+# compile directly from this file
+Compile_directly() {
+	echo "Trying to compile directly."
+	javac Connect4Game.java
+}
+
+# Remove .class files
+Clean_up() {
+	echo "Removing .class files."
+	rm *.class > /dev/null 2>&1
+}
+
+if [ $# -eq 1 ]
+then
+	if [ $1 == "clean" ]
+	then
+		Clean_up
+		echo "Clean up process done!"
+		exit 1
+	fi
+fi
+
 # remove all the .class files if they exist >>
 if [ -e "Connect4Game.class" ]
 then
-	echo "Removing old .class files."
-	rm *.class > /dev/null 2>&1
+	Clean_up
 fi
 # compile the java files >>
 if [ -e "compile.sh" ]
@@ -16,11 +37,10 @@ then
 	compiled_using_script=true
 else 
 	echo "Compile file missing. [File compile.sh missing]"
-	echo "Trying to compile directly."
-	javac Connect4Game.java
+	Compile_directly
 fi
 
-# check files have been compiled
+# check if compile is a success
 if [ -e "Connect4Game.class" ]
 then
 	echo "Compile success"
@@ -28,8 +48,8 @@ else
 	if [ "$compiled_using_script" = true ]
 	then
 		echo "Couldn't compile files using compile script"
-		echo "Trying to compile directly."
-		javac Connect4Game.java
+		Compile_directly
+
 		if [ -e "Connect4Game.class" ]
 		then
 			echo "Compile success"

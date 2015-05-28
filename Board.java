@@ -441,7 +441,7 @@ public class Board {
 	}
 
 
-	private int checkDiagonal(Participant currentParticipant) {
+	private int calculateDiagonalScore(Participant currentParticipant) {
 		// CHECKS THE DIAGONALS GOING FROM BOTTOM LEFT TO TOP RIGHT
 		int score = 0;
 		int startingRow = 3;
@@ -650,11 +650,11 @@ public class Board {
 
 
 			// CHECKS THE DIAGONALS GOING FROM BOTTOM LEFT TO TOP RIGHT
-			score += checkDiagonal(currentParticipant);
+			score += calculateDiagonalScore(currentParticipant);
 
 			// CHECKS THE DIAGONALS GOING FROM BOTTOM RIGHT TO TOP LEFT
 			rotateBoard();
-			score += checkDiagonal(currentParticipant);
+			score += calculateDiagonalScore(currentParticipant);
 			rotateBoard();
 			
 //			startingRow = this.getNumberOfRows() - 1;

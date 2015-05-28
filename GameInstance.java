@@ -96,7 +96,7 @@ public class GameInstance {
 			players.put(1, new AI(1, difficulty));
 		}
 		
-		for(int i=0;i<players.size();i++){
+		for(int i=0;i<players.size();i++){//debugging
 			System.out.println(players.get(i).getClass().getName());
 		}
 		

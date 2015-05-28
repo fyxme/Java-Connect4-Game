@@ -246,7 +246,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {		
-		if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
+		if (gi.getCurrentParticipant().getClass().getName()=="Player"&&gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
 			Participant curr = gi.getCurrentParticipant();
 			
 			animY = gi.getBoard().getColumnSpace(selectedColumn);

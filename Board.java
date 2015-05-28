@@ -241,18 +241,29 @@ public class Board {
 				if (tile[row][col].getOccupant() == lastPlayer) {
 					sameInARow++;
 					if (sameInARow == 4) {
-						// Updates the winning tiles
-						winningTiles[0][0] = row - 3;
-						winningTiles[0][1] = col + 3;
-						winningTiles[1][0] = row - 2;
-						winningTiles[1][1] = col + 2;
-						winningTiles[2][0] = row - 1;
-						winningTiles[2][1] = col + 1;
-						winningTiles[3][0] = row;
-						winningTiles[3][1] = col;
-						if (boardRotated) {
+						// account for board rotation
+						if (iteration == 1) {
+							// -1 since the number of columns does not account for the 0 column
+							col = this.getNumberOfColumns() - col - 1; 
 							rotateBoard();
-							boardRotated = !boardRotated;
+							winningTiles[0][0] = row - 3;
+		 					winningTiles[0][1] = col - 3;
+		 					winningTiles[1][0] = row - 2;
+		 					winningTiles[1][1] = col - 2;
+		 					winningTiles[2][0] = row - 1;
+		 					winningTiles[2][1] = col - 1;
+		 					winningTiles[3][0] = row;
+		 					winningTiles[3][1] = col;
+						} else {
+							// Updates the winning tiles
+							winningTiles[0][0] = row - 3;
+							winningTiles[0][1] = col + 3;
+							winningTiles[1][0] = row - 2;
+							winningTiles[1][1] = col + 2;
+							winningTiles[2][0] = row - 1;
+							winningTiles[2][1] = col + 1;
+							winningTiles[3][0] = row;
+							winningTiles[3][1] = col;
 						}
 						return lastPlayer;
 					}
@@ -263,9 +274,7 @@ public class Board {
 				row++;
 				col--;	
 			}
-			
 			rotateBoard();
-			boardRotated = !boardRotated;
 		}
 		return null;
 	}
@@ -283,8 +292,6 @@ public class Board {
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */
 	public Participant getWinner () {
-
-
 		if (round_num <= 6) {
 			// can't win before the 7th round - dont need to calculate anything
 			return null;

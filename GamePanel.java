@@ -220,6 +220,24 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		
 		g2d.setStroke(oldStroke);
 	}
+	
+	private void startMove(int column)
+	{
+		//this line must be run above make move so it gets the correct colour
+		animColour = gi.getCurrentParticipant().getColor();
+		
+		Move mv = gi.makeMove(column);
+		if(mv != null)
+		{
+			animY = mv.getRow();
+			animX = mv.getCol();
+			animYCur = -1;
+			selectedColumn = -1;
+
+			animating = true;
+			animTimer.start();
+		}
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -239,22 +257,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		if(selectedColumn == pressedColumn)
 		{
 			//below this line is the code for handling mouse clicks.
-			if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-				if (gi.getCurrentParticipant().getClass().getName()=="Player"&&gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-					
-					animY = gi.getBoard().getColumnSpace(selectedColumn);
-					animColour = gi.getCurrentParticipant().getColor();
-					// curr.makeMove(selectedColumn)
-					if(gi.makeMove(selectedColumn));
-					{
-						animX = selectedColumn;
-						animYCur = -1;
-						selectedColumn = -1;
-
-						animating = true;
-						animTimer.start();
-					}
-				}
+			if (gi.getWinner() == null && //game no winner yet
+					gi.getBoard().hasEmptySlot() &&  //there are still free slots
+					selectedColumn != -1 && //there is a selection.
+					gi.getCurrentParticipant() instanceof Player)// player's turn to move.
+			{
+					startMove(selectedColumn);
 			}
 		}
 		pressedColumn = -1;
@@ -304,7 +312,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	@Override
 	public void onGameEvent(int arg) {
-		animating = false;
+		stopAnimation();
 		repaint();
 	}
 
@@ -347,22 +355,32 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	public void componentShown(ComponentEvent arg0) {
 		// do nothing
 	}
+	
+	private void stopAnimation()
+	{
+		animating = false;
+		animTimer.stop();
+		
+		if(gi.getCurrentParticipant() instanceof AI)
+		{
+			startMove(-1);//passing a minus one asks the AI for the move.
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == animTimer)
 		{
-			if(!animating)
+			if(!animating) 
 			{
-				animTimer.stop();
+				stopAnimation();
 			}
 			else
 			{
 				animYCur += _ANIM_SPEED / _ANIM_FPS;
 				if(animYCur >= animY)
 				{
-					animating = false;
-					animTimer.stop();
+					stopAnimation();
 					//need to run update mouse to update the selected column.
 					Point mousePoint = MouseInfo.getPointerInfo().getLocation();
 					Point screenLoc = getLocationOnScreen();

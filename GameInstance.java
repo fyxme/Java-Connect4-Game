@@ -139,25 +139,29 @@ public class GameInstance {
 				return p;
 		return null;
 	}
-
+	
 	/**
 	 * Tries to make a Move on the board based on the input column
 	 * @param mv Move made
 	 * @return True if the Move has been Made else returns False if the move can't be made.
 	 */
-	public boolean makeMove(int col) {
+	public Move makeMove(int col) {//passing a minus one asks the AI for the move.
 		Participant curr = getCurrentParticipant();
+		if(col < 0)
+		{
+			col = ((AI)curr).chooseColumn(board, this.getOtherParticipant(curr));
+		}
 		Move mv = new Move(col, curr);
 		int row = board.getColumnSpace(col);
 		if (row != ERROR) {
 			mv.setRow(row);
 			board.addMove(mv);
-			board.clearUndoneMoves(); // clears the stack of undone Moves
-			fireGameEvent();
+			board.clearUndoneMoves(); // clears the stack of undone Moves.
+			
 			board.scoreOfBoard(this.getCurrentParticipant()); // TODO : DEBUGGING
-			return true;
+			return mv;
 		} else { // column is full invalid column
-			return false;
+			return null;
 		}
 	}
 

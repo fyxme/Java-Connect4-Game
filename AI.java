@@ -46,10 +46,11 @@ public class AI implements Participant {
 	 */
 	public int chooseColumn(Board bd, Participant other) {
 		// Creates a copy of bd
-		Board boardCopy = new Board(bd.getNumberOfRows(), bd.getNumberOfColumns());
-		for (int moveNum = 0; moveNum < bd.getTurnNum(); moveNum++) {
-			boardCopy.addMove(bd.getHistory().get(moveNum));
-		}
+		Board boardCopy = bd; 
+//		new Board(bd.getNumberOfRows(), bd.getNumberOfColumns());
+//		for (int moveNum = 0; moveNum < bd.getTurnNum(); moveNum++) {
+//			boardCopy.addMove(bd.getHistory().get(moveNum));
+//		}
 		
 		// Sets up an array to hold the scores given to each move
 		// Each score is set to be zero, which is neither good nor bad
@@ -60,13 +61,17 @@ public class AI implements Participant {
 		
 		// gets the score of all moves, two turns into the future (49 moves in total) and places them in the array.
 		for (int colTurn1 = 0; colTurn1 < boardCopy.getNumberOfColumns(); colTurn1++) {
-			boardCopy.addMove(new Move(colTurn1, this)); // adds the colTurn1 move to the board (the move this AI can make)
+			Move mv = new Move(colTurn1, this);
+			mv.setRow(boardCopy.getColumnSpace(colTurn1));
+			boardCopy.addMove(mv); // adds the colTurn1 move to the board (the move this AI can make)
 			if (boardCopy.scoreOfBoard(this) == 1000) {
 				return colTurn1; // WIN
 			}
 			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
 				// Adds the colTurn2 move to the board (the move the other player can make)
-				boardCopy.addMove(new Move(colTurn1, other));
+				mv = new Move(colTurn2, this);
+				mv.setRow(boardCopy.getColumnSpace(colTurn2));
+				boardCopy.addMove(mv);
 				
 				// updates the column score to be the minimum
 				scoreOfCol[colTurn1] = Math.min(scoreOfCol[colTurn1], boardCopy.scoreOfBoard(this));

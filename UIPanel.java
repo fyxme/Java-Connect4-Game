@@ -124,39 +124,17 @@ public class UIPanel extends JPanel implements ActionListener{
 		frame.getContentPane().add(hardAI);
 		*/
 	}
-
+	
+	public JButton getMainMenuButton()
+	{
+		return mainMenuButton;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == restartButton)
-		{
-			gi.restartGame();
-		}
-		else if(e.getSource() == undoButton)
-		{
-			gi.undoMove();
-		}
-		else if(e.getSource() == redoButton)
-		{
-			gi.redoMove();
-		}
-		else if(e.getSource() == mainMenuButton)
-		{
-			JOptionPane.showMessageDialog(null, "mainMenuButton not implemented");
-		}
-		/**
-		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
-		 */
-		else if(e.getSource() == difficultyMenu)
-		{
-			gi.changeDifficulty(difficultyMenu.getSelectedIndex());
-		}
-		else if(e.getSource() == twoPlayer)
-		{
-			gi.changeNumAI(twoPlayer.isSelected());
-		}
-		/**
-		 * END TEMPORARY CODE.
-		 */
+		if(e.getSource() == restartButton) gi.restartGame();
+		else if(e.getSource() == undoButton) gi.undoMove();
+		else if(e.getSource() == redoButton) gi.redoMove();
 	}
 	
 }

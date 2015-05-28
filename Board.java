@@ -430,7 +430,7 @@ public class Board {
 	/**
 	 * This function split the board horizontally 
 	 * and moves the tiles from the left side to the right side and vice versa
-	 * Usefull when writing code which tests diagonals
+	 * Useful when writing code which tests diagonals
 	 */
 	private void rotateBoard() {
 		for (int i = 0 , j = this.getNumberOfColumns(); i < j; i++, j--) {

@@ -542,7 +542,7 @@ public class Board {
 			// be used for a win. If so, increases the score by 300 if they are the currentParticipants
 			// or decreases it by 300 if it is the other participants.
 			for (int col = 0; col < this.getNumberOfColumns(); col ++) {
-				for (int firstRow = 0; firstRow < this.getNumberOfRows() - 2; firstRow++) {	
+				for (int firstRow = 1; firstRow < this.getNumberOfRows() - 2; firstRow++) {	
 					int sameInARow = 0;
 
 					if (!tile[firstRow][col].isFree()) {

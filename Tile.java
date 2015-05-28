@@ -40,16 +40,4 @@ public class Tile {
 	public void removeParticipant() {
 		this.occupant = null;
 	}
-
-	
-	// DEBUGGING
-	private Move mv = null;
-	public void setMove(Move mv) {
-		this.mv = mv;
-	}
-	
-	public Move getMove() {
-		return this.mv;
-	}
-	// END OF DEBUGGING
 }

@@ -95,14 +95,14 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//makes things look nice
 
 		//for some reason calculating this elsewhere results in inconsistencies if its not set properly before every paint call
-		screenLeft = (int) ((getSize().getWidth() - gi.getBoard().numCol()*CIRCLE_SPACE)/2);//better to just do it here
-		screenTop = (int) ((getSize().getHeight() - gi.getBoard().numRow()*CIRCLE_SPACE)/2);//better to just do it here
+		screenLeft = (int) ((getSize().getWidth() - gi.getBoard().getNumberOfColumns()*CIRCLE_SPACE)/2);//better to just do it here
+		screenTop = (int) ((getSize().getHeight() - gi.getBoard().getNumberOfRows()*CIRCLE_SPACE)/2);//better to just do it here
 		
 		// drawing code in general is a bit messy because of the drawing orders i need to keep to in order to make sure 
 		// stuff is drawn right and prevent artifacts. 
-		for( int y = 0; y < gi.getBoard().numRow(); y++ ) //draw circles on board.
+		for( int y = 0; y < gi.getBoard().getNumberOfRows(); y++ ) //draw circles on board.
 		{
-			for( int x = 0; x < gi.getBoard().numCol(); x++ )
+			for( int x = 0; x < gi.getBoard().getNumberOfColumns(); x++ )
 			{
 				Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(x,y));
 
@@ -136,9 +136,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 			g.setClip(s); //restore clip
 		}
-		for( int y = 0; y < gi.getBoard().numRow(); y++ ) // draw circle outlines
+		for( int y = 0; y < gi.getBoard().getNumberOfRows(); y++ ) // draw circle outlines
 		{
-			for( int x = 0; x < gi.getBoard().numCol(); x++ )
+			for( int x = 0; x < gi.getBoard().getNumberOfColumns(); x++ )
 			{
 				Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(x,y));
 				//outline
@@ -161,12 +161,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		{
 			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) 
 			{
-				if(selectedColumn < gi.getBoard().numCol())
+				if(selectedColumn < gi.getBoard().getNumberOfColumns())
 				{
 					Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(selectedColumn,0)); 
 					Participant oc = gi.getCurrentParticipant();
 					g.setColor(oc.getColor());
-					g.drawRect((int)(screenCoord.getX() - CIRCLE_PADDING/2), (int)(screenCoord.getY() - CIRCLE_PADDING/2), (int)CIRCLE_SPACE, (int)(gi.getBoard().numRow() * CIRCLE_SPACE));
+					g.drawRect((int)(screenCoord.getX() - CIRCLE_PADDING/2), (int)(screenCoord.getY() - CIRCLE_PADDING/2), (int)CIRCLE_SPACE, (int)(gi.getBoard().getNumberOfRows() * CIRCLE_SPACE));
 				}
 			}
 		}

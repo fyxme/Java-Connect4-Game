@@ -95,7 +95,6 @@ public class Board {
 	public void addMove(Move mv) {
 		this.history.put(this.round_num, mv);
 		this.tile[mv.getRow()][mv.getCol()].setOccupant(mv.getParticipant());
-		this.tile[mv.getRow()][mv.getCol()].setMove(mv);
 		round_num++;
 	}
 
@@ -343,20 +342,6 @@ public class Board {
 			return this.tile[row][col];
 		}
 		return null;
-	}
-
-	/**
-	 * @return Returns the number of rows
-	 */
-	public int numRow() {
-		return this.rows;
-	}
-
-	/**
-	 * @return Returns the number of columns
-	 */
-	public int numCol() {
-		return this.columns;
 	}
 
 	/**
@@ -641,20 +626,20 @@ public class Board {
 					System.out.print("3 in a row");
 					// you have three in row on the bottom row with free tiles on either side
 					if (!gapBetween && gapBefore && gapAfter && row == this.getNumberOfRows() - 1) {
-						System.out.println(" with two wins possible on bottom");
+						System.out.println(" with two wins possible on bottom"); // TODO : DEBUGGING
 						return compareParticipants(currentP, currentParticipant) * 999;
 
 					} else {
 						// You have 3 in a row, with either a gap in between, at the beginning,
 						// or at the end of your three
 						score += compareParticipants(currentP, currentParticipant) * 300;
-						System.out.println(" with one win possible");
+						System.out.println(" with one win possible"); // TODO : DEBUGGING
 
 
 						// Your three can be completed on either side (i.e in two ways)
 						if (!gapBetween && gapBefore && gapAfter) {
 							score += compareParticipants(currentP, currentParticipant) * 50;
-							System.out.println(" with two wins possible");
+							System.out.println(" with two wins possible"); // TODO : DEBUGGING
 						}
 					}
 				}
@@ -670,7 +655,7 @@ public class Board {
 			rotateBoard();
 		}
 		
-		System.out.println(score); // DEBUGGING
+		System.out.println(score); // TODO: DEBUGGING
 		return Math.min(score, 999);
 	}
 
@@ -688,46 +673,5 @@ public class Board {
 		} else {
 			return -1;
 		}
-	}
-
-
-	/**
-	 * Prints the full board using O for player 1 and X for player 2
-	 * on the System console
-	 * THIS METHOD IS MAINLY USED FOR DEBUGGING
-	 */
-	public void printBoard(Participant p1, Participant p2) {
-		System.out.println(" -- ROUND " + this.round_num);
-		System.out.println(" >> Player 1 : X");
-		System.out.println(" >> Player 2 : O");
-		for (int i = 0; i < (rows * 2 + 1); i++) {
-			for (int j = 0; j < (columns * 2 + 1); j++) {
-				System.out.print(" ");
-				if (i%2 == 0)
-					if (j%2 == 0)
-						System.out.print("+");
-					else
-						System.out.print("-");
-				else
-					if (j%2 == 0) {
-						System.out.print("|");
-					} else {
-						Move mv = tile[(i-1)/2][(j-1)/2].getMove();
-						if (mv == null) {
-							System.out.print(" ");
-						} else {
-							Participant p = mv.getParticipant();
-							if (p == p1)
-								System.out.print("X");
-							else 
-								System.out.print("O");
-						}
-					}	
-			}
-			System.out.println();
-		}
-		System.out.println(this.getWinner());
-		scoreOfBoard(p1);
-		scoreOfBoard(p2);
 	}
 }

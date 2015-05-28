@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class GameInstance {
 	private final static int ERROR = -1;
+	private final static int DEFAULT_DIFFICULTY = 0; // easy
+	
 	private List<GameEventListener> eventListeners = new LinkedList<GameEventListener>();
 
 	/**
@@ -48,19 +50,7 @@ public class GameInstance {
 	 * Number of Participants
 	 */
 	private int num_part = ERROR;
-
-
-	/**
-	 * CODE MAY NEED TO BE DELETED WHEN MAIN MENU IS IMPLEMENTED.
-	 */
-	private int difficulty = 0;
-
-
-	private boolean p2 = true;
-	/**
-	 * END MAYBE DELETABLE CODE.
-	 */
-
+	
 	/**
 	 * Constructor Method for GameInstance Class
 	 * @param rows Number of Rows
@@ -80,7 +70,7 @@ public class GameInstance {
 			
 		}
 		for (int i = 0; i < num_ai; i++, num_part++) { 
-			Participant ai = new AI(i, difficulty);
+			Participant ai = new AI(i, DEFAULT_DIFFICULTY);
 			ai.setColor(slotColours[num_part]);
 			players.put(num_part, ai);
 		}
@@ -109,25 +99,6 @@ public class GameInstance {
 	public void restartGame() {
 		this.board = new Board(this.board.getNumberOfRows(), this.board.getNumberOfColumns());
 		fireGameEvent();
-
-		/**
-		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
-		 */
-
-		players.remove(1);
-		if(p2){
-			players.put(1, new Player(1));
-		}else{
-			players.put(1, new AI(1, difficulty));
-		}
-
-		for(int i=0;i<players.size();i++){//debugging
-			System.out.println(players.get(i).getClass().getName());
-		}
-
-		/**
-		 * END TEMPORARY CODE.
-		 */
 	}
 
 	/**
@@ -183,7 +154,7 @@ public class GameInstance {
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves
 			fireGameEvent();
-			board.scoreOfBoard(this.getCurrentParticipant()); // DEBUG
+			board.scoreOfBoard(this.getCurrentParticipant()); // TODO : DEBUGGING
 			return true;
 		} else { // column is full invalid column
 			return false;
@@ -200,39 +171,18 @@ public class GameInstance {
 	}
 
 	/**
-	 * Used to make multiple moves at once
-	 * THIS IS MOSTLY USED FOR TESTING PURPOSES
-	 * @param moves List of Moves to make
+	 * Gets the board to undo a previously done move
 	 */
-	public void makeMoves(List<Move> moves) {
-		for (Move mv : moves) {
-			makeMove(mv.getCol());
-		}
-	}
-
 	public void undoMove() {
 		board.undoLastMove();
 		fireGameEvent();
 	}
+	
+	/**
+	 * Gets the board to add again a previously undone move
+	 */
 	public void redoMove() {
 		board.redoLastMove();
 		fireGameEvent();
 	}
-
-
-	/**
-	 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
-	 */
-	public void changeDifficulty(int i){
-		difficulty = i;
-	}
-
-
-	public void changeNumAI(boolean b){
-		p2 = b;
-	}
-
-	/**
-	 * END TEMPORARY CODE.
-	 */
 }

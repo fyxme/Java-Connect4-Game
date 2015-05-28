@@ -11,6 +11,11 @@ public class AI implements Participant {
 	
 	private Color color = null;
 	
+	/**
+	 * Constructor method for the AI class
+	 * @param id ID number of the AI class
+	 * @param difficulty Difficulty of the AI
+	 */
 	public AI(int id, int difficulty) {
 		this.id = id;
 		this.difficulty = difficulty;

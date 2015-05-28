@@ -9,6 +9,7 @@ public class UIPanel extends JPanel implements ActionListener{
 	private JButton undoButton;
 	private JButton redoButton;
 	private JButton mainMenuButton;
+	private JComboBox<String> difficultyMenu;
 	private GameInstance gi;
 	
 	public UIPanel()
@@ -42,6 +43,15 @@ public class UIPanel extends JPanel implements ActionListener{
 		mainMenuButton.addActionListener(this);
 		add(mainMenuButton);	
 		setBackground(new Color(210,210,210));
+
+		String[] difficulties = { "Easy", "Medium", "Hard"};
+		difficultyMenu = new JComboBox<String>(difficulties);
+		difficultyMenu.setBounds(406, 11, 89, 23);
+		difficultyMenu.setSelectedIndex(0); //0 makes the default difficulty easy.
+		difficultyMenu.addActionListener(this);
+		add(difficultyMenu);
+		
+		
 		
 		/*
 		JButton onePlayer = new JButton("1 Player");
@@ -111,6 +121,10 @@ public class UIPanel extends JPanel implements ActionListener{
 		else if(e.getSource() == mainMenuButton)
 		{
 			JOptionPane.showMessageDialog(null, "mainMenuButton not implemented");
+		}
+		else if(e.getSource() == difficultyMenu)
+		{
+			gi.changeDifficulty(difficultyMenu.getSelectedIndex());
 		}
 	}
 	

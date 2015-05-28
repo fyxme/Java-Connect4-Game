@@ -1,8 +1,8 @@
 public class AI implements Participant {
 	private static final int ERROR = -1;
-	private static final int EASY = 1;
-	private static final int MEDIUM = 2;
-	private static final int HARD = 3;
+	private static final int EASY = 0;
+	private static final int MEDIUM = 1;
+	private static final int HARD = 2;
 	
 	private int id = ERROR;
 	private int difficulty = ERROR;		// must be either EASY, MEDIUM or HARD

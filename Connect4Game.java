@@ -13,12 +13,11 @@ public class Connect4Game {
 	private final static int DEFAULT_COLUMN_NUM = 7;
 	private final static int DEFAULT_PLAYER_NUM = 2;
 	private final static int DEFAULT_AI_NUM = 0;
-	private final static int DEFAULT_AI_DIFFICULTY = -1;
 	GameInstance gi = null;
 
 	public void testAI() {
 		this.gi = new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
-				DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM, DEFAULT_AI_DIFFICULTY);	
+				DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM);	
 		Participant p1 = gi.getCurrentParticipant();
 		Participant p2 = gi.getOtherParticipant(p1);
 		

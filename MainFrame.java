@@ -13,10 +13,9 @@ public class MainFrame extends JFrame {
 	public final static int DEFAULT_COLUMN_NUM = 7;
 	private final static int DEFAULT_PLAYER_NUM = 2;
 	private final static int DEFAULT_AI_NUM = 0;
-	private final static int DEFAULT_AI_DIFFICULTY = ERROR;
-	private static final int EASY = 1;
-	private static final int MEDIUM = 2;
-	private static final int HARD = 3;
+	private static final int EASY = 0;
+	private static final int MEDIUM = 1;
+	private static final int HARD = 2;
 	
 	private GameInstance gi;
 	
@@ -36,7 +35,7 @@ public class MainFrame extends JFrame {
 	{
 		//maybe give up on the idea of instantiating our game instance more than once.
 		this.gi = new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
-				   				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM, DEFAULT_AI_DIFFICULTY);
+				   				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM);
 		gamePanel.setGameInstance(gi);
 		uiPanel.setGameInstance(gi);
 	}

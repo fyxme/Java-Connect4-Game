@@ -7,12 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
-
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements ActionListener, MouseMotionListener,MouseListener,ComponentListener,GameEventListener{
 	private GameInstance gi = null;
-
 
 	private static final float _CIRCLE_WIDTH = 50; // padding of circles;
 	private static final float _CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
@@ -41,7 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	}
 	
 	/**
-	 * Sets the GameInstance object that this panel retreives game information from.
+	 * Sets the GameInstance object that this panel retrieves game information from.
 	 * @param gi The game instance object.
 	 */
 	public void setGameInstance(GameInstance gi) {
@@ -68,8 +66,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		//the next line needs to be looked at if we want non-default fonts. But I think the default one is portable and looks fine.
 		this.setFont(this.getFont().deriveFont(Font.PLAIN, _FONT_SIZE));
 	}
-	
-
 
 	// all the private variables below are for demo purposes only.
 	private Color[] slotColours = new Color[]
@@ -93,6 +89,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	private int selectedColumn; // -1 for invalid columns
 	private int screenLeft;
+	private int screenTop;
 
 	private int animX;
 	private int animY;
@@ -113,7 +110,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 		//for some reason calculating this elsewhere results in inconsistencies if its not set properly before every paint call
 		screenLeft = (int) ((getSize().getWidth() - gi.getBoard().numCol()*CIRCLE_SPACE)/2);//better to just do it here
-
+		screenTop = (int) ((getSize().getHeight() - gi.getBoard().numRow()*CIRCLE_SPACE)/2);//better to just do it here
+		
+		// drawing code in general is a bit messy because of the drawing orders i need to keep to in order to make sure 
+		// stuff is drawn right and prevent artifacts. 
 		for( int y = 0; y < gi.getBoard().numRow(); y++ ) //draw circles on board.
 		{
 			for( int x = 0; x < gi.getBoard().numCol(); x++ )
@@ -140,15 +140,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			Shape s = g.getClip(); //save clip
 			
 			g.setColor(animColour);
-			g.setClip(new Ellipse2D.Float((int)screenCoord.getX(), yClipPos, CIRCLE_WIDTH, CIRCLE_WIDTH));
-			g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+			if(animYCur > -1)
+			{// stops the animation rendering above the board.
+				g.setClip(new Ellipse2D.Float((int)screenCoord.getX(), yClipPos, CIRCLE_WIDTH, CIRCLE_WIDTH));
+				g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+			}
 			g.setClip(new Ellipse2D.Float((int)screenCoord.getX(), yClipPos + CIRCLE_SPACE, CIRCLE_WIDTH, CIRCLE_WIDTH));
 			g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 
 			g.setClip(s); //restore clip
 		}
-
-		for( int y = 0; y < gi.getBoard().numRow(); y++ ) //draw circle outlines
+		for( int y = 0; y < gi.getBoard().numRow(); y++ ) // draw circle outlines
 		{
 			for( int x = 0; x < gi.getBoard().numCol(); x++ )
 			{
@@ -169,16 +171,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				g.drawOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 			}
 		}
-
 		if(gi.getWinner() == null && !animating) //draw selection rectangle code
 		{
 			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) 
 			{
 				if(selectedColumn < gi.getBoard().numCol())
 				{
+					Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(selectedColumn,0)); 
 					Participant oc = gi.getCurrentParticipant();
 					g.setColor(slotColours[oc.getPid()+1]);
-					g.drawRect((int)(selectedColumn * CIRCLE_SPACE + screenLeft), 0, (int)CIRCLE_SPACE, (int)(gi.getBoard().numRow() * CIRCLE_SPACE));
+					g.drawRect((int)(screenCoord.getX() - CIRCLE_PADDING/2), (int)(screenCoord.getY() - CIRCLE_PADDING/2), (int)CIRCLE_SPACE, (int)(gi.getBoard().numRow() * CIRCLE_SPACE));
 				}
 			}
 		}
@@ -207,7 +209,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private Point2D.Float boardToScreenSpace(Point2D.Float boardSpace)
 	{
 		int x = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * boardSpace.getX() + screenLeft);
-		int y = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * boardSpace.getY());
+		int y = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * boardSpace.getY() + screenTop);
 		return new Point2D.Float(x,y);
 	}
 
@@ -234,16 +236,43 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		//do nothing
+	public void mouseDragged(MouseEvent e) {
+		updateMouse(e);
+	}
+	
+	int pressedColumn = -1;
+	@Override
+	public void mousePressed(MouseEvent e) {
+		updateMouse(e);
+		pressedColumn = selectedColumn;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		updateMouse(e);
-		//might be worth moving the code in the mouse clicked event to here.
-		//this is because mouse click doesn't fire if the mouse moves at all when
-		//the button is released (can be annoying, also could be an accessibility issue)
+		if(selectedColumn == pressedColumn)
+		{
+			//below this line is the code for handling mouse clicks.
+			if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
+				if (gi.getCurrentParticipant().getClass().getName()=="Player"&&gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
+					Participant curr = gi.getCurrentParticipant();
+
+					animY = gi.getBoard().getColumnSpace(selectedColumn);
+					animColour = slotColours[gi.getCurrentParticipant().getPid() + 1];
+					// curr.makeMove(selectedColumn)
+					if(gi.makeMove(selectedColumn));
+					{
+						animX = selectedColumn;
+						animYCur = -1;
+						selectedColumn = -1;
+
+						animating = true;
+						animTimer.start();
+					}
+				}
+			}
+		}
+		pressedColumn = -1;
 	}
 
 	@Override
@@ -252,6 +281,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		// set x and y positions of mouse then repaint.		
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// do nothing.
+	}
+	
 	private void updateMouse(MouseEvent e)
 	{
 		if(!animating)
@@ -259,33 +293,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			mousex = e.getX();
 			mousey = e.getY();
 			selectedColumn = (int)((mousex-screenLeft) /  (CIRCLE_SPACE));
-			if(selectedColumn < 0 || selectedColumn >= gi.getBoard().getNumberOfColumns() || mousex < screenLeft)
+			
+			if(selectedColumn >= gi.getBoard().getNumberOfColumns() || //detects if mouse is right of board.
+					selectedColumn < 0 || // makes sure negative numbers result in selected column = -1 (required even with next line because of floating point issues)
+					mousex < screenLeft ||// detects if mouse is left of board
+					mousey > screenTop + CIRCLE_SPACE * gi.getBoard().getNumberOfRows() || // detects if mouse is below board
+					mousey < screenTop - CIRCLE_PADDING/2 + LINE_THICKNESS || // detects if mouse is above board
+					(pressedColumn != -1 && selectedColumn != pressedColumn))//stops highlighting adjacent columns when you click and drag.
 			{
 				selectedColumn = -1;
 			}
 			repaint();
-		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-			if (gi.getCurrentParticipant().getClass().getName()=="Player"&&gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-				Participant curr = gi.getCurrentParticipant();
-
-				animY = gi.getBoard().getColumnSpace(selectedColumn);
-				animColour = slotColours[gi.getCurrentParticipant().getPid() + 1];
-				// curr.makeMove(selectedColumn)
-				if(gi.makeMove(selectedColumn));
-				{
-					animX = selectedColumn;
-					animYCur = -1;
-					selectedColumn = -1;
-
-					animating = true;
-					animTimer.start();
-				}
-			}
 		}
 	}
 
@@ -297,11 +315,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	@Override
 	public void mouseExited(MouseEvent e) {
 		mouseIsInPanel = false;
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		//do nothing
 	}
 
 	@Override
@@ -339,7 +352,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		FONT_SHIFT = (int) (sizeRatio *_FONT_SHIFT);
 
 		if(!firstResize)
-		{// first resize is called
+		{// this stops repaint being called right when window opens which causes a flicker on the screen.
 			repaint();
 		}
 		firstResize = false;

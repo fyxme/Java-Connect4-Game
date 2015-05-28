@@ -21,10 +21,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private static final int _ANIM_FPS = 30; //frames per second
 	private static final float _ANIM_SPEED = 10; //slots per second
 	
-	private float CIRCLE_WIDTH = 50; // padding of circles;
-	private float CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
-	private float LINE_THICKNESS = 3;
-	private float CIRCLE_SPACE = CIRCLE_WIDTH + CIRCLE_PADDING;
+	private static final int _FONT_SIZE = 24;
+	private static final int _FONT_SHIFT = 1;
+	
+	private float CIRCLE_WIDTH = _CIRCLE_WIDTH; // padding of circles;
+	private float CIRCLE_PADDING = _CIRCLE_PADDING; // padding in pixels between two drawn slots.
+	private float LINE_THICKNESS = _LINE_THICKNESS;
+	private float CIRCLE_SPACE = _CIRCLE_WIDTH + _CIRCLE_PADDING;
+	
+	private int FONT_SHIFT = _FONT_SHIFT;
 	
 	private Dimension initialSize;
 	
@@ -54,7 +59,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		
 		//TODO: proper fonts for end screen.
 		//the next line needs to be looked at if we want proper fonts.
-		this.setFont(this.getFont().deriveFont(Font.PLAIN, 24));
+		this.setFont(this.getFont().deriveFont(Font.PLAIN, _FONT_SIZE));
 	}
 	
 	// all the private variables below are for demo purposes only.
@@ -185,9 +190,24 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			String str = "Player " + (gi.getWinner().getPid()+1) + " wins!";
 			int strWidth = fm.stringWidth(str);
 			int strHeight = (int) fm.getLineMetrics(str, g).getHeight();
-			g.setColor(Color.white);
-			g.drawString(str, ((int)getSize().getWidth() - strWidth)/2, ((int)getSize().getHeight() - strHeight)/2);
+			drawOutlineString(g,str, ((int)getSize().getWidth() - strWidth)/2, ((int)getSize().getHeight() - strHeight)/2);
 		}
+	}
+	
+	private void drawOutlineString(Graphics g, String str, int x, int y)
+	{
+		g.setColor(Color.black);
+		g.drawString(str, x-FONT_SHIFT,y-FONT_SHIFT);
+		g.drawString(str, x+FONT_SHIFT,y-FONT_SHIFT);
+		g.drawString(str, x-FONT_SHIFT,y+FONT_SHIFT);
+		g.drawString(str, x+FONT_SHIFT,y+FONT_SHIFT);
+		
+		g.drawString(str, x+FONT_SHIFT,y);
+		g.drawString(str, x-FONT_SHIFT,y);
+		g.drawString(str, x,y+FONT_SHIFT);
+		g.drawString(str, x,y-FONT_SHIFT);
+		g.setColor(Color.white);
+		g.drawString(str, x,y);
 	}
 
 	@Override
@@ -292,6 +312,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		CIRCLE_PADDING = sizeRatio * _CIRCLE_PADDING; // padding in pixels between two drawn slots.
 		LINE_THICKNESS = sizeRatio * _LINE_THICKNESS;
 		CIRCLE_SPACE = sizeRatio * _CIRCLE_SPACE;
+		
+		//adjust winning screen font size
+		this.setFont(this.getFont().deriveFont(Font.PLAIN, sizeRatio * _FONT_SIZE));
+		FONT_SHIFT = (int) (sizeRatio *_FONT_SHIFT);
 		
 		if(!firstResize)
 		{

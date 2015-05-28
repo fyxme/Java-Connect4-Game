@@ -615,23 +615,23 @@ public class Board {
 				}
 
 				if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
-//					System.out.print("3 in a row");
+					System.out.print("3 in a row");
 					// you have three in row on the bottom row with free tiles on either side
 					if (!gapBetween && gapBefore && gapAfter && row == this.getNumberOfRows() - 1) {
-//						System.out.println(" with two wins possible on bottom");
+						System.out.println(" with two wins possible on bottom");
 						return compareParticipants(currentP, currentParticipant) * 999;
 
 					} else {
 						// You have 3 in a row, with either a gap in between, at the beginning,
 						// or at the end of your three
 						score += compareParticipants(currentP, currentParticipant) * 300;
-//						System.out.println(" with one win possible");
+						System.out.println(" with one win possible");
 
 
 						// Your three can be completed on either side (i.e in two ways)
 						if (!gapBetween && gapBefore && gapAfter) {
 							score += compareParticipants(currentP, currentParticipant) * 50;
-//							System.out.println(" with two wins possible");
+							System.out.println(" with two wins possible");
 						}
 					}
 				}

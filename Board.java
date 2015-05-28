@@ -515,13 +515,9 @@ public class Board {
 						} else {
 							sameInARow = 1;
 							currentP = tile[row][col].getOccupant();
-							gapBefore = false;
+							gapBefore = gapBetween;
 							gapBetween = false;
 							gapAfter = false;
-							
-							if (tile[row][col - 1].isFree()) {
-								gapBefore = true;
-							}
 						}
 					}
 				}
@@ -546,6 +542,85 @@ public class Board {
 							System.out.println(" with two wins possible");
 						}
 					}
+				}
+			}
+			
+
+			// CHECKS THE DIAGONALS GOING FROM BOTTOM LEFT TO TOP RIGHT			
+			int startingRow = 3;
+			int startingCol = 0;
+			while (startingRow < this.getNumberOfRows() && startingCol < this.getNumberOfColumns() - 3) {
+				
+				int row = startingRow;
+				int sameInARow = 0;
+				int col = startingCol;
+				Participant participantWithDiagonal = null;
+				boolean gapBefore = false;
+				boolean gapBetween = false;
+				boolean gapAfter = false;
+				
+				while (col < this.getNumberOfColumns() && row >= 0) {
+					if (tile[row][col].isFree()) {
+						
+						if (gapBetween) {
+							gapBetween = false;
+							sameInARow = 0;
+							participantWithDiagonal = null;
+						}
+						// There is a free tile in the row before other occupied tiles
+						if (sameInARow == 0) {
+							gapBefore = true;
+						
+						// There is a free tile in the row between a row of 3
+						} else if (sameInARow > 0 && sameInARow < 3) {
+							gapBetween = true;
+							gapBefore = false;
+							gapAfter = false;
+						
+						// There is a free tile in the row after 3 occupied tiles
+						} else if (sameInARow == 3) {
+							gapAfter = true;
+						}
+
+					// This is the first occupied tile
+					} else if (participantWithDiagonal == null) {
+						participantWithDiagonal = tile[row][col].getOccupant();
+						sameInARow = 1;
+						
+					// There is another occupied tile
+					} else {
+						if (participantWithDiagonal == tile[row][col].getOccupant()) {
+							sameInARow++;
+						} else {
+							sameInARow = 1;
+							participantWithDiagonal = tile[row][col].getOccupant();
+							gapBefore = (gapBetween);
+							gapBetween = false;
+							gapAfter = false;
+						}
+					}
+					row--;
+					col++;
+				}
+				
+				if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
+					// You have 3 in a row, with either a gap in between, at the beginning,
+					// or at the end of your three
+					score += compareParticipants(participantWithDiagonal, currentParticipant) * 300;
+					System.out.println("3 diagonal");
+
+					
+					// Your three can be completed on either side (i.e in two ways)
+					if (!gapBetween && gapBefore && gapAfter) {
+						score += compareParticipants(participantWithDiagonal, currentParticipant) * 50;
+						System.out.println(" with two wins possible");
+					}
+				}
+				
+				if (startingRow == this.getNumberOfRows()) {
+					startingCol++;
+				} else {
+					startingRow++;
 				}
 			}
 		}

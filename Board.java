@@ -216,76 +216,56 @@ public class Board {
 	 * @return						The participant that won, null if no one won
 	 */
 	public Participant checkDiagonals(int rowOfLastPlaced, int colOfLastPlaced) {
-		int sameInARow = 0;
+		int sameInARow;
 		Participant lastPlayer = tile[rowOfLastPlaced][colOfLastPlaced].getOccupant();
-		int row = rowOfLastPlaced;
-		int col = colOfLastPlaced;
-
-
-		// CHECKS THE DIAGONAL GOING FROM BOTTOM LEFT TO TOP RIGHT
-
-		// gets to the top right of the diagonal you are in
-		while (col < 6 && row > 0) {
-			row--;
-			col++;
-		}
-
-		while (col >= 0 && row <= 5) {
-			if (tile[row][col].getOccupant() == lastPlayer) {
-				sameInARow++;
-				if (sameInARow == 4) {
-					// Updates the winning tiles
-					winningTiles[0][0] = row - 3;
-					winningTiles[0][1] = col + 3;
-					winningTiles[1][0] = row - 2;
-					winningTiles[1][1] = col + 2;
-					winningTiles[2][0] = row - 1;
-					winningTiles[2][1] = col + 1;
-					winningTiles[3][0] = row;
-					winningTiles[3][1] = col;
-					return lastPlayer;
-				}
-			} else {
-				sameInARow = 0;
-			}
-
-			row++;
-			col--;	
-		}
-
+		int row;
+		int col;
+		boolean boardRotated = false;
+		
 		sameInARow = 0;
 		row = rowOfLastPlaced;
 		col = colOfLastPlaced;
 
-
-		// CHECKS THE DIAGONAL GOING FROM BOTTOM RIGHT TO TOP LEFT
-
-		// gets to the top left of the diagonal you are in
-		while (col > 0 && row > 0) {
-			row--;
-			col--;
-		}
-
-		while (row <= 5 && col <= 6) {
-			if (tile[row][col].getOccupant() == lastPlayer) {
-				sameInARow++;
-				if (sameInARow == 4) {
-					// Updates the winning tiles
-					winningTiles[0][0] = row - 3;
-					winningTiles[0][1] = col - 3;
-					winningTiles[1][0] = row - 2;
-					winningTiles[1][1] = col - 2;
-					winningTiles[2][0] = row - 1;
-					winningTiles[2][1] = col - 1;
-					winningTiles[3][0] = row;
-					winningTiles[3][1] = col;
-					return lastPlayer;
-				}
-			} else {
-				sameInARow = 0;
+		for (int iteration = 0; iteration < 2; iteration++) {
+			
+			
+			// CHECKS THE DIAGONAL GOING FROM BOTTOM LEFT TO TOP RIGHT
+	
+			// gets to the top right of the diagonal you are in
+			while (col < 6 && row > 0) {
+				row--;
+				col++;
 			}
-			row++;
-			col++;
+	
+			while (col >= 0 && row <= 5) {
+				if (tile[row][col].getOccupant() == lastPlayer) {
+					sameInARow++;
+					if (sameInARow == 4) {
+						// Updates the winning tiles
+						winningTiles[0][0] = row - 3;
+						winningTiles[0][1] = col + 3;
+						winningTiles[1][0] = row - 2;
+						winningTiles[1][1] = col + 2;
+						winningTiles[2][0] = row - 1;
+						winningTiles[2][1] = col + 1;
+						winningTiles[3][0] = row;
+						winningTiles[3][1] = col;
+						if (boardRotated) {
+							rotateBoard();
+							boardRotated = !boardRotated;
+						}
+						return lastPlayer;
+					}
+				} else {
+					sameInARow = 0;
+				}
+	
+				row++;
+				col--;	
+			}
+			
+			rotateBoard();
+			boardRotated = !boardRotated;
 		}
 		return null;
 	}
@@ -433,10 +413,12 @@ public class Board {
 	 * Usefull when writing code which tests diagonals
 	 */
 	private void rotateBoard() {
-		for (int i = 0 , j = this.getNumberOfColumns(); i < j; i++, j--) {
-			Tile temp = this.tile[i][j];
-			this.tile[i][j] = this.tile[j][i];
-			this.tile[j][i] = temp;
+		for (int row = 0; row < this.getNumberOfRows(); row++) {
+			for (int i = 0 , j = this.getNumberOfColumns() - 1; i < j; i++, j--) {
+				Tile temp = this.tile[row][i];
+				this.tile[row][i] = this.tile[row][j];
+				this.tile[row][j] = temp;
+			}
 		}
 	}
 

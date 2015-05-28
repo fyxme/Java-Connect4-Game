@@ -305,7 +305,7 @@ public class Board {
 	public Participant getWinner () {
 
 
-		if (round_num < 6) {
+		if (round_num <= 6) {
 			// can't win before the 7th round - dont need to calculate anything
 			return null;
 		}
@@ -462,8 +462,10 @@ public class Board {
 						}
 						
 						if (sameInARow == 3) {
+							System.out.println("3 in a col");
 							score += compareParticipants(participantAtTop, currentParticipant) * 300;
 						}
+						break;
 					}
 				}	
 			}
@@ -525,19 +527,23 @@ public class Board {
 				}
 				
 				if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
-					
+					System.out.print("3 in a row");
 					// you have three in row on the bottom row with free tiles on either side
 					if (!gapBetween && gapBefore && gapAfter && row == this.getNumberOfRows() - 1) {
+						System.out.println(" with two wins possible on bottom");
 						return compareParticipants(currentP, currentParticipant) * 999;
 					
 					} else {
 						// You have 3 in a row, with either a gap in between, at the beginning,
 						// or at the end of your three
 						score += compareParticipants(currentP, currentParticipant) * 300;
+						System.out.println(" with one wins possible");
+
 						
 						// Your three can be completed on either side (i.e in two ways)
 						if (!gapBetween && gapBefore && gapAfter) {
 							score += compareParticipants(currentP, currentParticipant) * 50;
+							System.out.println(" with two wins possible");
 						}
 					}
 				}

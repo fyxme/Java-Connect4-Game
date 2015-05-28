@@ -426,7 +426,14 @@ public class Board {
 		}
 	}
 
-
+	/**
+	 * A method to calculate the score of diagonal rows. Adds 300 to the score if there are 3
+	 * counters place one after the other diagonally. Adds another 50 if the it can be made into a
+	 * 4 in a row through the placing of a tile in either one of two spots.
+	 * @param currentParticipant	The participant who you want to score the board for
+	 * @return						A score for the board state. The more positive and large the
+	 * 								number, the better the currentParticipants position is.
+	 */
 	private int calculateDiagonalScore(Participant currentParticipant) {
 		// CHECKS THE DIAGONALS GOING FROM BOTTOM LEFT TO TOP RIGHT
 		int score = 0;
@@ -662,8 +669,9 @@ public class Board {
 			score += calculateDiagonalScore(currentParticipant);
 			rotateBoard();
 		}
+		
 		System.out.println(score); // DEBUGGING
-		return score;
+		return Math.min(score, 999);
 	}
 
 

@@ -477,6 +477,11 @@ public class Board {
 					if (participantWithDiagonal == tile[row][col].getOccupant()) {
 						sameInARow++;
 						if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
+							if (col != this.getNumberOfColumns() - 1 && row != 0) {
+								if (tile[row - 1][col + 1].isFree()) {
+									gapAfter = true;
+								}
+							}
 							break;
 						}
 					} else {
@@ -604,7 +609,12 @@ public class Board {
 					} else {
 						if (currentP == tile[row][col].getOccupant()) {
 							sameInARow++;
-							if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
+							if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
+								if (col != this.getNumberOfColumns() - 1) {
+									if (tile[row][col + 1].isFree()) {
+										gapAfter = true;
+									}
+								}
 								break;
 							}
 						} else {

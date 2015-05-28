@@ -31,9 +31,15 @@ public class GameInstance {
 	
 
 	/**
-	 * AI difficulty
+	 * CODE MAY NEED TO BE DELETED WHEN MAIN MENU IS IMPLEMENTED.
 	 */
 	private int difficulty = 0;
+	
+
+	private boolean p2 = true;
+	/**
+	 * END MAYBE DELETABLE CODE.
+	 */
 	
 	/**
 	 * Constructor Method for GameInstance Class
@@ -47,13 +53,11 @@ public class GameInstance {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
 		num_part = 0;
-		for (int i = 0; i < num_player; i++) {
+		for (int i = 0; i < num_player; i++, num_part++) {
 			players.put(num_part, new Player(i));
-			num_part++;
 		}
-		for (int i = 0; i < num_ai; i++) { 
+		for (int i = 0; i < num_ai; i++, num_part++) { 
 			players.put(num_part, new AI(i, difficulty));
-			num_part++;
 		}
 	}
 	
@@ -80,6 +84,25 @@ public class GameInstance {
 	public void restartGame() {
 		this.board = new Board(this.board.getNumberOfRows(), this.board.getNumberOfColumns());
 		fireGameEvent();
+		
+		/**
+		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
+		 */
+
+		players.remove(1);
+		if(p2){
+			players.put(1, new Player(1));
+		}else{
+			players.put(1, new AI(1, difficulty));
+		}
+		
+		for(int i=0;i<players.size();i++){
+			System.out.println(players.get(i).getClass().getName());
+		}
+		
+		/**
+		 * END TEMPORARY CODE.
+		 */
 	}
 	
 	/**
@@ -174,8 +197,21 @@ public class GameInstance {
 		board.redoLastMove();
 		fireGameEvent();
 	}
+
 	
+	/**
+	 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
+	 */
 	public void changeDifficulty(int i){
 		difficulty = i;
 	}
+	
+
+	public void changeNumAI(boolean b){
+		p2 = b;
+	}
+	
+	/**
+	 * END TEMPORARY CODE.
+	 */
 }

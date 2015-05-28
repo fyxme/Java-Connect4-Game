@@ -10,6 +10,7 @@ public class UIPanel extends JPanel implements ActionListener{
 	private JButton redoButton;
 	private JButton mainMenuButton;
 	private JComboBox<String> difficultyMenu;
+	private JCheckBox twoPlayer;
 	private GameInstance gi;
 	
 	public UIPanel()
@@ -41,8 +42,14 @@ public class UIPanel extends JPanel implements ActionListener{
 		mainMenuButton = new JButton("Main Menu");
 		mainMenuButton.setBounds(307, 11, 89, 23);
 		mainMenuButton.addActionListener(this);
-		add(mainMenuButton);	
+		add(mainMenuButton);
 		setBackground(new Color(210,210,210));
+		
+
+		
+		/**
+		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
+		 */
 
 		String[] difficulties = { "Easy", "Medium", "Hard"};
 		difficultyMenu = new JComboBox<String>(difficulties);
@@ -50,6 +57,20 @@ public class UIPanel extends JPanel implements ActionListener{
 		difficultyMenu.setSelectedIndex(0); //0 makes the default difficulty easy.
 		difficultyMenu.addActionListener(this);
 		add(difficultyMenu);
+
+		
+		twoPlayer = new JCheckBox("Two Player");
+		twoPlayer.setSelected(true);
+		twoPlayer.setBounds(505, 11, 89, 23);
+		twoPlayer.addActionListener(this);
+		twoPlayer.setBackground(new Color(210,210,210));
+		add(twoPlayer);
+		
+
+		
+		/**
+		 * END TEMPORARY CODE.
+		 */
 		
 		
 		
@@ -122,10 +143,20 @@ public class UIPanel extends JPanel implements ActionListener{
 		{
 			JOptionPane.showMessageDialog(null, "mainMenuButton not implemented");
 		}
+		/**
+		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
+		 */
 		else if(e.getSource() == difficultyMenu)
 		{
 			gi.changeDifficulty(difficultyMenu.getSelectedIndex());
 		}
+		else if(e.getSource() == twoPlayer)
+		{
+			gi.changeNumAI(twoPlayer.isSelected());
+		}
+		/**
+		 * END TEMPORARY CODE.
+		 */
 	}
 	
 }

@@ -476,6 +476,9 @@ public class Board {
 				} else {
 					if (participantWithDiagonal == tile[row][col].getOccupant()) {
 						sameInARow++;
+						if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
+							break;
+						}
 					} else {
 						if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
 							break;
@@ -601,6 +604,9 @@ public class Board {
 					} else {
 						if (currentP == tile[row][col].getOccupant()) {
 							sameInARow++;
+							if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
+								break;
+							}
 						} else {
 							if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
 								break;

@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private static final float _ANIM_SPEED = 10; //slots per second
 
 	private static final int _FONT_SIZE = 24;
-	private static final int _FONT_SHIFT = 1;
+	private static final int _FONT_SHIFT = 4;
 
 	private float CIRCLE_WIDTH = _CIRCLE_WIDTH; // padding of circles;
 	private float CIRCLE_PADDING = _CIRCLE_PADDING; // padding in pixels between two drawn slots.

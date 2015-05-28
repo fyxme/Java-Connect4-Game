@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /**
  * Interface for the occupants.
  * The participant is considered to be either a player or an AI.
@@ -20,5 +22,15 @@ public interface Participant {
 	 * @return Returns the Player ID
 	 */
 	public int getPid();
+
+	/**
+	 * @return Returns the color of this participants tiles
+	 */
+	public Color getColor();
+	
+	/**
+	 * Set Color
+	 */
+	public void setColor(Color color);
 
 }

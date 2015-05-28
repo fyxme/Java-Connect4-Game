@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 public class AI implements Participant {
 	private static final int ERROR = -1;
 	private static final int EASY = 0;
@@ -6,6 +8,8 @@ public class AI implements Participant {
 	
 	private int id = ERROR;
 	private int difficulty = ERROR;		// must be either EASY, MEDIUM or HARD
+	
+	private Color color = null;
 	
 	public AI(int id, int difficulty) {
 		this.id = id;
@@ -123,5 +127,15 @@ public class AI implements Participant {
 			// Should never be the case
 			return ERROR;
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return this.color;
+	}
+
+	@Override
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

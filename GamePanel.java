@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	private Dimension initialSize;
 
+	private Color empty_cell = Color.WHITE;
+	
 	public GamePanel()
 	{
 		super();
@@ -66,22 +68,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		//the next line needs to be looked at if we want non-default fonts. But I think the default one is portable and looks fine.
 		this.setFont(this.getFont().deriveFont(Font.PLAIN, _FONT_SIZE));
 	}
-
-	// all the private variables below are for demo purposes only.
-	private Color[] slotColours = new Color[]
-			{
-			Color.WHITE, // empty cell
-			Color.ORANGE, // player one color
-			new Color(204,0,0) // player two color
-
-			/*
-			 * All Colors:
-			 * BLUE 	: new Color(0, 76, 153)
-			 * RED		: new Color(204, 0, 0)
-			 * GREEN	: new Color(0, 153, 76)
-			 * ORANGE	: Color.ORANGE
-			 */
-			};
 
 	//*
 	private int mousex, mousey;
@@ -122,10 +108,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 				Participant oc = gi.getBoard().getTile(y,x).getOccupant();
 
-				g.setColor(slotColours[0]);
+				g.setColor(empty_cell);
 
 				if (oc != null && !(animating && x == animX && y == animY))
-					g.setColor(slotColours[oc.getPid()+1]); // added +1 since pid starts at 0 and colors start at 1
+					g.setColor(oc.getColor()); // added +1 since pid starts at 0 and colors start at 1
 
 				g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 
@@ -179,7 +165,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				{
 					Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(selectedColumn,0)); 
 					Participant oc = gi.getCurrentParticipant();
-					g.setColor(slotColours[oc.getPid()+1]);
+					g.setColor(oc.getColor());
 					g.drawRect((int)(screenCoord.getX() - CIRCLE_PADDING/2), (int)(screenCoord.getY() - CIRCLE_PADDING/2), (int)CIRCLE_SPACE, (int)(gi.getBoard().numRow() * CIRCLE_SPACE));
 				}
 			}
@@ -255,10 +241,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			//below this line is the code for handling mouse clicks.
 			if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
 				if (gi.getCurrentParticipant().getClass().getName()=="Player"&&gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-					Participant curr = gi.getCurrentParticipant();
-
+					
 					animY = gi.getBoard().getColumnSpace(selectedColumn);
-					animColour = slotColours[gi.getCurrentParticipant().getPid() + 1];
+					animColour = gi.getCurrentParticipant().getColor();
 					// curr.makeMove(selectedColumn)
 					if(gi.makeMove(selectedColumn));
 					{

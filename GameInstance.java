@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,37 +11,56 @@ import java.util.List;
  */
 public class GameInstance {
 	private final static int ERROR = -1;
-	
 	private List<GameEventListener> eventListeners = new LinkedList<GameEventListener>();
-	
+
+	/**
+	 * An array of all available colors
+	 */
+	private Color[] slotColours = new Color[]
+			{
+			// Color.WHITE, // empty cell
+			Color.ORANGE, // player one color default >> ORANGE/YELLOW
+			new Color(204,0,0), // player two color default >> RED
+			new Color(0,76,153), // BLUE
+			new Color(0,153,76), // GREEN
+			/*
+			 * All Colors:
+			 * BLUE 	: new Color(0, 76, 153)
+			 * RED		: new Color(204, 0, 0)
+			 * GREEN	: new Color(0, 153, 76)
+			 * ORANGE	: Color.ORANGE
+			 */
+			};
+
+
 	/**
 	 * Game Board
 	 */
 	private Board board = null;	
-	
+
 	/**
 	 * HashMap of Participants with Id as Key.
 	 * >> (id, participant) first participant has id 0
 	 */
 	private HashMap<Integer, Participant> players = null;
-	
+
 	/**
 	 * Number of Participants
 	 */
 	private int num_part = ERROR;
-	
+
 
 	/**
 	 * CODE MAY NEED TO BE DELETED WHEN MAIN MENU IS IMPLEMENTED.
 	 */
 	private int difficulty = 0;
-	
+
 
 	private boolean p2 = true;
 	/**
 	 * END MAYBE DELETABLE CODE.
 	 */
-	
+
 	/**
 	 * Constructor Method for GameInstance Class
 	 * @param rows Number of Rows
@@ -54,13 +74,18 @@ public class GameInstance {
 		players = new HashMap<Integer, Participant>();
 		num_part = 0;
 		for (int i = 0; i < num_player; i++, num_part++) {
-			players.put(num_part, new Player(i));
+			Participant p = new Player(i);
+			p.setColor(slotColours[num_part]);
+			players.put(num_part, p);
+			
 		}
 		for (int i = 0; i < num_ai; i++, num_part++) { 
-			players.put(num_part, new AI(i, difficulty));
+			Participant ai = new AI(i, difficulty);
+			ai.setColor(slotColours[num_part]);
+			players.put(num_part, ai);
 		}
 	}
-	
+
 	public void addListener(GameEventListener l)
 	{
 		eventListeners.add(l);
@@ -84,7 +109,7 @@ public class GameInstance {
 	public void restartGame() {
 		this.board = new Board(this.board.getNumberOfRows(), this.board.getNumberOfColumns());
 		fireGameEvent();
-		
+
 		/**
 		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
 		 */
@@ -95,16 +120,16 @@ public class GameInstance {
 		}else{
 			players.put(1, new AI(1, difficulty));
 		}
-		
+
 		for(int i=0;i<players.size();i++){//debugging
 			System.out.println(players.get(i).getClass().getName());
 		}
-		
+
 		/**
 		 * END TEMPORARY CODE.
 		 */
 	}
-	
+
 	/**
 	 * Get the board of this Game Instance
 	 * @return The board itself
@@ -121,7 +146,7 @@ public class GameInstance {
 	public Collection<Participant> getPlayers() {
 		return this.players.values();
 	}
-	
+
 	/**
 	 * Get the Current Participant
 	 * ie. who's turn is it?
@@ -131,7 +156,7 @@ public class GameInstance {
 		Participant part = players.get((board.getTurnNum()%num_part));
 		return part;
 	}
-	
+
 	/**
 	 * Returns the second participant based on the given participant
 	 * @param ptc The first Participant
@@ -164,19 +189,13 @@ public class GameInstance {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Get the Winner of the game if there is one
 	 * @return The Winner if there is one, else returns no
 	 */
 	public Participant getWinner() {
 		Participant winner = board.getWinner();
-//		if (winner == null && !board.hasEmptySlot()) {
-//			System.out.println("\n*****DRAW!! NO ONE WINS*****");
-//		// Prints out the winners details if someone won
-//		} else if (winner != null) {
-//			System.out.println("\nPLAYER " + winner.getPid() + " WON!");
-//		}
 		return winner;
 	}
 
@@ -200,19 +219,19 @@ public class GameInstance {
 		fireGameEvent();
 	}
 
-	
+
 	/**
 	 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
 	 */
 	public void changeDifficulty(int i){
 		difficulty = i;
 	}
-	
+
 
 	public void changeNumAI(boolean b){
 		p2 = b;
 	}
-	
+
 	/**
 	 * END TEMPORARY CODE.
 	 */

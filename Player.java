@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /**
  * Player Class containing the name of a Player and the Player ID.
  * A player is someone participating in the game.
@@ -8,6 +10,7 @@ public class Player implements Participant {
 	
 	private String name = null;
 	private int id = ERROR;
+	private Color color = null;
 	
 	/**
 	 * Constructor method for the Player class
@@ -31,5 +34,15 @@ public class Player implements Participant {
 	public Move makeMove(int col) {
 		Move ret = new Move(col, this);
 		return ret;
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.color;
+	}
+
+	@Override
+	public void setColor(Color color){
+		this.color = color;
 	}
 }

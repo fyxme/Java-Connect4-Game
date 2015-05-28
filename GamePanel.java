@@ -5,6 +5,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextLayout;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private static final float _ANIM_SPEED = 10; //slots per second
 
 	private static final int _FONT_SIZE = 24;
-	private static final int _FONT_SHIFT = 1;
+	private static final int _FONT_SHIFT = 4;
 
 	private float CIRCLE_WIDTH = _CIRCLE_WIDTH; // padding of circles;
 	private float CIRCLE_PADDING = _CIRCLE_PADDING; // padding in pixels between two drawn slots.
@@ -190,24 +191,22 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			String str = "Player " + (gi.getWinner().getPid()+1) + " wins!";
 			int strWidth = fm.stringWidth(str);
 			int strHeight = (int) fm.getLineMetrics(str, g).getHeight();
-			drawOutlineString(g,str, ((int)getSize().getWidth() - strWidth)/2, ((int)getSize().getHeight() - strHeight)/2);
+			drawOutlineString((Graphics2D) g, getFont(), str, (getSize().getWidth() - strWidth)/2d, (getSize().getHeight() - strHeight)/2d);
 		}
 	}
 
-	private void drawOutlineString(Graphics g, String str, int x, int y)
+	private void drawOutlineString(Graphics2D g2d, Font f, String str, double x, double y)
 	{
-		g.setColor(Color.black);
-		g.drawString(str, x-FONT_SHIFT,y-FONT_SHIFT);
-		g.drawString(str, x+FONT_SHIFT,y-FONT_SHIFT);
-		g.drawString(str, x-FONT_SHIFT,y+FONT_SHIFT);
-		g.drawString(str, x+FONT_SHIFT,y+FONT_SHIFT);
-
-		g.drawString(str, x+FONT_SHIFT,y);
-		g.drawString(str, x-FONT_SHIFT,y);
-		g.drawString(str, x,y+FONT_SHIFT);
-		g.drawString(str, x,y-FONT_SHIFT);
-		g.setColor(Color.white);
-		g.drawString(str, x,y);
+		Stroke oldStroke = g2d.getStroke();
+		
+		g2d.setStroke(new BasicStroke(FONT_SHIFT,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+		TextLayout t = new TextLayout(str,f, g2d.getFontRenderContext());
+		g2d.setColor(Color.black);
+		g2d.draw(t.getOutline(AffineTransform.getTranslateInstance(x, y)));
+		g2d.setColor(Color.white);
+		g2d.drawString(str, (int)x,(int)y);
+		
+		g2d.setStroke(oldStroke);
 	}
 
 	@Override

@@ -432,7 +432,7 @@ public class Board {
 		int score = 0;
 		int startingRow = 3;
 		int startingCol = 0;
-		while (startingRow < this.getNumberOfRows() - 1 || startingCol < this.getNumberOfColumns() - 3) {
+		while (startingCol < this.getNumberOfColumns() - 3) {
 
 			int row = startingRow;
 			int sameInARow = 0;
@@ -445,7 +445,9 @@ public class Board {
 			while (col < this.getNumberOfColumns() && row >= 0) {
 				if (tile[row][col].isFree()) {
 
-					if (gapBetween  && sameInARow != 3) {
+					// In this case there are two free tiles within a max of four tile,
+					// therefore, we cannot have three in a row for these tiles, move on
+					if (gapBetween && sameInARow != 3) {
 						gapBetween = false;
 						sameInARow = 0;
 						participantWithDiagonal = null;
@@ -475,7 +477,8 @@ public class Board {
 					if (participantWithDiagonal == tile[row][col].getOccupant()) {
 						sameInARow++;
 					} else {
-						if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {	
+						if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {	
+							break;
 						} else {
 							sameInARow = 1;
 							participantWithDiagonal = tile[row][col].getOccupant();
@@ -489,7 +492,7 @@ public class Board {
 				col++;
 			}
 
-			if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
+			if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
 				// You have 3 in a row, with either a gap in between, at the beginning,
 				// or at the end of your three
 				score += compareParticipants(participantWithDiagonal, currentParticipant) * 300;
@@ -548,7 +551,7 @@ public class Board {
 						}
 
 						if (sameInARow == 3) {
-//							System.out.println("3 in a col");
+							System.out.println("3 in a col");
 							score += compareParticipants(participantAtTop, currentParticipant) * 300;
 						}
 						break;
@@ -599,7 +602,7 @@ public class Board {
 						if (currentP == tile[row][col].getOccupant()) {
 							sameInARow++;
 						} else {
-							if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
+							if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
 								break;
 							}
 							sameInARow = 1;
@@ -611,7 +614,7 @@ public class Board {
 					}
 				}
 
-				if (sameInARow == 3 && (gapBetween || gapBefore || gapAfter)) {
+				if (sameInARow >= 3 && (gapBetween || gapBefore || gapAfter)) {
 //					System.out.print("3 in a row");
 					// you have three in row on the bottom row with free tiles on either side
 					if (!gapBetween && gapBefore && gapAfter && row == this.getNumberOfRows() - 1) {

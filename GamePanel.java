@@ -34,17 +34,24 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	private Dimension initialSize;
 
-	public void setGameInstance(GameInstance gi) {
-		this.gi = gi;
-		gi.addListener(this);
-	}
-
 	public GamePanel()
 	{
 		super();
 		initUI();
 	}
+	
+	/**
+	 * Sets the GameInstance object that this panel retreives game information from.
+	 * @param gi The game instance object.
+	 */
+	public void setGameInstance(GameInstance gi) {
+		this.gi = gi;
+		gi.addListener(this);
+	}
 
+	/**
+	 * Initialises the UI. This involves setting up the layout and size, as well as adding the relevant listeners.
+	 */
 	private void initUI()
 	{
 		setLayout(new BorderLayout());//might be a better way to do this.
@@ -58,10 +65,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		addMouseListener(this);
 		addComponentListener(this);
 
-		//TODO: proper fonts for end screen.
-		//the next line needs to be looked at if we want proper fonts.
+		//the next line needs to be looked at if we want non-default fonts. But I think the default one is portable and looks fine.
 		this.setFont(this.getFont().deriveFont(Font.PLAIN, _FONT_SIZE));
 	}
+	
+
 
 	// all the private variables below are for demo purposes only.
 	private Color[] slotColours = new Color[]
@@ -110,8 +118,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		{
 			for( int x = 0; x < gi.getBoard().numCol(); x++ )
 			{
-				int xpos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * x + screenLeft);
-				int ypos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * y);
+				Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(x,y));
 
 				Participant oc = gi.getBoard().getTile(y,x).getOccupant();
 
@@ -120,35 +127,32 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				if (oc != null && !(animating && x == animX && y == animY))
 					g.setColor(slotColours[oc.getPid()+1]); // added +1 since pid starts at 0 and colors start at 1
 
-				g.fillOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+				g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 
 			}
 		}
 		if(animating) // draw animation code
 		{// repainting the whole board just to animate is inefficient.
 			// but it shouldn't matter since it's connect 4, not connect of duty 4: modern fourfare.
-			int xpos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * animX + screenLeft);
-			int ypos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * animYCur);
+			Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(animX,animYCur));
+			float yClipPos = (float) boardToScreenSpace(new Point2D.Float(animX,(int)animYCur)).getY();
 
+			Shape s = g.getClip(); //save clip
+			
 			g.setColor(animColour);
+			g.setClip(new Ellipse2D.Float((int)screenCoord.getX(), yClipPos, CIRCLE_WIDTH, CIRCLE_WIDTH));
+			g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+			g.setClip(new Ellipse2D.Float((int)screenCoord.getX(), yClipPos + CIRCLE_SPACE, CIRCLE_WIDTH, CIRCLE_WIDTH));
+			g.fillOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 
-			Shape s = g.getClip();
-
-			float yClipPos = ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * (int)animYCur);
-			g.setClip(new Ellipse2D.Float(xpos, yClipPos, CIRCLE_WIDTH, CIRCLE_WIDTH));
-			g.fillOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
-			g.setClip(new Ellipse2D.Float(xpos, yClipPos + CIRCLE_SPACE, CIRCLE_WIDTH, CIRCLE_WIDTH));
-			g.fillOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
-
-			g.setClip(s);
+			g.setClip(s); //restore clip
 		}
 
 		for( int y = 0; y < gi.getBoard().numRow(); y++ ) //draw circle outlines
 		{
 			for( int x = 0; x < gi.getBoard().numCol(); x++ )
 			{
-				int xpos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * x + screenLeft);
-				int ypos = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * y);
+				Point2D.Float screenCoord = boardToScreenSpace(new Point2D.Float(x,y));
 				//outline
 				g.setColor(Color.black);
 				if(gi.getWinner() != null && !animating) // code for blue highlighting of winning tiles.
@@ -162,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 						}
 					}
 				}
-				g.drawOval(xpos, ypos, (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
+				g.drawOval((int)screenCoord.getX(), (int)screenCoord.getY(), (int)CIRCLE_WIDTH, (int)CIRCLE_WIDTH);
 			}
 		}
 
@@ -194,7 +198,27 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			drawOutlineString((Graphics2D) g, getFont(), str, (getSize().getWidth() - strWidth)/2d, (getSize().getHeight() - strHeight)/2d);
 		}
 	}
+	
+	/**
+	 * Converts a board space coordinate to a screen space coordinate.
+	 * @param boardSpace The board space coordinate.
+	 * @return The resulting screens space coordinate.
+	 */
+	private Point2D.Float boardToScreenSpace(Point2D.Float boardSpace)
+	{
+		int x = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * boardSpace.getX() + screenLeft);
+		int y = (int) ((CIRCLE_PADDING/2) + (CIRCLE_SPACE)  * boardSpace.getY());
+		return new Point2D.Float(x,y);
+	}
 
+	/**
+	 * Draws a s
+	 * @param g2d The Graphics2D object used to draw.
+	 * @param f The font used to draw.
+	 * @param str The string to draw.
+	 * @param x The x position on the screen to draw.
+	 * @param y The y position on the screen to daw.
+	 */
 	private void drawOutlineString(Graphics2D g2d, Font f, String str, double x, double y)
 	{
 		Stroke oldStroke = g2d.getStroke();
@@ -315,7 +339,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		FONT_SHIFT = (int) (sizeRatio *_FONT_SHIFT);
 
 		if(!firstResize)
-		{
+		{// first resize is called
 			repaint();
 		}
 		firstResize = false;
@@ -324,7 +348,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 		// do nothing
-
 	}
 
 	@Override
@@ -344,11 +367,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 					animTimer.stop();
 					//need to run update mouse to update the selected column.
 					Point mousePoint = MouseInfo.getPointerInfo().getLocation();
-					updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x, mousePoint.y, 0, false));
+					Point screenLoc = getLocationOnScreen();
+					updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x - screenLoc.x, mousePoint.y - screenLoc.y, 0, false));
 				}
 				repaint();
 			}
-
 		}
 	}
 }

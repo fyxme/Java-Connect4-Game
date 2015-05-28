@@ -4,6 +4,9 @@
  */
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 import javax.swing.*;
 
 
@@ -52,5 +55,6 @@ public class MainFrame extends JFrame {
 		setMinimumSize(getSize());
 		setTitle("Connect Four");
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );		
+		setLocationByPlatform(true);//makes the frame be displayed where the OS wants it to be displayed
 	}
 }

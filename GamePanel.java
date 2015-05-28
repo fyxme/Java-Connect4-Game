@@ -247,11 +247,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	@Override
 	public void mouseClicked(MouseEvent e) {		
 		if (gi.getWinner() == null && gi.getBoard().hasEmptySlot() && selectedColumn != -1) {
-			Participant curr = gi.getCurrentParticipant();
 			
 			animY = gi.getBoard().getColumnSpace(selectedColumn);
 			animColour = slotColours[gi.getCurrentParticipant().getPid() + 1];
-			if(gi.makeMove(curr.makeMove(selectedColumn)));
+			// curr.makeMove(selectedColumn)
+			if(gi.makeMove(selectedColumn));
 			{
 				animX = selectedColumn;
 				animYCur = -1;
@@ -260,11 +260,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				animating = true;
 				animTimer.start();
 			}
-			
-			
-//			if (gi.getWinner() != null || !(gi.getBoard().hasEmptySlot())) {
-//				isOver = true;
-//			}
 		}
 	}
 

@@ -149,16 +149,17 @@ public class GameInstance {
 	 * @param mv Move made
 	 * @return True if the Move has been Made else returns False if the move can't be made.
 	 */
-	public boolean makeMove(Move mv) {
-		int row = board.getColumnSpace(mv.getCol());
+	public boolean makeMove(int col) {
+		Participant curr = getCurrentParticipant();
+		Move mv = new Move(col, curr);
+		int row = board.getColumnSpace(col);
 		if (row != ERROR) {
 			mv.setRow(row);
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves
 			fireGameEvent();
 			return true;
-		} else {
-//			System.out.println("Invalid move. Column is full!");
+		} else { // column is full invalid column
 			return false;
 		}
 	}
@@ -185,7 +186,7 @@ public class GameInstance {
 	 */
 	public void makeMoves(List<Move> moves) {
 		for (Move mv : moves) {
-			makeMove(mv);
+			makeMove(mv.getCol());
 		}
 	}
 

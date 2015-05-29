@@ -50,13 +50,7 @@ public class UIPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == restartButton) gi.restartGame();
-		else if(e.getSource() == undoButton) {
-			if (gi.getNumAI() > 0) {
-				gi.getBoard().undoLastMove();
-			}
-			gi.undoMove();
-			
-			}
+		else if(e.getSource() == undoButton) gi.undoMove();
 		else if(e.getSource() == redoButton) gi.redoMove();
 		else if(e.getSource() == mainMenuButton) main.changeCard(main.MENU);
 	}

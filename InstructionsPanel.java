@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,14 +18,14 @@ public class InstructionsPanel extends JPanel implements ActionListener{
 	}
 
 	private void initUI() {
-		insImg = new JLabel(new ImageIcon("src/logo.jpg"));
-		insImg.setAlignmentX(CENTER_ALIGNMENT);
-		add(insImg);
+		setLayout(new BorderLayout());
+		
+		insImg = new JLabel(new ImageIcon("src/logo.png"));
+		add(insImg, BorderLayout.CENTER);
 		
 		backButton = new JButton("Back");
 		backButton.addActionListener(this);
-		backButton.setAlignmentX(CENTER_ALIGNMENT);
-		add(backButton);
+		add(backButton, BorderLayout.PAGE_END);
 		
 		setBackground(Color.white);
 		

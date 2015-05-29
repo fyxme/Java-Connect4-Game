@@ -73,7 +73,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		menuCard.setLayout(new BorderLayout());
 		menuCard.add(menuPanel, BorderLayout.CENTER);
 		
-		instPanel.setLayout(new BorderLayout());
+		//instPanel.setLayout(new BorderLayout());//this line breaks it for some reason. don't touch.
 		instCard = new JPanel();
 		instCard.setBackground(new Color(210,210,210));
 		instCard.setLayout(new BorderLayout());

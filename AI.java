@@ -1,9 +1,9 @@
 import java.awt.Color;
 
 public class AI implements Participant {
-	private static final int EASY = 3;
-	private static final int MEDIUM = 6;
-	private static final int HARD = 9;
+	public static final int EASY = 3;
+	public static final int MEDIUM = 6;
+	public static final int HARD = 9;
 	private static final int ERROR = -1;
 	private static final float WIN_SCORE = 1f; // score of state that leads to a win
 	private static final float LOSE_SCORE = -1f; // score of state that leads to a loss

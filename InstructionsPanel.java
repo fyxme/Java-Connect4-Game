@@ -20,7 +20,7 @@ public class InstructionsPanel extends JPanel implements ActionListener{
 	private void initUI() {
 		setLayout(new BorderLayout());
 		
-		insImg = new JLabel(new ImageIcon("src/logo.png"));
+		insImg = new JLabel(new ImageIcon("src/instructions.png"));
 		add(insImg, BorderLayout.CENTER);
 		
 		backButton = new JButton("Back");

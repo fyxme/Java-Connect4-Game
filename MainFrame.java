@@ -23,15 +23,20 @@ public class MainFrame extends JFrame implements ActionListener {
 	private static final int MEDIUM = 1;
 	private static final int HARD = 2;
 	
+	public static final String MENU = "menu";
+	public static final String OPTIONS = "opti";
+	public static final String INSTRUCTIONS = "instru";
+	public static final String GAME = "game";
+	
 	private GameInstance gi;
 	
 	//basic idea is the main frame contains a card layout with two panes, one pane being main menu other pane being game screen.	
-	JPanel cards;
-	JPanel gameCard;
-	JPanel menuCard;
+	private JPanel cards;
+	private JPanel gameCard;
+	private JPanel menuCard;
 	
-	JButton onePlayer;
-	JButton twoPlayer;
+	private JButton onePlayer;
+	private JButton twoPlayer;
 	
 	// components:
 	private GamePanel gamePanel;
@@ -95,6 +100,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		uiPanel.setGameInstance(gi);
 		 CardLayout cl = (CardLayout)(cards.getLayout());
 		 cl.show(cards, "game" );
+	}
+	
+	public void changeCard(String token){
+		
 	}
 
 	@Override

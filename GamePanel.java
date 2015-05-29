@@ -12,6 +12,8 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements ActionListener, MouseMotionListener,MouseListener,ComponentListener,GameEventListener{
 	private GameInstance gi = null;
 
+	private static final int ERROR = -1;
+	
 	private static final float _CIRCLE_WIDTH = 50; // padding of circles;
 	private static final float _CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
 	private static final float _LINE_THICKNESS = 3;
@@ -355,17 +357,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	public void componentShown(ComponentEvent arg0) {
 		// do nothing
 	}
-
+	
 	private void stopAnimation()
 	{
 		animating = false;
 		animTimer.stop();
 
-		if ( gi.getWinner() == null && //game no winner yet
+		if (gi.getWinner() == null && //game no winner yet
 				gi.getBoard().hasEmptySlot() &&  //there are still free slots
 				gi.getCurrentParticipant() instanceof AI)// player's turn to move.
 		{
-			startMove(-1); //passing a minus one asks the AI for the move.
+			startMove(ERROR); //passing a minus one asks the AI for the move.
 		}
 	}
 

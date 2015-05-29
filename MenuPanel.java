@@ -12,6 +12,10 @@ public class MenuPanel extends JPanel implements ActionListener{
 	private JButton multiButton;
 	private MainFrame main;
 	
+	private static final int EASY_AI = 3;
+	private static final int MEDIUM_AI = 6;
+	private static final int HARD_AI = 9;
+	
 	public MenuPanel(MainFrame mf)
 	{
 		super();
@@ -51,18 +55,18 @@ public class MenuPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == easyButton){
 			GameInstance gi = new GameInstance(main.DEFAULT_ROW_NUM,
-					main.DEFAULT_COLUMN_NUM, 1, 1, 0);
+					main.DEFAULT_COLUMN_NUM, 1, 1, EASY_AI);
 			main.newGame(gi);
 		}
 		else if(e.getSource() == medButton){
 			GameInstance gi = new GameInstance(main.DEFAULT_ROW_NUM,
-					main.DEFAULT_COLUMN_NUM, 1, 1, 1);
+					main.DEFAULT_COLUMN_NUM, 1, 1, MEDIUM_AI);
 			main.newGame(gi);
 			
 		}
 		else if(e.getSource() == hardButton){
 			GameInstance gi = new GameInstance(main.DEFAULT_ROW_NUM,
-					main.DEFAULT_COLUMN_NUM, 1, 1, 2);
+					main.DEFAULT_COLUMN_NUM, 1, 1, HARD_AI);
 			main.newGame(gi);
 			
 		}

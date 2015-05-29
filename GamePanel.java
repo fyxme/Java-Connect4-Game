@@ -10,10 +10,12 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements ActionListener, MouseMotionListener,MouseListener,ComponentListener,GameEventListener{
+	//holds a reference to the game instance this GamePanel draws and provides input to.
 	private GameInstance gi = null;
 
 	private static final int ERROR = -1;
 	
+	//all of these variables starting with _ are the default original values
 	private static final float _CIRCLE_WIDTH = 50; // padding of circles;
 	private static final float _CIRCLE_PADDING = 10; // padding in pixels between two drawn slots.
 	private static final float _LINE_THICKNESS = 3;
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private static final int _FONT_SIZE = 24;
 	private static final int _FONT_SHIFT = 4;
 
+	//these variables are changed as the program runs
 	private float CIRCLE_WIDTH = _CIRCLE_WIDTH; // padding of circles;
 	private float CIRCLE_PADDING = _CIRCLE_PADDING; // padding in pixels between two drawn slots.
 	private float LINE_THICKNESS = _LINE_THICKNESS;
@@ -32,10 +35,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 	private int FONT_SHIFT = _FONT_SHIFT;
 
+	//the initial size of the screen
 	private Dimension initialSize;
 
+	//the colour of an empty cell
 	private Color empty_cell = Color.WHITE;
 
+	/**
+	 * Creates a new instance of a GamePanel class.
+	 */
 	public GamePanel()
 	{
 		super();
@@ -71,20 +79,20 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		this.setFont(this.getFont().deriveFont(Font.PLAIN, _FONT_SIZE));
 	}
 
-	//*
+	//the variables below are used for input
 	private int mousex, mousey;
 	private boolean mouseIsInPanel = false;
-
 	private int selectedColumn; // -1 for invalid columns
+	//the variables below are used to keep track of where the screen is
 	private int screenLeft;
 	private int screenTop;
-
+	//the variables below are used to keep track of the current state of animation
 	private int animX;
 	private int animY;
 	private float animYCur;
 	private Color animColour;
 	private boolean animating = false;
-
+	//this timer ticks and fires an event for every frame of animation
 	private Timer animTimer = new Timer(1000/_ANIM_FPS, this); //30fps timer.
 
 	@Override
@@ -161,9 +169,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		}
 		if(gi.getWinner() == null && !animating) //draw selection rectangle code
 		{
-			if(mouseIsInPanel 
-					&& gi.getBoard().hasEmptySlot() && selectedColumn != -1 
-					&& gi.getCurrentParticipant() instanceof Player) 
+			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) 
 			{
 				if(selectedColumn < gi.getBoard().getNumberOfColumns())
 				{
@@ -204,12 +210,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	}
 
 	/**
-	 * Draws a s
+	 * Draws a white string with a black outline.
 	 * @param g2d The Graphics2D object used to draw.
 	 * @param f The font used to draw.
 	 * @param str The string to draw.
 	 * @param x The x position on the screen to draw.
-	 * @param y The y position on the screen to daw.
+	 * @param y The y position on the screen to draw.
 	 */
 	private void drawOutlineString(Graphics2D g2d, Font f, String str, double x, double y)
 	{
@@ -225,6 +231,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		g2d.setStroke(oldStroke);
 	}
 
+	/**
+	 * Starts the process of creating and animating a move at a selected column.
+	 * @param column The column to start the move at. Pass a -1 if you want an AI to make the move.
+	 */
 	private void startMove(int column)
 	{
 		//this line must be run above make move so it gets the correct colour
@@ -283,6 +293,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		// do nothing.
 	}
 
+	/**
+	 * Updates all variables keeping track of the mouse.
+	 * @param e
+	 */
 	private void updateMouse(MouseEvent e)
 	{
 		if(!animating)
@@ -367,16 +381,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 		if (gi.getWinner() == null && //game no winner yet
 				gi.getBoard().hasEmptySlot() &&  //there are still free slots
-				gi.getCurrentParticipant() instanceof AI)// ai's turn to move.
+				gi.getCurrentParticipant() instanceof AI)// player's turn to move.
 		{
-			repaint();
-			SwingUtilities.invokeLater(new Runnable()
-			{
-				public void run() 
-				{
-					startMove(ERROR); //passing a minus one asks the AI for the move.
-				}
-			});
+			startMove(ERROR); //passing a minus one asks the AI for the move.
 		}
 	}
 
@@ -395,18 +402,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				{
 					stopAnimation();
 					//need to run update mouse to update the selected column.
-					try 
-					{
-						Point mousePoint = MouseInfo.getPointerInfo().getLocation();
-						Point screenLoc = getLocationOnScreen();
-						updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x - screenLoc.x, mousePoint.y - screenLoc.y, 0, false));
-					}
-					catch (IllegalComponentStateException exp)
-					{ 	// this needs to be here because there is no way to check if the panel is visible
-						// on screen before running getLocationOnScreen
-						// if its not on the screen the function will throw this exception
-						// which is not an issue.
-					}
+					Point mousePoint = MouseInfo.getPointerInfo().getLocation();
+					Point screenLoc = getLocationOnScreen();
+					updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x - screenLoc.x, mousePoint.y - screenLoc.y, 0, false));
 				}
 				repaint();
 			}

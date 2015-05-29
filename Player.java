@@ -29,7 +29,12 @@ public class Player implements Participant {
 	public String getName() {
 		return name;
 	}
-
+	
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Move makeMove(int col) {
 		Move ret = new Move(col, this);

@@ -9,8 +9,6 @@ public class UIPanel extends JPanel implements ActionListener{
 	private JButton undoButton;
 	private JButton redoButton;
 	private JButton mainMenuButton;
-	private JComboBox<String> difficultyMenu;
-	private JCheckBox twoPlayer;
 	private GameInstance gi;
 	
 	public UIPanel()
@@ -45,84 +43,6 @@ public class UIPanel extends JPanel implements ActionListener{
 		add(mainMenuButton);
 		setBackground(new Color(210,210,210));
 		
-
-		
-		/**
-		 * TEMPORARY CODE. DELETE WHEN MAIN MENU IS IMPLEMENTED.
-		 */
-
-		String[] difficulties = { "Easy", "Medium", "Hard"};
-		difficultyMenu = new JComboBox<String>(difficulties);
-		difficultyMenu.setBounds(406, 11, 89, 23);
-		difficultyMenu.setSelectedIndex(0); //0 makes the default difficulty easy.
-		difficultyMenu.addActionListener(this);
-		add(difficultyMenu);
-
-		
-		twoPlayer = new JCheckBox("Two Player");
-		twoPlayer.setSelected(true);
-		twoPlayer.setBounds(505, 11, 89, 23);
-		twoPlayer.addActionListener(this);
-		twoPlayer.setBackground(new Color(210,210,210));
-		add(twoPlayer);
-		
-
-		
-		/**
-		 * END TEMPORARY CODE.
-		 */
-		
-		
-		
-		/*
-		JButton onePlayer = new JButton("1 Player");
-		onePlayer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		onePlayer.setBounds(86, 48, 89, 23);
-		frame.getContentPane().add(onePlayer);
-		
-		JButton twoPlayer = new JButton("2 Player");
-		twoPlayer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		twoPlayer.setBounds(86, 74, 89, 23);
-		frame.getContentPane().add(twoPlayer);
-		
-		JButton help = new JButton("Help");
-		help.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		help.setBounds(86, 100, 89, 23);
-		frame.getContentPane().add(help);
-		
-		JButton easyAI = new JButton("Easy AI");
-		easyAI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		easyAI.setBounds(86, 134, 89, 23);
-		frame.getContentPane().add(easyAI);
-		
-		JButton mediumAI = new JButton("Medium AI");
-		mediumAI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		mediumAI.setBounds(86, 163, 89, 23);
-		frame.getContentPane().add(mediumAI);
-		
-		JButton hardAI = new JButton("Hard AI");
-		hardAI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		hardAI.setBounds(86, 198, 89, 23);
-		frame.getContentPane().add(hardAI);
-		*/
 	}
 	
 	public JButton getMainMenuButton()

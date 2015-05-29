@@ -12,6 +12,12 @@ public interface Participant {
 	public String getName();
 	
 	/**
+	 * Set the name of the participant
+	 * @param name Name of the Participant
+	 */
+	public void setName(String name);
+	
+	/**
 	 * Asks the player or the AI to make a move
 	 * @return The Move made
 	 * @param col Column to make the Move in

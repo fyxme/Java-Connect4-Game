@@ -10,6 +10,7 @@ public class AI implements Participant {
 	private int difficulty = ERROR;		// must be either EASY, MEDIUM or HARD
 	
 	private Color color = null;
+	private String name = null;
 	
 	/**
 	 * Constructor method for the AI class
@@ -147,5 +148,10 @@ public class AI implements Participant {
 	@Override
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name  = name;
 	}
 }

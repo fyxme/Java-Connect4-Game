@@ -69,6 +69,7 @@ public class GameInstance {
 			players.put(num_part, p);
 			
 		}
+		
 		for (int i = 0; i < num_ai; i++, num_part++) { 
 			Participant ai = new AI(i, DEFAULT_DIFFICULTY);
 			ai.setColor(slotColours[num_part]);

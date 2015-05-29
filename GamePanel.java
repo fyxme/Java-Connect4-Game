@@ -33,13 +33,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private Dimension initialSize;
 
 	private Color empty_cell = Color.WHITE;
-	
+
 	public GamePanel()
 	{
 		super();
 		initUI();
 	}
-	
+
 	/**
 	 * Sets the GameInstance object that this panel retrieves game information from.
 	 * @param gi The game instance object.
@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		//for some reason calculating this elsewhere results in inconsistencies if its not set properly before every paint call
 		screenLeft = (int) ((getSize().getWidth() - gi.getBoard().getNumberOfColumns()*CIRCLE_SPACE)/2);//better to just do it here
 		screenTop = (int) ((getSize().getHeight() - gi.getBoard().getNumberOfRows()*CIRCLE_SPACE)/2);//better to just do it here
-		
+
 		// drawing code in general is a bit messy because of the drawing orders i need to keep to in order to make sure 
 		// stuff is drawn right and prevent artifacts. 
 		for( int y = 0; y < gi.getBoard().getNumberOfRows(); y++ ) //draw circles on board.
@@ -124,7 +124,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			float yClipPos = (float) boardToScreenSpace(new Point2D.Float(animX,(int)animYCur)).getY();
 
 			Shape s = g.getClip(); //save clip
-			
+
 			g.setColor(animColour);
 			if(animYCur > -1)
 			{// stops the animation rendering above the board.
@@ -186,7 +186,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			drawOutlineString((Graphics2D) g, getFont(), str, (getSize().getWidth() - strWidth)/2d, (getSize().getHeight() - strHeight)/2d);
 		}
 	}
-	
+
 	/**
 	 * Converts a board space coordinate to a screen space coordinate.
 	 * @param boardSpace The board space coordinate.
@@ -210,22 +210,22 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	private void drawOutlineString(Graphics2D g2d, Font f, String str, double x, double y)
 	{
 		Stroke oldStroke = g2d.getStroke();
-		
+
 		g2d.setStroke(new BasicStroke(FONT_SHIFT,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
 		TextLayout t = new TextLayout(str,f, g2d.getFontRenderContext());
 		g2d.setColor(Color.black);
 		g2d.draw(t.getOutline(AffineTransform.getTranslateInstance(x, y)));
 		g2d.setColor(Color.white);
 		g2d.drawString(str, (int)x,(int)y);
-		
+
 		g2d.setStroke(oldStroke);
 	}
-	
+
 	private void startMove(int column)
 	{
 		//this line must be run above make move so it gets the correct colour
 		animColour = gi.getCurrentParticipant().getColor();
-		
+
 		Move mv = gi.makeMove(column);
 		if(mv != null)
 		{
@@ -243,7 +243,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	public void mouseDragged(MouseEvent e) {
 		updateMouse(e);
 	}
-	
+
 	int pressedColumn = -1;
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -262,7 +262,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 					selectedColumn != -1 && //there is a selection.
 					gi.getCurrentParticipant() instanceof Player)// player's turn to move.
 			{
-					startMove(selectedColumn);
+				startMove(selectedColumn);
 			}
 		}
 		pressedColumn = -1;
@@ -278,7 +278,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	public void mouseClicked(MouseEvent e) {
 		// do nothing.
 	}
-	
+
 	private void updateMouse(MouseEvent e)
 	{
 		if(!animating)
@@ -286,7 +286,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 			mousex = e.getX();
 			mousey = e.getY();
 			selectedColumn = (int)((mousex-screenLeft) /  (CIRCLE_SPACE));
-			
+
 			if(selectedColumn >= gi.getBoard().getNumberOfColumns() || //detects if mouse is right of board.
 					selectedColumn < 0 || // makes sure negative numbers result in selected column = -1 (required even with next line because of floating point issues)
 					mousex < screenLeft ||// detects if mouse is left of board
@@ -355,15 +355,17 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 	public void componentShown(ComponentEvent arg0) {
 		// do nothing
 	}
-	
+
 	private void stopAnimation()
 	{
 		animating = false;
 		animTimer.stop();
-		
-		if(gi.getCurrentParticipant() instanceof AI)
+
+		if ( gi.getWinner() == null && //game no winner yet
+				gi.getBoard().hasEmptySlot() &&  //there are still free slots
+				gi.getCurrentParticipant() instanceof AI)// player's turn to move.
 		{
-			startMove(-1);//passing a minus one asks the AI for the move.
+			startMove(-1); //passing a minus one asks the AI for the move.
 		}
 	}
 

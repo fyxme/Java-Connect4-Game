@@ -45,45 +45,93 @@ public class AI implements Participant {
 	 * 
 	 * @return The chosen Column
 	 */
-	public int chooseColumn(Board bd, Participant other) {
-		// Creates a copy of bd
-		Board boardCopy = bd; 
-//		new Board(bd.getNumberOfRows(), bd.getNumberOfColumns());
-//		for (int moveNum = 0; moveNum < bd.getTurnNum(); moveNum++) {
-//			boardCopy.addMove(bd.getHistory().get(moveNum));
-//		}
-		
-		// Sets up an array to hold the scores given to each move
-		// Each score is set to be zero, which is neither good nor bad
-		int scoreOfCol[] = new int[7];
-		for (int col = 0; col < 7; col++) {
-			scoreOfCol[col] = 0;
+
+static final int MAX_MOVES_AHEAD = 8; // number of moves the ai looks ahead
+
+static final float WIN_SCORE = 1f; // score of state that leads to a win
+
+static final float LOSE_SCORE = -1f; // score of state that leads to a loss
+
+static final float UNCERTAIN_SCORE = WIN_SCORE + LOSE_SCORE; // Mid score
+
+public int chooseColumn(Board bd, Participant other) {
+	int ret = ERROR; // chosen column
+	double max_val = 2.0 * Integer.MIN_VALUE;
+
+	for (int col = 0; col < bd.getNumberOfColumns(); col++) {
+		if (bd.getColumnSpace(col) != ERROR) {
+			// compare move
+			double new_move_value = moveValue(col, bd); // get the value of this move
+
+			if (max_val < new_move_value) {
+				max_val = new_move_value; // update the new best max_value
+				ret = col; // update the new best column
+				// if this is a win break and ret this value
+				if (max_val == WIN_SCORE) {
+					break;
+				}
+			}
 		}
-		
-		// gets the score of all moves, two turns into the future (49 moves in total) and places them in the array.
-		for (int colTurn1 = 0; colTurn1 < boardCopy.getNumberOfColumns(); colTurn1++) {
-			Move mv = new Move(colTurn1, this);
-			mv.setRow(boardCopy.getColumnSpace(colTurn1));
-			boardCopy.addMove(mv); // adds the colTurn1 move to the board (the move this AI can make)
-			if (boardCopy.scoreOfBoard(this) == 1000) {
-				return colTurn1; // WIN
-			}
-			for (int colTurn2 = 0; colTurn2 < boardCopy.getNumberOfColumns(); colTurn2++) {
-				// Adds the colTurn2 move to the board (the move the other player can make)
-				mv = new Move(colTurn2, this);
-				mv.setRow(boardCopy.getColumnSpace(colTurn2));
-				boardCopy.addMove(mv);
-				
-				// updates the column score to be the minimum
-				scoreOfCol[colTurn1] = Math.min(scoreOfCol[colTurn1], boardCopy.scoreOfBoard(this));
-				
-				boardCopy.undoLastMove();
-			}
-			boardCopy.undoLastMove(); // undoes the last move so we can simulate the case of the next column along
-		}	
-		
-		return findCol(scoreOfCol);
 	}
+	return ret;
+}
+
+private double moveValue (int col, Board bd) {
+	// make the move
+	Move mv = new Move(col, this);
+	mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
+	bd.addMove(mv);
+	// calculate score
+	double val_of_move = maxMin(MAX_MOVES_AHEAD, Integer.MIN_VALUE, Integer.MAX_VALUE, null, bd);
+	bd.undoLastMove();
+	return val_of_move;
+}
+
+// recursive tree function
+private double maxMin(int moves_ahead, double min, double max, Participant currPlayer, Board bd) {
+	if (moves_ahead == 0 || bd.getWinner() != null) {
+		double score_of_board = 0;
+		// finished recursion because of moves_ahead == 0
+		if (bd.getWinner() != null) {
+			// check if the  winner is player or AI and adjust score accordingly
+			score_of_board = (bd.getWinner() != this)? LOSE_SCORE : WIN_SCORE; 
+		} else {
+			score_of_board = UNCERTAIN_SCORE;
+		}
+		// something that happens sooner has more value than something that happens later
+		return score_of_board / (MAX_MOVES_AHEAD - moves_ahead + 1); // + 1 so we don't divide by zero and break the universe
+	}
+
+	// check if Participant is AI
+	if (currPlayer == this) {
+		for (int col = 0; col < bd.getNumberOfColumns(); col++) {
+			if (bd.getColumnSpace(col) != ERROR) {
+				Move mv = new Move(col, this);
+				mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
+				bd.addMove(mv); // add move
+				min = Math.max(min, maxMin(moves_ahead - 1, min, max, null, bd));
+				bd.undoLastMove(); // undo move	
+				if (min <= max)
+					break;		
+			}
+		}
+		return max;
+	// otherwise Participant is a Player
+	} else {
+		for (int col = 0; col < bd.getNumberOfColumns(); col++) {
+			if (bd.getColumnSpace(col) != ERROR) {
+				Move mv = new Move(col, this);
+				mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
+				bd.addMove(mv); // add move
+				min = Math.max(max, maxMin(moves_ahead - 1, min, max, this, bd));
+				bd.undoLastMove(); // undo move	
+				if (min <= max)
+					break;
+			}
+		}
+		return min;
+	}
+}
 	
 
 	@Override

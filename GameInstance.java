@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class GameInstance {
 	private final static int ERROR = -1;
-	private final static int DEFAULT_DIFFICULTY = 0; // easy
 	
 	private List<GameEventListener> eventListeners = new LinkedList<GameEventListener>();
 
@@ -59,7 +58,7 @@ public class GameInstance {
 	 * @param num_ai Number of AI's
 	 * @param difficulty Difficulty of AI
 	 */
-	public GameInstance(int rows, int columns, int num_player, int num_ai) {
+	public GameInstance(int rows, int columns, int num_player, int num_ai, int difficulty) {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
 		num_part = 0;
@@ -70,7 +69,7 @@ public class GameInstance {
 			
 		}
 		for (int i = 0; i < num_ai; i++, num_part++) { 
-			Participant ai = new AI(i, DEFAULT_DIFFICULTY);
+			Participant ai = new AI(i, difficulty);
 			ai.setColor(slotColours[num_part]);
 			players.put(num_part, ai);
 		}

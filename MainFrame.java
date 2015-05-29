@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	public final static int DEFAULT_COLUMN_NUM = 7;
 	private final static int DEFAULT_PLAYER_NUM = 2;
 	private final static int DEFAULT_AI_NUM = 0;
+	private final static int DEFAULT_DIFFICULTY = 0;
 	private static final int EASY = 0;
 	private static final int MEDIUM = 1;
 	private static final int HARD = 2;
@@ -35,20 +36,22 @@ public class MainFrame extends JFrame implements ActionListener {
 	// components:
 	private GamePanel gamePanel;
 	private UIPanel uiPanel;
+	private MenuPanel menuPanel;
 	// add buttons and stuff here
 	
 	MainFrame()
 	{
 		super();
 		initUI();
-		newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
-				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM));
+//		newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
+//				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM, DEFAULT_DIFFICULTY));
 	}
 
 	private void initUI()
 	{
 		gamePanel = new GamePanel();
 		uiPanel = new UIPanel();
+		menuPanel = new MenuPanel(this);
 		uiPanel.getMainMenuButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -61,20 +64,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		gameCard.add(gamePanel,BorderLayout.CENTER);
 		gameCard.add(uiPanel,BorderLayout.PAGE_END);
 		
+		BoxLayout bl = new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS);
+		
+		menuPanel.setLayout(bl);
 		menuCard = new JPanel();
-		menuCard.setBackground(Color.BLACK);
+		menuCard.setBackground(new Color(210,210,210));
+		menuCard.setLayout(new BorderLayout());
+		menuCard.add(menuPanel, BorderLayout.CENTER);
 		
-		onePlayer = new JButton("1 Player");
-		onePlayer.addActionListener(this);
-		onePlayer.setBounds(86, 48, 89, 23);
-		menuCard.add(onePlayer);
 		
-		twoPlayer = new JButton("2 Player");
-		twoPlayer.addActionListener(this);
-		twoPlayer.setBounds(86, 74, 89, 23);
-		menuCard.add(twoPlayer);
-		
-		menuCard.add(new JButton("play game"));
 		
 		cards = new JPanel(new CardLayout());
 		cards.add(menuCard,"menu");
@@ -89,26 +87,28 @@ public class MainFrame extends JFrame implements ActionListener {
 		setLocationByPlatform(true);//makes the frame be displayed where the OS wants it to be displayed
 	}
 	
-	private void newGame(GameInstance gi)
+	public void newGame(GameInstance gi)
 	{
 		//maybe give up on the idea of instantiating our game instance more than once.
 		this.gi = gi;
 		gamePanel.setGameInstance(gi);
 		uiPanel.setGameInstance(gi);
+		 CardLayout cl = (CardLayout)(cards.getLayout());
+		 cl.show(cards, "game" );
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == onePlayer)
-		{
-			newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,1, 1));
-	        CardLayout cl = (CardLayout)(cards.getLayout());
-	        cl.show(cards, "game" );
-		}
-		else if (e.getSource() == twoPlayer)
-		{
-	        CardLayout cl = (CardLayout)(cards.getLayout());
-	        cl.show(cards, "game" );
-		}
+//		if(e.getSource() == onePlayer)
+//		{
+//			newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,1, 1));
+//	        CardLayout cl = (CardLayout)(cards.getLayout());
+//	        cl.show(cards, "game" );
+//		}
+//		else if (e.getSource() == twoPlayer)
+//		{
+//	        CardLayout cl = (CardLayout)(cards.getLayout());
+//	        cl.show(cards, "game" );
+//		}
 	}
 }

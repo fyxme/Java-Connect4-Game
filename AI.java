@@ -83,7 +83,7 @@ public class AI implements Participant {
 		Move mv = new Move(col, this);
 		mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 		bd.addMove(mv);
-		System.out.println("Making move for AI in column " + col);
+		// System.out.println("Making move for AI in column " + col);
 		// calculate score
 		double val_of_move = maxMin(MAX_MOVES_AHEAD, Integer.MIN_VALUE, Integer.MAX_VALUE, this, bd, other);
 		bd.undoLastMove();
@@ -104,8 +104,8 @@ public class AI implements Participant {
 				score_of_board = UNCERTAIN_SCORE;
 			}
 			// something that happens sooner has more value than something that happens later
-			System.out.println("Score of board = " + score_of_board);
-			System.out.println("Return score =  " + (score_of_board / ((MAX_MOVES_AHEAD - moves_ahead + 1) * 1.0)));
+			// System.out.println("Score of board = " + score_of_board);
+			// System.out.println("Return score =  " + (score_of_board / ((MAX_MOVES_AHEAD - moves_ahead + 1) * 1.0)));
 			return score_of_board / ((MAX_MOVES_AHEAD - moves_ahead + 1) * 1.0); // + 1 so we don't divide by zero and break the universe
 		}
 
@@ -114,7 +114,7 @@ public class AI implements Participant {
 			for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 				if (bd.getColumnSpace(col) != ERROR) {
 					Move mv = new Move(col, this);
-					System.out.println("Making move for AI in column " + col);
+					// System.out.println("Making move for AI in column " + col);
 					mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 					bd.addMove(mv); // add move
 					min = Math.max(min, maxMin(moves_ahead - 1, min, max, this, bd, other));
@@ -129,7 +129,7 @@ public class AI implements Participant {
 			for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 				if (bd.getColumnSpace(col) != ERROR) {
 					Move mv = new Move(col, other); // make move for player
-					System.out.println("Making move for Player in column " + col);
+					// System.out.println("Making move for Player in column " + col);
 					mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 					bd.addMove(mv); // add move
 					max = Math.min(max, maxMin(moves_ahead - 1, min, max, other, bd, other));

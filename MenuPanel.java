@@ -20,30 +20,26 @@ public class MenuPanel extends JPanel implements ActionListener{
 	}
 
 	private void initUI() {
-		logo = new JLabel(new ImageIcon("src/logo.jpg"));
+		logo = new JLabel(new ImageIcon("src/logo.png"));
 		logo.setAlignmentX(CENTER_ALIGNMENT);
 		add(logo);
 		
 		easyButton = new JButton("Easy");
-		easyButton.setBounds(10, 11, 89, 23);
 		easyButton.addActionListener(this);
 		easyButton.setAlignmentX(CENTER_ALIGNMENT);
 		add(easyButton);
 		
 		medButton = new JButton("Medium");
-		medButton.setBounds(10, 41, 89, 23);
 		medButton.addActionListener(this);
 		medButton.setAlignmentX(CENTER_ALIGNMENT);
 		add(medButton);
 		
 		hardButton = new JButton("Hard");
-		hardButton.setBounds(10, 71, 89, 23);
 		hardButton.addActionListener(this);
 		hardButton.setAlignmentX(CENTER_ALIGNMENT);
 		add(hardButton);
 		
 		multiButton = new JButton("Multiplayer");
-		multiButton.setBounds(10, 101, 89, 23);
 		multiButton.addActionListener(this);
 		multiButton.setAlignmentX(CENTER_ALIGNMENT);
 		add(multiButton);

@@ -1,8 +1,3 @@
-/**
- * Game screen.
- * @author Michael Bernardi
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextLayout;
@@ -419,6 +414,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 					{	// this needs to be here because there is no way to check if the panel is visible
 						// on screen before running getLocationOnScreen
 						// If it is not on the screen, the function will throw this exception, which is not an issue.
+					}
 				}
 				repaint();
 			}

@@ -39,7 +39,7 @@ public class MenuPanel extends JPanel implements ActionListener{
 	private void initUI() {
 		
 		// The logo
-		logo = new JLabel(new ImageIcon("src/logo.png"));
+		logo = new JLabel(new ImageIcon("./logo.png"));
 		logo.setAlignmentX(CENTER_ALIGNMENT);
 		add(logo);
 		

@@ -10,10 +10,12 @@ public class UIPanel extends JPanel implements ActionListener{
 	private JButton redoButton;
 	private JButton mainMenuButton;
 	private GameInstance gi;
+	private MainFrame main;
 	
-	public UIPanel()
+	public UIPanel(MainFrame mf)
 	{
 		super();
+		main = mf;
 		initUI();
 	}
 	
@@ -45,16 +47,12 @@ public class UIPanel extends JPanel implements ActionListener{
 		
 	}
 	
-	public JButton getMainMenuButton()
-	{
-		return mainMenuButton;
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == restartButton) gi.restartGame();
 		else if(e.getSource() == undoButton) gi.undoMove();
 		else if(e.getSource() == redoButton) gi.redoMove();
+		else if(e.getSource() == mainMenuButton) main.changeCard(main.MENU);
 	}
 	
 }

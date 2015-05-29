@@ -147,8 +147,7 @@ public class GameInstance {
 	 */
 	public Move makeMove(int col) {//passing a minus one asks the AI for the move.
 		Participant curr = getCurrentParticipant();
-		if(col < 0)
-		{
+		if(col == ERROR) { // its the AI's turn
 			col = ((AI)curr).chooseColumn(board, this.getOtherParticipant(curr));
 		}
 		Move mv = new Move(col, curr);
@@ -158,7 +157,7 @@ public class GameInstance {
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves.
 			
-			board.scoreOfBoard(this.getCurrentParticipant()); // TODO : DEBUGGING
+			// board.scoreOfBoard(this.getCurrentParticipant()); // TODO : DEBUGGING
 			return mv;
 		} else { // column is full invalid column
 			return null;

@@ -56,16 +56,18 @@ static final float UNCERTAIN_SCORE = WIN_SCORE + LOSE_SCORE; // Mid score
 
 public int chooseColumn(Board bd, Participant other) {
 	int ret = ERROR; // chosen column
-	double max_val = 2.0 * Integer.MIN_VALUE;
-
+	double max_val = 2.0 * Integer.MIN_VALUE; // max_value < LOSE_SCORE
+	
 	for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 		if (bd.getColumnSpace(col) != ERROR) {
 			// compare move
-			double new_move_value = moveValue(col, bd); // get the value of this move
+			double new_move_value = moveValue(col, bd, other); // get the value of this move
 
 			if (max_val < new_move_value) {
+				
 				max_val = new_move_value; // update the new best max_value
 				ret = col; // update the new best column
+				System.out.println(max_val);
 				// if this is a win break and ret this value
 				if (max_val == WIN_SCORE) {
 					break;
@@ -76,25 +78,26 @@ public int chooseColumn(Board bd, Participant other) {
 	return ret;
 }
 
-private double moveValue (int col, Board bd) {
+private double moveValue (int col, Board bd, Participant other) {
 	// make the move
 	Move mv = new Move(col, this);
 	mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 	bd.addMove(mv);
 	// calculate score
-	double val_of_move = maxMin(MAX_MOVES_AHEAD, Integer.MIN_VALUE, Integer.MAX_VALUE, null, bd);
+	double val_of_move = maxMin(MAX_MOVES_AHEAD, Integer.MIN_VALUE, Integer.MAX_VALUE, this, bd, other);
 	bd.undoLastMove();
 	return val_of_move;
 }
 
 // recursive tree function
-private double maxMin(int moves_ahead, double min, double max, Participant currPlayer, Board bd) {
+private double maxMin(int moves_ahead, double min, double max, 
+		Participant currPlayer, Board bd, Participant other) {
 	if (moves_ahead == 0 || bd.getWinner() != null) {
 		double score_of_board = 0;
 		// finished recursion because of moves_ahead == 0
 		if (bd.getWinner() != null) {
 			// check if the  winner is player or AI and adjust score accordingly
-			score_of_board = (bd.getWinner() != this)? LOSE_SCORE : WIN_SCORE; 
+			score_of_board = (bd.getWinner() == other)? LOSE_SCORE : WIN_SCORE; 
 		} else {
 			score_of_board = UNCERTAIN_SCORE;
 		}
@@ -102,34 +105,34 @@ private double maxMin(int moves_ahead, double min, double max, Participant currP
 		return score_of_board / (MAX_MOVES_AHEAD - moves_ahead + 1); // + 1 so we don't divide by zero and break the universe
 	}
 
-	// check if Participant is AI
-	if (currPlayer == this) {
+	// check if Participant is Player
+	if (currPlayer != this) {
 		for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 			if (bd.getColumnSpace(col) != ERROR) {
-				Move mv = new Move(col, this);
+				Move mv = new Move(col, other);
 				mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 				bd.addMove(mv); // add move
-				min = Math.max(min, maxMin(moves_ahead - 1, min, max, null, bd));
+				min = Math.max(min, maxMin(moves_ahead - 1, min, max, this, bd, other));
 				bd.undoLastMove(); // undo move	
-				if (min <= max)
+				if (max <= min)
 					break;		
 			}
 		}
-		return max;
-	// otherwise Participant is a Player
+		return min;
+	// otherwise Participant is a AI
 	} else {
 		for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 			if (bd.getColumnSpace(col) != ERROR) {
 				Move mv = new Move(col, this);
 				mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 				bd.addMove(mv); // add move
-				min = Math.max(max, maxMin(moves_ahead - 1, min, max, this, bd));
+				max = Math.max(max, maxMin(moves_ahead - 1, min, max, other, bd, other));
 				bd.undoLastMove(); // undo move	
-				if (min <= max)
+				if (max <= min)
 					break;
 			}
 		}
-		return min;
+		return max;
 	}
 }
 	

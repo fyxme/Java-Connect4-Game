@@ -169,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 		}
 		if(gi.getWinner() == null && !animating) //draw selection rectangle code
 		{
-			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1) 
+			if(mouseIsInPanel && gi.getBoard().hasEmptySlot() && selectedColumn != -1 && gi.getCurrentParticipant() instanceof Player) 
 			{
 				if(selectedColumn < gi.getBoard().getNumberOfColumns())
 				{
@@ -381,9 +381,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 		if (gi.getWinner() == null && //game no winner yet
 				gi.getBoard().hasEmptySlot() &&  //there are still free slots
-				gi.getCurrentParticipant() instanceof AI)// player's turn to move.
+				gi.getCurrentParticipant() instanceof AI)// Ai's turn to move.
 		{
-			startMove(ERROR); //passing a minus one asks the AI for the move.
+			repaint();
+			SwingUtilities.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					startMove(ERROR); //passing a minus one asks the AI for the move.
+				}
+			});
 		}
 	}
 
@@ -402,9 +409,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 				{
 					stopAnimation();
 					//need to run update mouse to update the selected column.
-					Point mousePoint = MouseInfo.getPointerInfo().getLocation();
-					Point screenLoc = getLocationOnScreen();
-					updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x - screenLoc.x, mousePoint.y - screenLoc.y, 0, false));
+					try
+					{
+						Point mousePoint = MouseInfo.getPointerInfo().getLocation();
+						Point screenLoc = getLocationOnScreen();
+						updateMouse(new MouseEvent(this, 0, 0, 0, mousePoint.x - screenLoc.x, mousePoint.y - screenLoc.y, 0, false));
+					}
+					catch (IllegalComponentStateException exp)
+					{	// this needs to be here because there is no way to check if the panel is visible
+						// on screen before running getLocationOnScreen
+						// If it is not on the screen, the function will throw this exception, which is not an issue.
 				}
 				repaint();
 			}

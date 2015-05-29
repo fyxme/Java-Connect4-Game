@@ -44,7 +44,8 @@ public class AI implements Participant {
 	 * 
 	 * This method also allows the AI to help a player
 	 * if a Hint is requested 
-	 * 
+	 * @param bd	the board
+	 * @param other	The other participant
 	 * @return The chosen Column
 	 */
 	public int chooseColumn(Board bd, Participant other) {

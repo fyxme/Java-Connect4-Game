@@ -152,7 +152,7 @@ public class GameInstance {
 	
 	/**
 	 * Tries to make a Move on the board based on the input column
-	 * @param mv Move made
+	 * @param col The column you want to make a move in
 	 * @return True if the Move has been Made else returns False if the move can't be made.
 	 */
 	public Move makeMove(int col) {//passing a minus one asks the AI for the move.

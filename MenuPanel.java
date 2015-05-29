@@ -14,6 +14,9 @@ public class MenuPanel extends JPanel implements ActionListener{
 	private JButton onePlayerButton;
 	private JButton twoPlayerButton;
 	private JButton instructionsButton;
+	private JButton glassPanel1;
+	private JButton glassPanel2;
+
 	
 	private MainFrame main;
 	
@@ -25,41 +28,46 @@ public class MenuPanel extends JPanel implements ActionListener{
 	}
 
 	private void initUI() {
-		Dimension preferredSize = new Dimension(300, 100);
-		setLayout(new GridBagLayout());
 		
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(50,50,55,55);//set padding here
-		c.anchor = c.CENTER;
-		c.fill = c.HORIZONTAL;
-		c.weighty = 1;
-		c.weightx = 1;
-		
-		c.gridx = 0;
-		c.gridy = 0;
+		// The logo
 		logo = new JLabel(new ImageIcon("src/logo.png"));
-		//logo.setAlignmentX(CENTER_ALIGNMENT);
-		add(logo,c);
-		c.gridy++;
+		logo.setAlignmentX(CENTER_ALIGNMENT);
+		add(logo);
 		
+		// The one player button
 		onePlayerButton = new JButton("1 Player");
 		onePlayerButton.addActionListener(this);
-		//onePlayerButton.setAlignmentX(CENTER_ALIGNMENT);
-		onePlayerButton.setPreferredSize(preferredSize);
-		add(onePlayerButton,c);
-		c.gridy++;
+		onePlayerButton.setAlignmentX(CENTER_ALIGNMENT);
+		add(onePlayerButton);
 		
+		// To add a little blank space under the first button
+		glassPanel1 = new JButton("");
+		glassPanel1.setAlignmentX(CENTER_ALIGNMENT);
+		glassPanel1.setOpaque(false);
+		glassPanel1.setContentAreaFilled(false);
+		glassPanel1.setBorderPainted(false);
+		add(glassPanel1);
+
+
+		// The two player button
 		twoPlayerButton = new JButton("2 Player");
 		twoPlayerButton.addActionListener(this);
-		//twoPlayerButton.setAlignmentX(CENTER_ALIGNMENT);
-		add(twoPlayerButton,c);
-		c.gridy++;
+		twoPlayerButton.setAlignmentX(CENTER_ALIGNMENT);
+		add(twoPlayerButton);
 		
+		// To add a little blank space under the first button
+		glassPanel2 = new JButton("");
+		glassPanel2.setAlignmentX(CENTER_ALIGNMENT);
+		glassPanel2.setOpaque(false);
+		glassPanel2.setContentAreaFilled(false);
+		glassPanel2.setBorderPainted(false);
+		add(glassPanel2);
+		
+		// The instruction button
 		instructionsButton = new JButton("Instructions");
 		instructionsButton.addActionListener(this);
-		//instructionsButton.setAlignmentX(CENTER_ALIGNMENT);
-		add(instructionsButton,c);
-		c.gridy++;
+		instructionsButton.setAlignmentX(CENTER_ALIGNMENT);
+		add(instructionsButton);
 		
 		setBackground(Color.white);
 	}

@@ -25,7 +25,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	public static final String MENU = "menu";
 	public static final String OPTIONS = "opti";
-	public static final String INSTRUCTIONS = "instru";
+	public static final String INSTRUCTIONS = "inst";
 	public static final String GAME = "game";
 	
 	private GameInstance gi;
@@ -34,6 +34,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JPanel cards;
 	private JPanel gameCard;
 	private JPanel menuCard;
+	private JPanel instCard;
+	private JPanel optiCard;
 	
 	private JButton onePlayer;
 	private JButton twoPlayer;
@@ -42,46 +44,52 @@ public class MainFrame extends JFrame implements ActionListener {
 	private GamePanel gamePanel;
 	private UIPanel uiPanel;
 	private MenuPanel menuPanel;
+	private InstructionsPanel instPanel;
+	private OptionsPanel optiPanel;
 	// add buttons and stuff here
 	
 	MainFrame()
 	{
 		super();
 		initUI();
-//		newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,
-//				   DEFAULT_PLAYER_NUM, DEFAULT_AI_NUM, DEFAULT_DIFFICULTY));
 	}
 
 	private void initUI()
 	{
 		gamePanel = new GamePanel();
-		uiPanel = new UIPanel();
+		uiPanel = new UIPanel(this);
 		menuPanel = new MenuPanel(this);
-		uiPanel.getMainMenuButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.show(cards, "menu" );
-			}
-		});
+		instPanel = new InstructionsPanel(this);
+		optiPanel = new OptionsPanel(this);
 		
 		gameCard = new JPanel(new BorderLayout());
 		gameCard.add(gamePanel,BorderLayout.CENTER);
 		gameCard.add(uiPanel,BorderLayout.PAGE_END);
 		
 		BoxLayout bl = new BoxLayout(menuPanel, BoxLayout.PAGE_AXIS);
-		
 		menuPanel.setLayout(bl);
 		menuCard = new JPanel();
 		menuCard.setBackground(new Color(210,210,210));
 		menuCard.setLayout(new BorderLayout());
 		menuCard.add(menuPanel, BorderLayout.CENTER);
 		
+		instPanel.setLayout(new BorderLayout());
+		instCard = new JPanel();
+		instCard.setBackground(new Color(210,210,210));
+		instCard.setLayout(new BorderLayout());
+		instCard.add(instPanel, BorderLayout.CENTER);
 		
+		optiPanel.setLayout(new CardLayout());
+		optiCard = new JPanel();
+		optiCard.setBackground(new Color(210,210,210));
+		optiCard.setLayout(new BorderLayout());
+		optiCard.add(optiPanel, BorderLayout.CENTER);
 		
 		cards = new JPanel(new CardLayout());
-		cards.add(menuCard,"menu");
-		cards.add(gameCard,"game");
+		cards.add(menuCard,MENU);
+		cards.add(gameCard,GAME);
+		cards.add(optiCard,OPTIONS);
+		cards.add(instCard,INSTRUCTIONS);
 		
 		add(cards);
 		
@@ -98,26 +106,20 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.gi = gi;
 		gamePanel.setGameInstance(gi);
 		uiPanel.setGameInstance(gi);
-		 CardLayout cl = (CardLayout)(cards.getLayout());
-		 cl.show(cards, "game" );
+		this.changeCard(GAME);
 	}
 	
 	public void changeCard(String token){
-		
+		 CardLayout cl = (CardLayout)(cards.getLayout());
+		 cl.show(cards, token );
+	}
+	
+	public void changeOptiCard(boolean isAI){
+		this.changeCard(OPTIONS);
+		optiPanel.setAIScreen(isAI);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		if(e.getSource() == onePlayer)
-//		{
-//			newGame(new GameInstance(DEFAULT_ROW_NUM, DEFAULT_COLUMN_NUM,1, 1));
-//	        CardLayout cl = (CardLayout)(cards.getLayout());
-//	        cl.show(cards, "game" );
-//		}
-//		else if (e.getSource() == twoPlayer)
-//		{
-//	        CardLayout cl = (CardLayout)(cards.getLayout());
-//	        cl.show(cards, "game" );
-//		}
 	}
 }

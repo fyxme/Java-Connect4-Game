@@ -17,7 +17,7 @@ public class GameInstance {
 	/**
 	 * An array of all available colors
 	 */
-	private Color[] slotColours = new Color[]
+	public static Color[] slotColours = new Color[]
 			{
 			// Color.WHITE, // empty cell
 			Color.ORANGE, // player one color default >> ORANGE/YELLOW
@@ -70,6 +70,7 @@ public class GameInstance {
 		num_part = 0;
 		for (int i = 0; i < num_player; i++, num_part++) {
 			Participant p = new Player(i);
+			p.setName("Player " + (i + 1));
 			p.setColor(slotColours[num_part]);
 			players.put(num_part, p);
 			

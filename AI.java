@@ -27,8 +27,7 @@ public class AI implements Participant {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Computer";
 	}
 
 	@Override
@@ -56,16 +55,13 @@ public class AI implements Participant {
 			reduced_diff = true;
 		}
 		
-		System.out.println(this.getDifficulty());
 		int ret = ERROR; // chosen column
-		double max_val = 2. * Integer.MIN_VALUE; // max_value < LOSE_SCORE
-		
-		System.out.println(this.getDifficulty());
-		
+		double max_val = 2.0 * Integer.MIN_VALUE; // max_value < LOSE_SCORE
+				
 		for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 			if (bd.getColumnSpace(col) != ERROR) {
 				// compare move
-				double new_move_value = moveValue(col, bd, other); // get the value of this move
+				double new_move_value = scoreMove(col, bd, other); // get the value of this move
 
 				if (max_val < new_move_value) {
 					
@@ -84,12 +80,11 @@ public class AI implements Participant {
 		return ret;
 	}
 
-	private double moveValue(int col, Board bd, Participant other) {
+	private double scoreMove(int col, Board bd, Participant other) {
 		// make the move
 		Move mv = new Move(col, this);
 		mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 		bd.addMove(mv);
-		// System.out.println("Making move for AI in column " + col);
 		// calculate score
 		double val_of_move = maxMin(this.getDifficulty(), Integer.MIN_VALUE, Integer.MAX_VALUE, this, bd, other);
 		bd.undoLastMove();
@@ -110,8 +105,6 @@ public class AI implements Participant {
 				score_of_board = UNCERTAIN_SCORE;
 			}
 			// something that happens sooner has more value than something that happens later
-			// System.out.println("Score of board = " + score_of_board);
-			// System.out.println("Return score =  " + (score_of_board / ((this.getDifficulty() - moves_ahead + 1) * 1.0)));
 			return score_of_board / ((this.getDifficulty() - moves_ahead + 1) * 1.0); // + 1 so we don't divide by zero and break the universe
 		}
 
@@ -120,7 +113,6 @@ public class AI implements Participant {
 			for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 				if (bd.getColumnSpace(col) != ERROR) {
 					Move mv = new Move(col, this);
-					// System.out.println("Making move for AI in column " + col);
 					mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 					bd.addMove(mv); // add move
 					min = Math.max(min, maxMin(moves_ahead - 1, min, max, this, bd, other));
@@ -135,7 +127,6 @@ public class AI implements Participant {
 			for (int col = 0; col < bd.getNumberOfColumns(); col++) {
 				if (bd.getColumnSpace(col) != ERROR) {
 					Move mv = new Move(col, other); // make move for player
-					// System.out.println("Making move for Player in column " + col);
 					mv.setRow(bd.getColumnSpace(col)); // column has available space since it has been looked at before
 					bd.addMove(mv); // add move
 					max = Math.min(max, maxMin(moves_ahead - 1, min, max, other, bd, other));

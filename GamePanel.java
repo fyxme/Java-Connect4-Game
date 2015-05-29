@@ -182,7 +182,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseMotionList
 
 			//winner text
 			FontMetrics fm = getFontMetrics(getFont());
-			String str = "Player " + (gi.getWinner().getPid()+1) + " wins!";
+			String str = gi.getWinner().getName() + " wins!";
 			int strWidth = fm.stringWidth(str);
 			int strHeight = (int) fm.getLineMetrics(str, g).getHeight();
 			drawOutlineString((Graphics2D) g, getFont(), str, (getSize().getWidth() - strWidth)/2d, (getSize().getHeight() - strHeight)/2d);

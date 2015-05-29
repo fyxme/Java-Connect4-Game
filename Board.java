@@ -90,7 +90,6 @@ public class Board {
 	 * by adding the Move to the history and adding the occupant
 	 * to the specific Tile
 	 * @param mv Move made
-	 * @param p Participant who made the move
 	 */
 	public void addMove(Move mv) {
 		this.history.put(this.round_num, mv);
@@ -282,8 +281,6 @@ public class Board {
 	 * 
 	 * If someone won, prints the details and returns true, otherwise returns false
 	 * 
-	 * @param rowOfLastPlaced		The row of the last placed counter
-	 * @param colOfLastPlaced		The column of the last placed counter
 	 * @return						A number corresponding to the player that has four in a row, or 0 if neither
 	 * 								ie. 1 for player1, 2 for player2, 0 for no-one.
 	 */

@@ -20,6 +20,11 @@ public class MenuPanel extends JPanel implements ActionListener{
 	
 	private MainFrame main;
 	
+	
+	/**
+	 * A method to initiate a main menu UI.
+	 * @param mf 	the mainframe for which we want to draw a menu
+	 */
 	public MenuPanel(MainFrame mf)
 	{
 		super();
@@ -27,6 +32,10 @@ public class MenuPanel extends JPanel implements ActionListener{
 		initUI();
 	}
 
+	
+	/**
+	 * Draws the necessary images and buttons
+	 */
 	private void initUI() {
 		
 		// The logo

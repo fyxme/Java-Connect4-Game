@@ -83,14 +83,17 @@ public class GameInstance {
 		}
 	}
 
+	
 	public void addListener(GameEventListener l)
 	{
 		eventListeners.add(l);
 	}
+	
 	public void removeListener(GameEventListener l)
 	{
 		eventListeners.remove(l);
 	}
+	
 	private void fireGameEvent()
 	{
 		for(GameEventListener l : eventListeners)
@@ -163,8 +166,6 @@ public class GameInstance {
 			mv.setRow(row);
 			board.addMove(mv);
 			board.clearUndoneMoves(); // clears the stack of undone Moves.
-			
-			// board.scoreOfBoard(this.getCurrentParticipant()); // TODO : DEBUGGING
 			return mv;
 		} else { // column is full invalid column
 			return null;
@@ -196,6 +197,10 @@ public class GameInstance {
 		fireGameEvent();
 	}
 	
+	/**
+	 * Gets the number of AI participants, should be 1 or 0
+	 * @return	the number of AIs
+	 */
 	public int getNumAI() {
 		return this.numAi;
 	}

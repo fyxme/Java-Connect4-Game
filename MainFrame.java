@@ -54,6 +54,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		initUI();
 	}
 
+	
+	/**
+	 * A method the draw the bar at the bottom of a game. Draws a restart,
+	 * undo, redo and mainMenu buttons.
+	 */
 	private void initUI()
 	{
 		gamePanel = new GamePanel();
@@ -100,20 +105,30 @@ public class MainFrame extends JFrame implements ActionListener {
 		setLocationByPlatform(true);//makes the frame be displayed where the OS wants it to be displayed
 	}
 	
+	/**
+	 * A Method to pass a new game to all the game and ui panels which require it.
+	 * @param gi The new GameInstance object
+	 */
 	public void newGame(GameInstance gi)
 	{
-		//maybe give up on the idea of instantiating our game instance more than once.
 		this.gi = gi;
 		gamePanel.setGameInstance(gi);
 		uiPanel.setGameInstance(gi);
 		this.changeCard(GAME);
 	}
-	
+	/**
+	 * Changes the card that the main frame is displaying.
+	 * @param token A token representing the card to chnage to. E.g. MainFrame.MENU
+	 */
 	public void changeCard(String token){
 		 CardLayout cl = (CardLayout)(cards.getLayout());
 		 cl.show(cards, token );
 	}
 	
+	/**
+	 * Changes the card to the options card.
+	 * @param isAI Whether or not the options card should display options for an AI game or a two player game.
+	 */
 	public void changeOptiCard(boolean isAI){
 		this.changeCard(OPTIONS);
 		optiPanel.setAIScreen(isAI);

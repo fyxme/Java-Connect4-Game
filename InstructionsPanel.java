@@ -17,6 +17,11 @@ public class InstructionsPanel extends JPanel implements ActionListener{
 		initUI();
 	}
 
+	
+	/**
+	 * A method to draw the instructions page. Adds the instructions image
+	 * and a back button.
+	 */
 	private void initUI() {
 		setLayout(new BorderLayout());
 		

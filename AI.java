@@ -48,12 +48,6 @@ public class AI implements Participant {
 	 * @return The chosen Column
 	 */
 	public int chooseColumn(Board bd, Participant other) {
-//		boolean reduced_diff = false;
-//		int orig_diff = this.difficulty;
-//		if (bd.getTurnNum() < 4) {
-//			this.difficulty = Math.min(this.difficulty, MEDIUM);
-//			reduced_diff = true;
-//		}
 		
 		int ret = ERROR; // chosen column
 		double max_val = 2.0 * Integer.MIN_VALUE; // max_value < LOSE_SCORE
@@ -75,8 +69,6 @@ public class AI implements Participant {
 				}
 			}
 		}
-//		if (reduced_diff)
-//			this.difficulty = orig_diff;
 		return ret;
 	}
 

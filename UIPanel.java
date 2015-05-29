@@ -12,6 +12,10 @@ public class UIPanel extends JPanel implements ActionListener{
 	private GameInstance gi;
 	private MainFrame main;
 	
+	/**
+	 * A method to intialise the drawing of the UI
+	 * @param mf	The mainframe to intialise for
+	 */
 	public UIPanel(MainFrame mf)
 	{
 		super();
@@ -23,6 +27,10 @@ public class UIPanel extends JPanel implements ActionListener{
 		this.gi = gi;
 	}
 
+	/**
+	 * A method to draw and set up all the required buttons
+	 * at the bottom of the screen 
+	 */
 	private void initUI() {
 		restartButton = new JButton("Restart");
 		restartButton.setBounds(10, 11, 89, 23);

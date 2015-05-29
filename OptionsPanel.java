@@ -68,6 +68,12 @@ public class OptionsPanel extends JPanel implements ActionListener{
 	private final static String AI = "ai";
 	private final static String TP = "twoplayer";
 	
+	
+	
+	/**
+	 * A method to intiate the drawing of an options panel
+	 * @param mf	The mainframe for which we want to draw the options panel
+	 */
 	public OptionsPanel(MainFrame mf)
 	{
 		super();
@@ -76,11 +82,17 @@ public class OptionsPanel extends JPanel implements ActionListener{
 		createLayout();
 	}
 
+	
+	
+	/**
+	 * Draws the necessary buttons for the options screens.
+	 * There are essentially two parts to this method, one of which draws the option
+	 * screen for a game between two players, and the other draws the option screen for
+	 * a game between a player and an AI.
+	 */
 	private void initUI() {
 		Dimension preferredRadSize = new Dimension(80,20);
-		
-		
-		
+			
 		//1 vs 1 screen
 		p1Label = new JLabel("Player 1:");
 		p1Name = new JTextField("player 1");	
@@ -257,6 +269,10 @@ public class OptionsPanel extends JPanel implements ActionListener{
 		
 	}
 	
+	
+	/**
+	 * Draws all the necessary buttons using a grid
+	 */
 	private void createLayout()
 	{	
 		//ai screen
@@ -380,6 +396,11 @@ public class OptionsPanel extends JPanel implements ActionListener{
 		tpCard.add(playTPButton,c);
 	}
 	
+	
+	/**
+	 * A method to intiate the showing of either the 2 player screen, or 1 player screen
+	 * @param aiScreen	A boolean, true if one player, false if two player
+	 */
 	public void setAIScreen(boolean aiScreen)
 	{
 		 CardLayout cl = (CardLayout)(cards.getLayout());
@@ -469,9 +490,6 @@ public class OptionsPanel extends JPanel implements ActionListener{
 			} else {
 				p2.setColor(p2Colour4Rad.getBackground());
 			}
-			
-			
-			
 			
 			main.newGame(gi);
 		}

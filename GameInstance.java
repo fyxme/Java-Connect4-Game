@@ -51,6 +51,11 @@ public class GameInstance {
 	private int num_part = ERROR;
 	
 	/**
+	 * Number of AI's, either 0 or 1
+	 */
+	private int numAi;
+	
+	/**
 	 * Constructor Method for GameInstance Class
 	 * @param rows Number of Rows
 	 * @param columns Number of Columns
@@ -61,6 +66,7 @@ public class GameInstance {
 	public GameInstance(int rows, int columns, int num_player, int num_ai, int difficulty) {
 		board = new Board(rows, columns);
 		players = new HashMap<Integer, Participant>();
+		this.numAi = num_ai;
 		num_part = 0;
 		for (int i = 0; i < num_player; i++, num_part++) {
 			Participant p = new Player(i);
@@ -187,5 +193,9 @@ public class GameInstance {
 	public void redoMove() {
 		board.redoLastMove();
 		fireGameEvent();
+	}
+	
+	public int getNumAI() {
+		return this.numAi;
 	}
 }
